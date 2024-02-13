@@ -35,4 +35,4 @@ def login():
     return render_template('login.html')
 
 if __name__ == "__main__":
-    app.run(host='localhost',debug=True)
+    app.run(host='localhost',, port='8080',debug=True)
