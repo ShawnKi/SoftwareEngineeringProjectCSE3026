@@ -5,6 +5,7 @@ on:
     branches:
       - test1
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: windows-latest
@@ -23,4 +24,7 @@ jobs:
         pip install flask
 
     - name: Run app
-      run: python app.py
+      run: |
+        python app.py &
+        sleep 10  # Wait for the server to start
+        kill %1  # Stop the server
