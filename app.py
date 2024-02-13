@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import os
 
 # Create the Flask application and specify the templates directory
 app = Flask(__name__, template_folder='test1/templates')
