@@ -25,6 +25,6 @@ jobs:
 
     - name: Run app
       run: |
-        python app.py &
-        sleep 10  # Wait for the server to start
-        kill %1  # Stop the server
+        Start-Process -NoNewWindow -FilePath python -ArgumentList "app.py"
+        Start-Sleep -Seconds 10
+        Stop-Process -Name "python"
