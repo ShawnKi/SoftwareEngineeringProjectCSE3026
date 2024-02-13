@@ -11,7 +11,7 @@ templates_dir = os.path.join(dir_path, 'test1', 'templates')
 app = Flask(__name__, template_folder=templates_dir)
 print("Template folder (relative):", app.template_folder)
 print("Template folder (absolute):", os.path.join(app.root_path, app.template_folder))
-@app.route('/')
+#@app.route('/')
 def index():
     return render_template('index.html')
 
