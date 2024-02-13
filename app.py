@@ -22,6 +22,6 @@ def quiz():
 def login():
     return render_template('login.html')
 
-
+#Runs the main program
 if __name__ == "__main__":
     app.run(debug=True)
