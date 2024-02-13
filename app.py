@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import os
 
 # Create the Flask application and specify the templates directory
-app = Flask(__name__, template_folder='test1/templates')
+app = Flask(__name__, template_folder='templates')
 
 print("Template folder (relative):", app.template_folder)
 print("Template folder (absolute):", os.path.join(app.root_path, app.template_folder))
