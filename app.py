@@ -1,8 +1,11 @@
 from flask import Flask, render_template
 import os
 
+# Get the absolute path of the directory where app.py is located
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 # Define the templates directory
-templates_dir = 'D:\\a\\SoftwareEngineeringProjectCSE3026\\tree\\test1\\templates'
+templates_dir = os.path.join(dir_path, 'tree', 'test1', 'templates')
 
 # Create the Flask application and specify the templates directory
 app = Flask(__name__, template_folder=templates_dir)
