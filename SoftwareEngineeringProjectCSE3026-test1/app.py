@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+import json
 import os
 import mysql.connector
 import bcrypt
 import getpass
 
-# Create the Flask application and specify the templates directory
 app = Flask(__name__, template_folder='templates')
+app.secret_key = '123456'  # change this for new testing instances
+
 def get_db_connection():
     #password = getpass.getpass()
     db = mysql.connector.connect(
@@ -16,14 +18,8 @@ def get_db_connection():
     )
     cursor = db.cursor()
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(255), password VARCHAR(255))")
+    cursor.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, userdata JSON, PRIMARY KEY (username))")
     return db
-
-
-
-# Get the absolute path of the templates directory
-templates_dir_abs = os.path.join(app.root_path, app.template_folder)
-
 
 @app.route('/')
 def index():
@@ -33,8 +29,19 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route('/quiz')
+@app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        data = request.get_json()
+        db = get_db_connection()
+        cursor = db.cursor()
+        cursor.execute("UPDATE users SET userdata = %s WHERE username = %s", (json.dumps(data), session['username']))
+        db.commit()
+        return jsonify({'message': 'Thank you for completing the survey'}), 200
+
     return render_template('quiz.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -45,38 +52,32 @@ def signup():
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         db = get_db_connection()
         cursor = db.cursor()
-        cursor.execute(f"INSERT INTO users (username, password) VALUES ('{username}', '{hashed_password.decode('utf-8')}')")
+        cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password.decode('utf-8')))
         db.commit()
-        
         return redirect(url_for('login'))
     else:
         return render_template('signup.html')
-    
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
         db = get_db_connection()
         cursor = db.cursor()
-        cursor.execute(f"SELECT * FROM users WHERE username='{username}'")
+        cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
         user = cursor.fetchone()
-
         if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
-            # Successful login
-            # Redirect to the user's dashboard or another page
-            return redirect(url_for('success'))
+            session['username'] = username
+            return redirect(url_for('quiz'))
         else:
-            # Invalid credentials
             return render_template('login.html', error='Invalid username or password')
     else:
         return render_template('login.html')
 
+@app.route('/thankyou')
+def thankyou():
+    return 'Thank you for completing the survey'
 
-@app.route('/success')
-def success():
-    return 'Logged in successfully'
 if __name__ == "__main__":
-
     app.run(host='localhost', port='8080',debug=True)
