@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import mysql.connector
+import bcrypt
 import getpass
 
 # Create the Flask application and specify the templates directory
@@ -41,11 +42,11 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         db = get_db_connection()
         cursor = db.cursor()
-        cursor.execute(f"INSERT INTO users (username, password) VALUES ('{username}', '{password}')")
+        cursor.execute(f"INSERT INTO users (username, password) VALUES ('{username}', '{hashed_password.decode('utf-8')}')")
         db.commit()
-        print(username, password)
         
         return redirect(url_for('login'))
     else:
@@ -55,27 +56,23 @@ def signup():
 def login():
     if request.method == 'POST':
         username = request.form['username']
-       
         password = request.form['password']
-        print(username,password)
+
         db = get_db_connection()
         cursor = db.cursor()
         cursor.execute(f"SELECT * FROM users WHERE username='{username}'")
-        
         user = cursor.fetchone()
-        print(user)
-        if user:
-            if user[1] == password:  # In a real application, make sure to hash and salt passwords
-                print("correct password")
-                return redirect(url_for('success'))
-            else:
-                print("wrong password")
-                return 'Wrong password'
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
+            # Successful login
+            # Redirect to the user's dashboard or another page
+            return redirect(url_for('success'))
         else:
-            print('Username not found')
-            return 'Username not found'
+            # Invalid credentials
+            return render_template('login.html', error='Invalid username or password')
     else:
         return render_template('login.html')
+
 
 @app.route('/success')
 def success():
