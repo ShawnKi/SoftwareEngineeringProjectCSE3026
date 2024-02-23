@@ -11,7 +11,7 @@ app.secret_key = '123456789'  # change this for new testing instances
 def get_db_connection():
     #password = getpass.getpass()
     db = mysql.connector.connect(
-        host="208.67.222.222",  # replace with your host
+        host="129.138.166.180",  # replace with your host
         user="shawn",  # replace with your username
         password="root",  # replace with your password
         database="mysql"  # replace with your database name
