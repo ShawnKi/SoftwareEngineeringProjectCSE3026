@@ -6,12 +6,12 @@ import bcrypt
 import getpass
 
 app = Flask(__name__, template_folder='templates')
-app.secret_key = '123456'  # change this for new testing instances
+app.secret_key = '123456789'  # change this for new testing instances
 
 def get_db_connection():
     #password = getpass.getpass()
     db = mysql.connector.connect(
-        host="LAPTOP-0FMGT87M",  # replace with your host
+        host="208.67.222.222",  # replace with your host
         user="shawn",  # replace with your username
         password="root",  # replace with your password
         database="mysql"  # replace with your database name
@@ -80,4 +80,4 @@ def thankyou():
     return 'Thank you for completing the survey'
 
 if __name__ == "__main__":
-    app.run(host='localhost', port='8080',debug=True)
+    app.run(host='0.0.0.0', port='8080',debug=True)
