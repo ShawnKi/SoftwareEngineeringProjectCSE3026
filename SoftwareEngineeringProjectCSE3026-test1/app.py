@@ -11,10 +11,10 @@ app.secret_key = '123456789'  # change this for new testing instances
 def get_db_connection():
     #password = getpass.getpass()
     db = mysql.connector.connect(
-        host="129.138.166.180",  # replace with your host
-        user="shawn",  # replace with your username
-        password="root",  # replace with your password
-        database="mysql"  # replace with your database name
+        host="localhost",  # replace with your host
+        user="root",  # replace with your username
+        password="Ex@m2O01",  # replace with your password
+        database="fitness"  # replace with your database name
     )
     cursor = db.cursor()
 
@@ -31,7 +31,7 @@ def about():
 
 @app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
-    if 'username' not in session:
+    if not session.get('loggedin'):
         return redirect(url_for('login'))
 
     if request.method == 'POST':
@@ -68,6 +68,7 @@ def login():
         cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
         user = cursor.fetchone()
         if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
+            session['loggedin'] = True
             session['username'] = username
             return redirect(url_for('quiz'))
         else:
