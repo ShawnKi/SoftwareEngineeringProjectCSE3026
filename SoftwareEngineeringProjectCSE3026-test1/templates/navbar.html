@@ -20,7 +20,12 @@
                     <a class="nav-link" href="{{url_for('quiz')}}">Quiz</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('login')}}">Login</a>
+
+                    {% if not session.get('loggedin') %}
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    {% else %}
+                    <a class="nav-link" href="{{ url_for('index') }}">profile</a>
+                    {% endif %}
                 </li>
             </ul>
         </div>
