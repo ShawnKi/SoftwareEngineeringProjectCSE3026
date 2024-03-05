@@ -22,7 +22,7 @@ login_manager.init_app(app)
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(255), primary_key=False)
+    username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
 
@@ -37,31 +37,6 @@ with app.app_context():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-# To get a database connection:
-# db.session.execute("SELECT * FROM users")
-'''
-def get_db_connection():
-    #password = getpass.getpass()
-    db = mysql.connector.connect(
-        host="localhost",  # replace with your host
-        user="root",  # replace with your username
-        password="Ex@m2O01",  # replace with your password
-        database="fitness"  # replace with your database name
-    )
-    cursor = db.cursor()
-
-    cursor.execute("CREATE TABLE IF NOT EXISTS users (username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, userdata JSON, PRIMARY KEY (username))")
-    return db
-
-class User():
-    db = get_db_connection()
-    cursor = db.cursor()
-    username=cursor.execute("SELECT * FROM users WHERE username=(username)")
-    user_data = cursor.fetchone()
-    cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
-    def __init__(self, username):
-        self.username = username
-'''
 
 @app.route('/')
 def index():
@@ -78,12 +53,6 @@ def quiz():
 
     if request.method == 'POST':
         data = request.get_json()
-        '''
-        db = get_db_connection()
-        cursor = db.cursor()
-        cursor.execute("UPDATE users SET userdata = %s WHERE username = %s", (json.dumps(data), session['username']))
-        db.commit()
-        '''
         user = User.query.filter_by(username=session['username']).first()
         user.userdata = data
         db.session.commit()
@@ -96,14 +65,6 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        '''
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        db = get_db_connection()
-        cursor = db.cursor()
-        cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password.decode('utf-8')))
-        db.commit()
-        newuser = User(request.form['username'])
-        '''
         new_user = User(username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
@@ -117,12 +78,6 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        '''
-        db = get_db_connection()
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
-        user = cursor.fetchone()
-        '''
         user = User.query.filter_by(username=username).first()
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             login_user(user)
@@ -138,11 +93,6 @@ def login():
 @app.route('/profile/<username>')
 @login_required
 def profile(username):
-    '''
-    if not session.get('loggedin'):
-        return redirect(url_for('login'))
-    user = session.get('username')
-    '''
     user = User.query.filter_by(username=username).first()
     if User is None:
         return redirect(url_for('signup'))
