@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Quiz</title>
+<style>
+  .center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container center-screen">
+  <div class="card p-3">
+    <h2>Fitness Tracking App Survey</h2>
+
+    <form id="surveyForm">
+      <label for="goal">What's your goal?</label><br>
+      <input type="radio" id="getFit" name="goal" value="Get fit">
+      <label for="getFit">Get fit</label><br>
+      <input type="radio" id="loseWeight" name="goal" value="Lose weight">
+      <label for="loseWeight">Lose weight</label><br>
+      <input type="radio" id="buildMuscle" name="goal" value="Build muscle">
+      <label for="buildMuscle">Build muscle</label><br>
+
+      <label for="bodyType">What's your body type?</label><br>
+      <input type="radio" id="ectomorph" name="bodyType" value="Ectomorph">
+      <label for="ectomorph">Ectomorph</label><br>
+      <input type="radio" id="mesomorph" name="bodyType" value="Mesomorph">
+      <label for="mesomorph">Mesomorph</label><br>
+      <input type="radio" id="endomorph" name="bodyType" value="Endomorph">
+      <label for="endomorph">Endomorph</label><br>
+
+      <label for="dietaryPreferences">What are your dietary preferences?</label><br>
+      <input type="checkbox" id="vegetarian" name="dietaryPreferences" value="Vegetarian">
+      <label for="vegetarian">Vegetarian</label><br>
+      <input type="checkbox" id="vegan" name="dietaryPreferences" value="Vegan">
+      <label for="vegan">Vegan</label><br>
+      <input type="checkbox" id="glutenFree" name="dietaryPreferences" value="Gluten Free">
+      <label for="glutenFree">Gluten Free</label><br>
+      <input type="checkbox" id="lactoseFree" name="dietaryPreferences" value="Lactose Free">
+      <label for="lactoseFree">Lactose Free</label><br>
+      <input type="checkbox" id="kosher" name="dietaryPreferences" value="Kosher">
+      <label for="kosher">Kosher</label><br>
+
+      <!-- Add the rest of your questions in a similar manner -->
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById("surveyForm").addEventListener("submit", function (event) {
+    event.preventDefault()
+
+    let result = {
+      goal: document.querySelector('input[name="goal"]:checked').value,
+      bodyType: document.querySelector('input[name="bodyType"]:checked').value,
+      dietaryPreferences: Array.from(document.querySelectorAll('input[name="dietaryPreferences"]:checked')).map(el => el.value),
+      // Add the rest of your variables in a similar manner
+    };
+
+    fetch('/quiz', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(result)
+    }).then(response => {
+      if (response.ok) {
+        window.location.href = "/thankyou";  // Redirect to the "thank you" page
+      } else {
+        throw new Error('Error: ' + response.statusText);
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+  });
+</script>
+{% endblock %}
