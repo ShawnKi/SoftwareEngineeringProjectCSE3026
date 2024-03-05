@@ -2,21 +2,30 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 import json
-import os
-import mysql.connector
 import bcrypt
-import getpass
+import pymysql
+import sqlalchemy
+# from google.cloud.sql.connector import Connector
 
-app = Flask(__name__, template_folder='templates')
-app.secret_key = '123456789'  # change this for new testing instances
 
-#replace with your own info mysql+mysqlconnector://username:password@hostname:port/database_name.
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:Exom2O01@localhost:3306/fitness"
+app = Flask(__name__)
+app.config["SECRET_KEY"] = '123456789'  # change this for new testing instances
+
+db_user = 'dbuser'
+db_pass = 'dbuser'
+db_name = 'users'
+cloud_sql_connection_name = 'awesome-flash-416102:us-central1:fitness-app-db'
+
+host = '/cloudsql/{}'.format(cloud_sql_connection_name)
+db_public_ip = '34.29.30.210'
+db_port = 3306
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}:{db_port}/{db_name}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 # Defines model
 class User(db.Model, UserMixin):
@@ -109,4 +118,4 @@ def thankyou():
     return 'Thank you for completing the survey'
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port='8080',debug=True)
+    app.run()
