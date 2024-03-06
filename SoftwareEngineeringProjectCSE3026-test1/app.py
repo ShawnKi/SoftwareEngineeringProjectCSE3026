@@ -101,7 +101,7 @@ def signup():
         new_user = User(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
-        return redirect(url_for('login'))
+        return render_template('profile.html', username=username)
         
     else:
         return render_template('signup.html')
@@ -116,7 +116,7 @@ def login():
             login_user(user)
             session['loggedin'] = True
             #session['username'] = username
-            return redirect(url_for('quiz'))
+            return render_template('profile.html', username=username)
         
         else:
             return render_template('login.html', error='Invalid username or password')
