@@ -70,12 +70,23 @@ def quiz():
         return redirect(url_for('login'))
 
     if request.method == 'POST':
-        
-        user=User.query.get(session.get('_user_id'))
-        data = request.get_json()
-        user.userdata = data
-        db.session.commit()
-        return jsonify({'message': 'Thank you for completing the survey'}), 200
+        # Get the user's answers from the session
+        answers = session.get('answers', {})
+
+        # Update the answers with the data from the current POST request
+        answers.update(request.get_json())
+
+        session['answers'] = answers
+
+    
+        if len(answers) == 3:  # Replace 3 with the number of questions in quiz
+            user = User.query.get(session.get('_user_id'))
+            user.userdata = answers
+            db.session.commit()
+            print(user.userdata)
+            return jsonify({'message': 'Thank you for completing the survey!'}), 200
+
+        return jsonify({'message': 'Your answer has been saved'}), 200
 
     return render_template('quiz.html')
 
