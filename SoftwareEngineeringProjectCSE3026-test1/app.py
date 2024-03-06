@@ -5,11 +5,14 @@ import json
 import bcrypt
 import pymysql
 import sqlalchemy
+from flask_migrate import Migrate
+
+
 # from google.cloud.sql.connector import Connector
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = '123456789'  # change this for new testing instances
+app.config["SECRET_KEY"] = '12345678989'  # change this for new testing instances
 
 db_user = 'dbuser'
 db_pass = 'dbuser'
@@ -23,7 +26,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{d
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -31,11 +34,17 @@ login_manager.init_app(app)
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    first_name = db.Column(db.String(255), nullable=False)
+    last_name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
 
-    def __init__(self, username, password):
+    def __init__(self, first_name, last_name, email, username, password):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
         self.username = username
         self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
@@ -61,8 +70,9 @@ def quiz():
         return redirect(url_for('login'))
 
     if request.method == 'POST':
+        
+        user=User.query.get(session.get('_user_id'))
         data = request.get_json()
-        user = User.query.filter_by(username=session['username']).first()
         user.userdata = data
         db.session.commit()
         return jsonify({'message': 'Thank you for completing the survey'}), 200
@@ -72,9 +82,12 @@ def quiz():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
         username = request.form['username']
         password = request.form['password']
-        new_user = User(username=username, password=password)
+        new_user = User(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
@@ -103,6 +116,7 @@ def login():
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first()
+    print(user)
     if User is None:
         return redirect(url_for('signup'))
     else:
