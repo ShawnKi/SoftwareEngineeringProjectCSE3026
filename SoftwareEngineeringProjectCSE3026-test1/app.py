@@ -12,7 +12,7 @@ from flask_migrate import Migrate
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = '12345678989'  # change this for new testing instances
+app.config["SECRET_KEY"] = '1234567899'  # change this for new testing instances
 
 db_user = 'dbuser'
 db_pass = 'dbuser'
@@ -79,7 +79,7 @@ def quiz():
         session['answers'] = answers
 
     
-        if len(answers) == 3:  # Replace 3 with the number of questions in quiz
+        if len(answers) == 7:  # Replace 3 with the number of questions in quiz
             user = User.query.get(session.get('_user_id'))
             user.userdata = answers
             db.session.commit()
