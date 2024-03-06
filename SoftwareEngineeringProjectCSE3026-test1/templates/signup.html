@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+.container {
+    position: relative;
+    top: -100px;  /* Adjust this value to move the form up */
+}
+.border {
+    margin-bottom: 100px;  /* Add space at the bottom to prevent overlap */
+}
+.header {
+    margin-bottom: -20px;  /* Add space below the header to move the "Sign Up" text down */
+}
+</style>
 {% endblock %}
 {% block body %}
 <div class="container">
@@ -12,6 +24,9 @@
             <h2 class="word">
                 <form action="{{ url_for('signup') }}" method="post">
                     <div class="msg">{{ msg }}</div>
+                    <input id="first_name" name="first_name" type="text" placeholder="First Name" class="textbox" /></br></br>
+                    <input id="last_name" name="last_name" type="text" placeholder="Last Name" class="textbox" /></br></br>
+                    <input id="email" name="email" type="text" placeholder="Email" class="textbox" /></br></br>
                     <input id="username" name="username" type="text" placeholder="Username" class="textbox" /></br></br>
                     <input id="password" name="password" type="password" placeholder="Password"
                         class="textbox" /></br></br></br>
