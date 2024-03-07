@@ -82,12 +82,21 @@
         <label for="barbell">Barbell</label><br>
         <input type="checkbox" id="kettlebell" name="equipment" value="Kettlebell">
         <label for="kettlebell">Kettlebell</label><br>
+        <button type="button" onclick="nextQuestion('question6')">Next</button> 
 	<button type="button" onclick="nextQuestion('question4')">Previous</button> 
-	<input type="submit" value="Submit">
 	</div>
 
-	
-
+	<div id="question6" style="display: none;">
+       <label for="exerciseFrequency">How often do you exercise?</label><br>
+        <label for="height">What's your height(cm)?</label><br>
+       <input type="number" id="height" name="height" value=""> <br>
+       <label for="weight">How much you weigh(lb)?</label><br>
+       <input type="number" id="weight" name="weight" value=""><br>
+       <label for="goalweight">What's your goal weight(lb)?</label><br>
+       <input type="number" id="goalweight" name="goalweight" value=""><br><br>
+	<button type="button" onclick="nextQuestion('question5')">Previous</button> 
+	<input type="submit" value="Submit">
+	</div>
 
       
     </form>
@@ -119,6 +128,9 @@ document.getElementById("surveyForm").addEventListener("submit", function(event)
     dietaryPreferences: Array.from(document.querySelectorAll('input[name="dietaryPreferences"]:checked')).map(el => el.value),
 	exerciseFrequency : document.querySelector('input[name="exerciseFrequency"]:checked').value,
 	equipment : document.querySelector('input[name="equipment"]:checked').value,
+height: document.querySelector('input[name="height"]').value,
+  weight: document.querySelector('input[name="weight"]').value,
+  goalWeight: document.querySelector('input[name="goalweight"]').value,
   };
 
   fetch('/quiz', {
