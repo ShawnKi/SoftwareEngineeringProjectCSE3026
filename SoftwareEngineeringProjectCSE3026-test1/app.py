@@ -78,12 +78,12 @@ def quiz():
 
         session['answers'] = answers
 
-        if len(answers) == 7:  # Replace 3 with the number of questions in quiz
-            user = User.query.get(session.get('_user_id'))
-            user.userdata = answers
-            db.session.commit()
-            print(user.userdata)
-            return jsonify({'message': 'Thank you for completing the survey!'}), 200
+        
+        user = User.query.get(session.get('_user_id'))
+        user.userdata = answers
+        db.session.commit()
+        print(user.userdata)
+        return jsonify({'message': 'Thank you for completing the survey!'}), 200
 
         return jsonify({'message': 'Your answer has been saved'}), 200
 
