@@ -101,6 +101,7 @@ def signup():
         new_user = User(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
+        login_user(new_user)
         return render_template('profile.html', username=username)
         
     else:
@@ -123,11 +124,19 @@ def login():
     else:
         return render_template('login.html')
     
-@app.route('/profile/<username>')
+@app.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
+    if request.method == 'POST':
+        first_name = request.form['inputFirstName']
+        last_name = request.form['inputLastName']
+        email = request.form['inputEmailAddress']
+        username = request.form['inputUsername']
+        current_user.first_name = first_name
+        current_user.last_name = last_name
+        current_user.email = email
+        current_user.username = username
     user = User.query.filter_by(username=username).first()
-    print(user)
     if User is None:
         return redirect(url_for('signup'))
     else:
