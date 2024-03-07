@@ -78,7 +78,6 @@ def quiz():
 
         session['answers'] = answers
 
-    
         if len(answers) == 7:  # Replace 3 with the number of questions in quiz
             user = User.query.get(session.get('_user_id'))
             user.userdata = answers
@@ -146,6 +145,10 @@ def profile(username):
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
+@app.route('/results')
+def results():
+    return render_template('results.html')
 
 @app.route('/thankyou')
 def thankyou():
