@@ -102,7 +102,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return render_template('profile.html', username=username)
+        return render_template('quiz.html')
         
     else:
         return render_template('signup.html')
