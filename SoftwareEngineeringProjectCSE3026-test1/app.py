@@ -123,7 +123,6 @@ def login():
 @app.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
-    print("here")
     user = User.query.filter_by(username=username).first()
     if request.method == 'POST':
         first_name = request.form['inputFirstName']

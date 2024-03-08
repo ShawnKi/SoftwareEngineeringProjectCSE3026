@@ -28,32 +28,30 @@
 <div class="col-xl-4 mx-auto">
     <div class="card mb-4">
         <div align="center">
-            <div class="card-header">
-                <h1 class="fs-4 card-title fw-bold mb-4">Sign Up</h1>
-            </div>
+            <!-- <div class="card-header">Sign Up</div> -->
+            <h1 class="fs-4 card-title fw-bold mt-5">Sign Up</h1>
         </div>
         <div class="card-body">
             <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
 
-                <div class="row gx-3 m-3">
-                    <div class="col-md-6">
-                        <!-- <label class="small mb-1" for="inputFirstName">First name</label> -->
-                        <input class="form-control" id="first_name" name="first_name" type="text"
-                            placeholder="First name">
-                    </div>
-
-                    <div class="col-md-6">
-                        <!-- <label class="small mb-1" for="inputLastName">Last name</label> -->
-                        <input class="form-control" id="last_name" name="last_name" type="text" placeholder="Last name">
-                    </div>
+                <!-- <div class="row gx-3 m-3"> -->
+                <div class="m-4">
+                    <!-- <label class="small mb-1" for="inputFirstName">First name</label> -->
+                    <input class="form-control" id="first_name" name="first_name" type="text" placeholder="First name">
                 </div>
+
+                <div class="m-4">
+                    <!-- <label class="small mb-1" for="inputLastName">Last name</label> -->
+                    <input class="form-control" id="last_name" name="last_name" type="text" placeholder="Last name">
+                </div>
+                <!-- </div> -->
                 <div class="m-4">
                     <!--<label class="small mb-1" for="inputUsername">Username</label>-->
                     <input class="form-control" id="username" name="username" type="text" placeholder="Username">
                 </div>
                 <div class="m-4">
                     <!-- <label class="small mb-1" for="inputUsername">Password</label> -->
-                    <input class="form-control" id="password" name="password" type="text" placeholder="Password">
+                    <input class="form-control" id="password" name="password" type="password" placeholder="Password">
                     <label class="small mb-1" for="inputUsername">(must be at least 8 characters long, contain at least
                         1 uppercase letter, 1 lowercase letter, and 1 number)</label>
                 </div>
@@ -74,38 +72,4 @@
         </div>
     </div>
 </div>
-
-<!--
-<div class="container-xl px-4 mt-4">
-    <div class="col-xl-6 mx-auto">
-        <div class="card mb-4">
-            <div align="center">
-                <div align="center" class="border">
-                    <div class="header">
-                        <h1 class="fs-4 card-title fw-bold mb-4">Sign Up</h1>
-                    </div></br>
-                    <h2 class="word">
-                        <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
-                            <div class="msg">{{ msg }}</div>
-                            <input id="first_name" name="first_name" type="text" placeholder="First Name"
-                                class="textbox" /></br></br>
-                            <input id="last_name" name="last_name" type="text" placeholder="Last Name"
-                                class="textbox" /></br></br>
-                            <input id="email" name="email" type="text" placeholder="Email" class="textbox" /></br></br>
-                            <input id="username" name="username" type="text" placeholder="Username"
-                                class="textbox" /></br></br>
-                            <input id="password" name="password" type="password" placeholder="Password"
-                                class="textbox" /></br></br></br>
-                            <input type="submit" class="btn" value="Sign Up"></br></br>
-                        </form>
-                    </h2>
-                    <p class="bottom">Already have an account? <a class="bottom" href="{{ url_for('login') }}"> Login
-                            here</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
--->
 {% endblock %}
