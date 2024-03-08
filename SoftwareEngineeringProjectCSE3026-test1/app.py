@@ -123,20 +123,19 @@ def login():
 @app.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
+    print("here")
+    user = User.query.filter_by(username=username).first()
     if request.method == 'POST':
         first_name = request.form['inputFirstName']
         last_name = request.form['inputLastName']
         email = request.form['inputEmailAddress']
         username = request.form['inputUsername']
-        current_user.first_name = first_name
-        current_user.last_name = last_name
-        current_user.email = email
-        current_user.username = username
-    user = User.query.filter_by(username=username).first()
-    if User is None:
-        return redirect(url_for('signup'))
-    else:
-        return render_template('profile.html', username=username)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.username = username
+    
+    return render_template('profile.html', username=username)
 
 @app.route('/results/<username>')
 def results(username):
