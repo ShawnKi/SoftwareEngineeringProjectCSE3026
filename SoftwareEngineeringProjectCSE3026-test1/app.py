@@ -41,12 +41,13 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
 
-    def __init__(self, first_name, last_name, email, username, password):
+    def __init__(self, first_name, last_name, email, username, password, userdata):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.username = username
         self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        self.userdata = userdata
 
 # Creates tables if they don't exist
 with app.app_context():
@@ -77,7 +78,6 @@ def quiz():
         answers.update(request.get_json())
 
         session['answers'] = answers
-
         if len(answers) == 7:  # Replace 3 with the number of questions in quiz
             user = User.query.get(session.get('_user_id'))
             user.userdata = answers
@@ -141,14 +141,15 @@ def profile(username):
     else:
         return render_template('profile.html', username=username)
 
+@app.route('/results/<username>')
+def results(username):
+    user = User.query.filter_by(username=username).first()
+    return render_template('results.html', username=username)
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for("index"))
-
-@app.route('/results')
-def results():
-    return render_template('results.html')
 
 @app.route('/thankyou')
 def thankyou():
