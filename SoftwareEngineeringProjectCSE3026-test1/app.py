@@ -133,7 +133,7 @@ def profile(username):
         user.last_name = last_name
         user.email = email
         user.username = username
-    
+        db.session.commit()
     return render_template('profile.html', username=username)
 
 @app.route('/results/<username>')
