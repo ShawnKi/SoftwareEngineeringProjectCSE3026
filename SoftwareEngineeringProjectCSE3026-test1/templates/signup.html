@@ -1,52 +1,108 @@
 {% extends 'base.html' %}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<style>
-.container {
-    position: relative;
-    top: -100px;  /* Adjust this value to move the form up */
-}
-.border {
-    margin-bottom: 100px;  /* Add space at the bottom to prevent overlap */
-}
-.header {
-    margin-bottom: -20px;  /* Add space below the header to move the "Sign Up" text down */
-}
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+
 <script>
-function validatePassword() {
-    var password = document.getElementById("password").value;
-    var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-    if (regex.test(password)) {
-        return true;
-    } else {
-        alert("Your password does not meet the complexity requirements. It must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.");
-        return false;
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+        var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+        if (regex.test(password)) {
+            return true;
+        } else {
+            alert("Your password does not meet the complexity requirements. It must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.");
+            return false;
+        }
     }
-}
 </script>
 {% endblock %}
 {% block body %}
 <div class="container">
-    <div align="center">
-        <div align="center" class="border">
-            <div class="header">
-                <h1 class="word">Sign Up</h1>
-            </div></br>
-            <h2 class="word">
-                <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
-                    <div class="msg">{{ msg }}</div>
-                    <input id="first_name" name="first_name" type="text" placeholder="First Name" class="textbox" /></br></br>
-                    <input id="last_name" name="last_name" type="text" placeholder="Last Name" class="textbox" /></br></br>
-                    <input id="email" name="email" type="text" placeholder="Email" class="textbox" /></br></br>
-                    <input id="username" name="username" type="text" placeholder="Username" class="textbox" /></br></br>
-                    <input id="password" name="password" type="password" placeholder="Password"
-                        class="textbox" /></br></br></br>
-                    <input type="submit" class="btn" value="Sign Up"></br></br>
-                </form>
-            </h2>
-            <p class="bottom">Already have an account? <a class="bottom" href="#"> Login here</a></p>
+    <div>
+        <ol class="breadcrumb small" style="margin-top:100px;">
+            <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Signup</li>
+        </ol>
+    </div>
+</div>
+
+<div class="col-xl-6 mx-auto">
+    <div class="card mb-4">
+        <div align="center">
+            <div class="card-header">Sign Up</div>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
+
+                <div class="row gx-3 mb-3">
+
+                    <div class="col-md-6">
+                        <label class="small mb-1" for="inputFirstName">First name</label>
+                        <input class="form-control" id="first_name" name="first_name" type="text"
+                            placeholder="Enter your first name">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="small mb-1" for="inputLastName">Last name</label>
+                        <input class="form-control" id="last_name" name="last_name" type="text"
+                            placeholder="Enter your last name">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="small mb-1" for="inputUsername">Username</label>
+                    <input class="form-control" id="username" name="username" type="text"
+                        placeholder="Enter your username">
+                </div>
+                <div class="mb-3">
+                    <label class="small mb-1" for="inputUsername">Password</label>
+                    <input class="form-control" id="password" name="password" type="text"
+                        placeholder="Enter your username">
+                    <label class="small mb-1" for="inputUsername">(must be at least 8 characters long, contain at least
+                        1 uppercase letter, 1 lowercase letter, and 1 number)</label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="small mb-1" for="inputEmailAddress">Email address</label>
+                    <input class="form-control" id="email" name="email" type="email"
+                        placeholder="Enter your email address">
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="Sign Up"></br></br>
+            </form>
         </div>
     </div>
 </div>
+
+<!--
+<div class="container-xl px-4 mt-4">
+    <div class="col-xl-6 mx-auto">
+        <div class="card mb-4">
+            <div align="center">
+                <div align="center" class="border">
+                    <div class="header">
+                        <h1 class="fs-4 card-title fw-bold mb-4">Sign Up</h1>
+                    </div></br>
+                    <h2 class="word">
+                        <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
+                            <div class="msg">{{ msg }}</div>
+                            <input id="first_name" name="first_name" type="text" placeholder="First Name"
+                                class="textbox" /></br></br>
+                            <input id="last_name" name="last_name" type="text" placeholder="Last Name"
+                                class="textbox" /></br></br>
+                            <input id="email" name="email" type="text" placeholder="Email" class="textbox" /></br></br>
+                            <input id="username" name="username" type="text" placeholder="Username"
+                                class="textbox" /></br></br>
+                            <input id="password" name="password" type="password" placeholder="Password"
+                                class="textbox" /></br></br></br>
+                            <input type="submit" class="btn" value="Sign Up"></br></br>
+                        </form>
+                    </h2>
+                    <p class="bottom">Already have an account? <a class="bottom" href="{{ url_for('login') }}"> Login
+                            here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+-->
 {% endblock %}

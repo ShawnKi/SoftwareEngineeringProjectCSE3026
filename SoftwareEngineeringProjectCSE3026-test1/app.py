@@ -41,13 +41,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
 
-    def __init__(self, first_name, last_name, email, username, password, userdata):
+    def __init__(self, first_name, last_name, email, username, password):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
         self.username = username
         self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        self.userdata = userdata
 
 # Creates tables if they don't exist
 with app.app_context():
