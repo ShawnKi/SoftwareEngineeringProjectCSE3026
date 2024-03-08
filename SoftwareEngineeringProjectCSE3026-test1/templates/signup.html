@@ -25,48 +25,51 @@
     </div>
 </div>
 
-<div class="col-xl-6 mx-auto">
+<div class="col-xl-4 mx-auto">
     <div class="card mb-4">
         <div align="center">
-            <div class="card-header">Sign Up</div>
+            <div class="card-header">
+                <h1 class="fs-4 card-title fw-bold mb-4">Sign Up</h1>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
 
-                <div class="row gx-3 mb-3">
-
+                <div class="row gx-3 m-3">
                     <div class="col-md-6">
-                        <label class="small mb-1" for="inputFirstName">First name</label>
+                        <!-- <label class="small mb-1" for="inputFirstName">First name</label> -->
                         <input class="form-control" id="first_name" name="first_name" type="text"
-                            placeholder="Enter your first name">
+                            placeholder="First name">
                     </div>
 
                     <div class="col-md-6">
-                        <label class="small mb-1" for="inputLastName">Last name</label>
-                        <input class="form-control" id="last_name" name="last_name" type="text"
-                            placeholder="Enter your last name">
+                        <!-- <label class="small mb-1" for="inputLastName">Last name</label> -->
+                        <input class="form-control" id="last_name" name="last_name" type="text" placeholder="Last name">
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label class="small mb-1" for="inputUsername">Username</label>
-                    <input class="form-control" id="username" name="username" type="text"
-                        placeholder="Enter your username">
+                <div class="m-4">
+                    <!--<label class="small mb-1" for="inputUsername">Username</label>-->
+                    <input class="form-control" id="username" name="username" type="text" placeholder="Username">
                 </div>
-                <div class="mb-3">
-                    <label class="small mb-1" for="inputUsername">Password</label>
-                    <input class="form-control" id="password" name="password" type="text"
-                        placeholder="Enter your username">
+                <div class="m-4">
+                    <!-- <label class="small mb-1" for="inputUsername">Password</label> -->
+                    <input class="form-control" id="password" name="password" type="text" placeholder="Password">
                     <label class="small mb-1" for="inputUsername">(must be at least 8 characters long, contain at least
                         1 uppercase letter, 1 lowercase letter, and 1 number)</label>
                 </div>
 
-                <div class="mb-3">
-                    <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                    <input class="form-control" id="email" name="email" type="email"
-                        placeholder="Enter your email address">
+                <div class="m-4">
+                    <!-- <label class="small mb-1" for="inputEmailAddress">Email address</label> -->
+                    <input class="form-control" id="email" name="email" type="email" placeholder="Email address">
                 </div>
-
-                <input type="submit" class="btn btn-primary" value="Sign Up"></br></br>
+                <div class="m-4">
+                    <center><input type="submit" class="btn btn-primary" value="Sign Up"></center>
+                </div>
+                <div class="m-4">
+                    <p class="bottom">Already have an account? <a class="bottom" href="{{ url_for('login') }}"> Login
+                            here</a>
+                    </p>
+                </div>
             </form>
         </div>
     </div>
