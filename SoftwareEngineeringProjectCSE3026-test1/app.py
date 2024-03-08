@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 import json
@@ -78,12 +78,22 @@ def quiz():
         answers.update(request.get_json())
 
         session['answers'] = answers
+<<<<<<< HEAD
         if len(answers) == 7:  # Replace 3 with the number of questions in quiz
             user = User.query.get(session.get('_user_id'))
             user.userdata = answers
             db.session.commit()
             print(user.userdata)
             return jsonify({'message': 'Thank you for completing the survey!'}), 200
+=======
+
+        
+        user = User.query.get(session.get('_user_id'))
+        user.userdata = answers
+        db.session.commit()
+        print(user.userdata)
+        return jsonify({'message': 'Thank you for completing the survey!'}), 200
+>>>>>>> 52fd74d4decfa34df527bf7119e5db19faa062d8
 
         return jsonify({'message': 'Your answer has been saved'}), 200
 
@@ -149,7 +159,11 @@ def results(username):
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    response = make_response(redirect(url_for("index")))
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 @app.route('/thankyou')
 def thankyou():

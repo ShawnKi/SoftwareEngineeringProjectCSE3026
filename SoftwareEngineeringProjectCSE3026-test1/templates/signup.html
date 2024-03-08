@@ -13,6 +13,18 @@
     margin-bottom: -20px;  /* Add space below the header to move the "Sign Up" text down */
 }
 </style>
+<script>
+function validatePassword() {
+    var password = document.getElementById("password").value;
+    var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    if (regex.test(password)) {
+        return true;
+    } else {
+        alert("Your password does not meet the complexity requirements. It must be at least 8 characters long, contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.");
+        return false;
+    }
+}
+</script>
 {% endblock %}
 {% block body %}
 <div class="container">
@@ -22,7 +34,7 @@
                 <h1 class="word">Sign Up</h1>
             </div></br>
             <h2 class="word">
-                <form action="{{ url_for('signup') }}" method="post">
+                <form action="{{ url_for('signup') }}" method="post" onsubmit="return validatePassword()">
                     <div class="msg">{{ msg }}</div>
                     <input id="first_name" name="first_name" type="text" placeholder="First Name" class="textbox" /></br></br>
                     <input id="last_name" name="last_name" type="text" placeholder="Last Name" class="textbox" /></br></br>
