@@ -19,136 +19,103 @@
         <a class="nav-link active ms-0" href="#">Quiz Results</a>
     </nav>
     <hr class="mt-0 mb-4">
-    <div class="row">
-        <div class="col-xl-4">
-            <!-- Profile picture (maybe change)-->
-            <div class="card mb-4 mb-xl-0">
-                <!--  <div class="card-header">Profile Picture</div>-->
-                <div class="card-body text-center">
-                    <!-- Profile picture upload button-->
-                    <a class="nav-link" href="{{url_for('quiz')}}">Retake
-                        Quiz</a>
+    <div class="col-xl-10 mx-auto">
+        <!-- Quiz details-->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Goal</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{current_user.userdata.goal}}</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xl-8">
-            <!-- Quiz details-->
-            <div class="card mb-4">
-                <div class="card-header">Quiz Results</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Goal</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{current_user.userdata}}</p>
-                        </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Body Type</p>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Body Type</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">example@example.com</p>
-                        </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{current_user.userdata.bodyType}}</p>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Dietary Preferences</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">(097) 234-5678</p>
-                        </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Dietary Preferences</p>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Exercise Frequency</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">(098) 765-4321</p>
-                        </div>
+                    <div class="col-sm-9">
+                        {% if current_user.userdata.dietaryPreferences is string%}
+                        <p class="text-muted mb-0">{{current_user.userdata.dietaryPreferences}}</p>
+                        {% else %}
+                        <p class="text-muted mb-0">{{
+                            ", ".join(current_user.userdata.dietaryPreferences)}}</p>
+                        {% endif %}
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Height</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-                        </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Exercise Frequency</p>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Current Weight</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-                        </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{current_user.userdata.exerciseFrequency}}</p>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <p class="mb-0">Goal Weight</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-                        </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Equipment</p>
                     </div>
-                    <!--
-                    <form action="{{ url_for('profile', username=current_user.username) }}" method="post">
+                    <div class="col-sm-9">
+                        {% if current_user.userdata.equipment is string%}
+                        <p class="text-muted mb-0">{{current_user.userdata.equipment}}</p>
+                        {% else %}
+                        <p class="text-muted mb-0">{{
+                            ", ".join(current_user.userdata.equipment)}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Height</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{current_user.userdata.height}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Current Weight</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{current_user.userdata.weight}}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Goal Weight</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">{{current_user.userdata.goalWeight}}</p>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-3">
+                        <a class="btn" href="{{url_for('quiz')}}">Retake
+                            Quiz</a>
 
-                        <div class="mb-3">
-                            <label class="small mb-1" for="goal">Goal</label>
-                            <p class="text-muted mb-0">get fit</p>
-
-                        </div>
-
-                        <div class="row gx-3 mb-3">
-        
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputFirstName">First name</label>
-                                <input class="form-control" id="inputFirstName" type="text"
-                                    placeholder="Enter your first name" value={{current_user.first_name}}>
-                            </div>
-                           
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputLastName">Last name</label>
-                                <input class="form-control" id="inputLastName" type="text"
-                                    placeholder="Enter your last name" value={{current_user.last_name}}>
-                            </div>
-                        </div>
-  
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                            <input class="form-control" id="inputEmailAddress" type="email"
-                                placeholder="Enter your email address" value={{current_user.email}}>
-                        </div>
-
-                        <div class="row gx-3 mb-3">
-       
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Phone number</label>
-                                <input class="form-control" id="inputPhone" type="tel"
-                                    placeholder="Enter your phone number" value="555-123-4567">
-                            </div>
-       
-                            <div class="col-md-6">
-                                <label class="small mb-1" for="inputBirthday">Birthday</label>
-                                <input class="form-control" id="inputBirthday" type="text" name="birthday"
-                                    placeholder="Enter your birthday" value="06/10/1988">
-                            </div>
-                        </div>
-
-                        <button class="btn btn-primary" type="button" type="submit">Save changes</button>
-                    </form>
-                            -->
+                    </div>
+                    <div class="col-sm-9">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

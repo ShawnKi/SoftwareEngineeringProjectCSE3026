@@ -56,3 +56,10 @@ body{margin-top:20px;
         margin-left: 1rem;
         margin-right: 1rem;
     }
+    .btn {
+        text-decoration: none;
+        padding: 0.5rem;
+        background-color: #0061f2;
+        border: 1px solid #333333;
+        color: white;
+    }

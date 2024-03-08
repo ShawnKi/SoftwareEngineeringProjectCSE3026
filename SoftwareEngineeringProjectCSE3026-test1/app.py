@@ -78,23 +78,11 @@ def quiz():
         answers.update(request.get_json())
 
         session['answers'] = answers
-<<<<<<< HEAD
-        if len(answers) == 7:  # Replace 3 with the number of questions in quiz
-            user = User.query.get(session.get('_user_id'))
-            user.userdata = answers
-            db.session.commit()
-            print(user.userdata)
-            return jsonify({'message': 'Thank you for completing the survey!'}), 200
-=======
-
-        
+        print(answers)
         user = User.query.get(session.get('_user_id'))
         user.userdata = answers
         db.session.commit()
-        print(user.userdata)
         return jsonify({'message': 'Thank you for completing the survey!'}), 200
->>>>>>> 52fd74d4decfa34df527bf7119e5db19faa062d8
-
         return jsonify({'message': 'Your answer has been saved'}), 200
 
     return render_template('quiz.html')
