@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Quiz</title>
+<style>
+.center-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container center-screen">
+  <div class="card p-3">
+    <h2>Fitness Tracking App Survey</h2>
+
+    <form id="surveyForm">
+      <div id="question1" style="display: block;">
+        <label for="goal">What's your goal?</label><br>
+        <input type="radio" id="getFit" name="goal" value="Get fit">
+        <label for="getFit">Get fit</label><br>
+        <input type="radio" id="loseWeight" name="goal" value="Lose weight">
+        <label for="loseWeight">Lose weight</label><br>
+        <input type="radio" id="buildMuscle" name="goal" value="Build muscle">
+        <label for="buildMuscle">Build muscle</label><br>
+        <button type="button" onclick="nextQuestion('question2')">Next</button>
+      </div>
+	<div id="question2" style="display: none;">
+      <label for="bodyType">What's your body type?</label><br>
+      <input type="radio" id="ectomorph" name="bodyType" value="Ectomorph">
+      <label for="ectomorph">Ectomorph</label><br>
+      <input type="radio" id="mesomorph" name="bodyType" value="Mesomorph">
+      <label for="mesomorph">Mesomorph</label><br>
+      <input type="radio" id="endomorph" name="bodyType" value="Endomorph">
+      <label for="endomorph">Endomorph</label><br>
+	<button type="button" onclick="nextQuestion('question3')">Next</button>
+	<button type="button" onclick="nextQuestion('question1')">Previous</button> 
+	</div>
+
+	<div id="question3" style="display: none;">
+      <label for="dietaryPreferences">What are your dietary preferences?</label><br>
+      <input type="checkbox" id="vegetarian" name="dietaryPreferences" value="Vegetarian">
+      <label for="vegetarian">Vegetarian</label><br>
+      <input type="checkbox" id="vegan" name="dietaryPreferences" value="Vegan">
+      <label for="vegan">Vegan</label><br>
+      <input type="checkbox" id="glutenFree" name="dietaryPreferences" value="Gluten Free">
+      <label for="glutenFree">Gluten Free</label><br>
+      <input type="checkbox" id="lactoseFree" name="dietaryPreferences" value="Lactose Free">
+      <label for="lactoseFree">Lactose Free</label><br>
+      <input type="checkbox" id="kosher" name="dietaryPreferences" value="Kosher">
+      <label for="kosher">Kosher</label><br>
+	<button type="button" onclick="nextQuestion('question4')">Next</button> 
+	<button type="button" onclick="nextQuestion('question2')">Previous</button> 
+	</div>
+
+	<div id="question4" style="display: none;">
+      <label for="exerciseFrequency">How often do you exercise?</label><br>
+        <input type="radio" id="onceAWeek" name="exerciseFrequency" value="Once a week">
+        <label for="onceAWeek">Once a week</label><br>
+        <input type="radio" id="twiceAWeek" name="exerciseFrequency" value="Twice a week">
+        <label for="twiceAWeek">Twice a week</label><br>
+        <input type="radio" id="threeTimesAWeek" name="exerciseFrequency" value="Three times a week">
+        <label for="threeTimesAWeek">Three times a week</label><br>
+        <input type="radio" id="fourOrFiveTimesAWeek" name="exerciseFrequency" value="4-5 times a week">
+        <label for="fourOrFiveTimesAWeek">4-5 times a week</label><br>
+	<button type="button" onclick="nextQuestion('question5')">Next</button> 
+	<button type="button" onclick="nextQuestion('question3')">Previous</button> 
+	</div>
+
+	<div id="question5" style="display: none;">
+      	<label for="equipment">Which equipment do you have?</label><br>
+        <input type="checkbox" id="noEquipment" name="equipment" value="No equipment">
+        <label for="noEquipment">No equipment</label><br>
+        <input type="checkbox" id="dumbbells" name="equipment" value="Dumbbells">
+        <label for="dumbbells">Dumbbells</label><br>
+        <input type="checkbox" id="pullUpBar" name="equipment" value="Pull-up bar">
+        <label for="pullUpBar">Pull-up bar</label><br>
+        <input type="checkbox" id="barbell" name="equipment" value="Barbell">
+        <label for="barbell">Barbell</label><br>
+        <input type="checkbox" id="kettlebell" name="equipment" value="Kettlebell">
+        <label for="kettlebell">Kettlebell</label><br>
+        <button type="button" onclick="nextQuestion('question6')">Next</button> 
+	<button type="button" onclick="nextQuestion('question4')">Previous</button> 
+	</div>
+
+	<div id="question6" style="display: none;">
+       <label for="exerciseFrequency">How often do you exercise?</label><br>
+        <label for="height">What's your height(cm)?</label><br>
+       <input type="number" id="height" name="height" value=""> <br>
+       <label for="weight">How much you weigh(lb)?</label><br>
+       <input type="number" id="weight" name="weight" value=""><br>
+       <label for="goalweight">What's your goal weight(lb)?</label><br>
+       <input type="number" id="goalweight" name="goalweight" value=""><br><br>
+	<button type="button" onclick="nextQuestion('question5')">Previous</button> 
+	<input type="submit" value="Submit">
+	</div>
+
+      
+    </form>
+  </div>
+</div>
+
+<script>
+function nextQuestion(questionId) {
+  // Hide all questions
+  document.querySelectorAll('[id^="question"]').forEach(function(question) {
+    question.style.display = 'none';
+  });
+
+  // Show the next question if it exists, otherwise submit the form
+  var nextQuestion = document.getElementById(questionId);
+  if (nextQuestion) {
+    nextQuestion.style.display = 'block';
+  } else {
+    document.getElementById("surveyForm").submit();
+  }
+}
+
+document.getElementById("surveyForm").addEventListener("submit", function(event){
+  event.preventDefault()
+
+  let result = {
+    goal: document.querySelector('input[name="goal"]:checked') ? document.querySelector('input[name="goal"]:checked').value : null,
+    bodyType: document.querySelector('input[name="bodyType"]:checked') ? document.querySelector('input[name="bodyType"]:checked').value : null,
+    dietaryPreferences: Array.from(document.querySelectorAll('input[name="dietaryPreferences"]:checked')).map(el => el.value),
+	exerciseFrequency : document.querySelector('input[name="exerciseFrequency"]:checked').value,
+	equipment : document.querySelector('input[name="equipment"]:checked').value,
+height: document.querySelector('input[name="height"]').value,
+  weight: document.querySelector('input[name="weight"]').value,
+  goalWeight: document.querySelector('input[name="goalweight"]').value,
+  };
+
+  fetch('/quiz', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(result)
+  }).then(response => {
+    if (response.ok) {
+      window.location.href = "{{ url_for('profile', username=current_user.username) }}"  // Redirect to the "thank you" page
+    } else {
+      throw new Error('Error: ' + response.statusText);
+    }
+  }).catch(error => {
+    console.error('Error:', error);
+  });
+});
+
+</script>
+{% endblock %}

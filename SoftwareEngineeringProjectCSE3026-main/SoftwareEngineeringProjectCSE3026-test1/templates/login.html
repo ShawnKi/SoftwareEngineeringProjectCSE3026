@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div>
+        <ol class="breadcrumb small" style="margin-top:100px;">
+            <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">login</li>
+        </ol>
+    </div>
+</div>
+<div class="col-xl-4 mx-auto">
+    <div class="card mb-4">
+        <div align="center">
+            <!-- <div class="card-header">Sign Up</div> -->
+            <h1 class="fs-4 card-title fw-bold mt-5">Login</h1>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('login') }}" method="post">
+
+                <!-- </div> -->
+                <div class="m-4">
+                    <!--<label class="small mb-1" for="inputUsername">Username</label>-->
+                    <input class="form-control" id="username" name="username" type="text" placeholder="Username">
+                </div>
+                <div class="m-4">
+                    <!-- <label class="small mb-1" for="inputUsername">Password</label> -->
+                    <input class="form-control" id="password" name="password" type="password" placeholder="Password">
+                </div>
+                <div class="m-4">
+                    <center><input type="submit" class="btn btn-primary" value="Login"></center>
+                </div>
+                <div class="m-4">
+                    <p class="bottom">Don't have an account? <a class="bottom" href="{{ url_for('signup') }}"> Sign Up
+                            here</a></p>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--
+<div class="container">
+    <div align="center">
+        <div align="center" class="border">
+            <div class="header">
+                <h1 class="word">Login</h1>
+            </div></br>
+            <h2 class="word">
+                <form action="{{ url_for('login') }}" method="post">
+                    <div class="msg">{{ msg }}</div>
+                    <input id="username" name="username" type="text" placeholder="Username" class="textbox" /></br></br>
+                    <input id="password" name="password" type="password" placeholder="Password"
+                        class="textbox" /></br></br></br>
+                    <input type="submit" class="btn" value="Sign In"></br></br>
+                </form>
+            </h2>
+            <p class="bottom">Don't have an account? <a class="bottom" href="{{ url_for('signup') }}"> Sign Up here</a></p>
+        </div>
+    </div>
+</div>
+-->
+{% endblock %}
