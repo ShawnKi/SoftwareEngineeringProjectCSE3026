@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<style>
+    .exercise-image {
+        width: 25%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .exercise-name {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 14px;
+        color: aliceblue;
+    }
+
+    .table {
+        border: 1px solid #ececec00;
+        padding: .75rem;
+        vertical-align: top;
+        background-color: #9e94c0;
+    }
+</style>
+
+<div class="container">
+    <div>
+        <ol class="breadcrumb small" style="margin-top:100px;">
+            <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">schedule</li>
+        </ol>
+    </div>
+    <h1 style="margin-top:37px;">Weekly Schedule</h1>
+
+    <div class="container">
+        <div class="timetable-img text-center">
+            <img src="img/content/timetable.png" alt="">
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr class="weekday-name">
+                        <th class="text-uppercase">Sunday</th>
+                        <th class="text-uppercase">Monday</th>
+                        <th class="text-uppercase">Tuesday</th>
+                        <th class="text-uppercase">Wednesday</th>
+                        <th class="text-uppercase">Thursday</th>
+                        <th class="text-uppercase">Friday</th>
+                        <th class="text-uppercase">Saturday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <!-- ROW 1 -->
+                        <td> <!-- SUNDAY -->
+                        </td>
+
+                        <td> <!-- Monday -->
+                            <span class="exercise-name">Pushups</span>
+                            <div> <img src="{{ url_for('static', filename='images/PushUp.jpg') }}" alt="Pushup"
+                                    class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">10 Reps</div>
+                        </td>
+
+                        <td> <!-- Tuesday -->
+                        </td>
+
+                        <td> <!-- Wednesday -->
+                            <span class="exercise-name">Squats</span>
+                            <div> <img src="{{ url_for('static', filename='images/Squat.jpg') }}" alt="Squat"
+                                    class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">10 Reps</div>
+                        </td>
+
+                        <td> <!-- Thursday -->
+                        </td>
+
+                        <td> <!-- Friday -->
+                            <span class="exercise-name">Deadlift</span>
+                            <div> <img src="{{ url_for('static', filename='images/Deadlift.jpg') }}" alt="Deadlift"
+                                    class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">4 Sets</div>
+                            <div class="font-size13 text-light-gray">6 Reps</div>
+                        </td>
+
+                        <td> <!-- Saturday -->
+                        </td>
+                    </tr>
+
+                    <tr> <!-- ROW 2 -->
+                        <td> <!-- SUNDAY -->
+                        </td>
+
+                        <td> <!-- Monday -->
+                            <span class="exercise-name">Shoulder Press</span>
+                            <div> <img src="{{ url_for('static', filename='images/ShoulderPress.jpg') }}"
+                                    alt="ShoulderPress" class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">10 Reps</div>
+                        </td>
+
+                        <td> <!-- Tuesday -->
+                        </td>
+
+                        <td> <!-- Wednesday -->
+                            <span class="exercise-name">Lateral Raises</span>
+                            <div> <img src="{{ url_for('static', filename='images/LateralRaises.jpg') }}"
+                                    alt="LateralRaises" class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">6 Reps</div>
+                        </td>
+
+                        <td> <!-- Thursday -->
+                        </td>
+
+                        <td> <!-- Friday -->
+                            <span class="exercise-name">Squat</span>
+                            <div> <img src="{{ url_for('static', filename='images/Squat.jpg') }}" alt="Squat"
+                                    class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">12 Reps</div>
+                        </td>
+
+                        <td> <!-- Saturday -->
+                        </td>
+                    </tr>
+
+                    <tr> <!-- ROW 3 -->
+                        <td> <!-- SUNDAY -->
+                        </td>
+
+                        <td> <!-- Monday -->
+                            <span class="exercise-name">Bicep Curls</span>
+                            <div> <img src="{{ url_for('static', filename='images/BicepCurls.jpg') }}" alt="BicepCurls"
+                                    class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">10 Reps</div>
+                        </td>
+
+                        <td> <!-- Tuesday -->
+                        </td>
+
+                        <td> <!-- Wednesday -->
+                            <span class="exercise-name">Plank</span>
+                            <div> <img src="{{ url_for('static', filename='images/Plank.jpg') }}" alt="Plank"
+                                    class="exercise-image"> </div>
+                            <div class="margin-10px-top font-size14">3 Sets</div>
+                            <div class="font-size13 text-light-gray">30 Sec</div>
+                        </td>
+
+                        <td> <!-- Thursday -->
+                        </td>
+
+                        <td> <!-- Friday -->
+                        </td>
+
+                        <td> <!-- Saturday -->
+                        </td>
+                    </tr>
+
+                    <tr> <!-- ROW 4 -->
+                    </tr>
+
+                    <tr> <!-- ROW 5 -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
