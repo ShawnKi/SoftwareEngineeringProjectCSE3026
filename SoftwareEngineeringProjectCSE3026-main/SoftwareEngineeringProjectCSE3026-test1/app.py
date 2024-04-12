@@ -226,7 +226,10 @@ def workouts(username):
 
     return render_template('workouts.html', username=username, workouts=workouts)
 
-    
+@app.route('/schedule', methods=['GET', 'POST'])
+@login_required
+def schedule():
+    return render_template('schedule.html')
 
 @app.route('/logout')
 def logout():
