@@ -180,7 +180,7 @@
 		<span class="tag muscle-group">Shoulders</span>
                 <span class="tag difficulty">Intermediate</span>
             </div>
-            <button class="btn-details add-to-plan" data-exercise="Bench Press" data-state="add">Add to Workout Plan</button>
+            <button class="btn-details add-to-plan" data-exercise="BenchPress" data-state="add">Add to Workout Plan</button>
         </div>
 
         
@@ -195,7 +195,7 @@
 		<span class="tag muscle-group">Triceps</span>
                 <span class="tag difficulty">Beginner</span>
             </div>
-            <button class="btn-details add-to-plan" data-exercise="Pull-up" data-state="add">Add to Workout Plan</button>
+            <button class="btn-details add-to-plan" data-exercise="PullUp" data-state="add">Add to Workout Plan</button>
         </div>
 
 
@@ -211,7 +211,7 @@
 		<span class="tag muscle-group">Shoulders</span>
                 <span class="tag difficulty">Beginner</span>
             </div>
-            <button class="btn-details add-to-plan" data-exercise="Push-up" data-state="add">Add to Workout Plan</button>
+            <button class="btn-details add-to-plan" data-exercise="PushUp" data-state="add">Add to Workout Plan</button>
         </div>
 	
 	<div class="grid-item" data-equipment="barbell" data-muscle="quads,glutes,hamstrings" data-difficulty="intermediate">
@@ -290,7 +290,7 @@
         <span class="tag muscle-group">Triceps</span>
         <span class="tag difficulty">Intermediate</span>
     </div>
-    <button class="btn-details add-to-plan" data-exercise="Dumbbell Bench Press" data-state="add">Add to Workout Plan</button>
+    <button class="btn-details add-to-plan" data-exercise="Dumbbell BenchPress" data-state="add">Add to Workout Plan</button>
 </div>
 
 <div class="grid-item" data-equipment="dumbbells" data-muscle="shoulders" data-difficulty="intermediate">
@@ -329,7 +329,7 @@
         <span class="tag muscle-group">Triceps</span>
         <span class="tag difficulty">Intermediate</span>
     </div>
-    <button class="btn-details add-to-plan" data-exercise="Pectoral fly" data-state="add">Add to Workout Plan</button>
+    <button class="btn-details add-to-plan" data-exercise="Pectoral Fly" data-state="add">Add to Workout Plan</button>
 </div>
 <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
     <h3 class="exercise-title">Sit Ups</h3>
@@ -340,10 +340,10 @@
         <span class="tag muscle-group">Core</span>
         <span class="tag difficulty">Beginner</span>
     </div>
-    <button class="btn-details add-to-plan" data-exercise="Sit Ups" data-state="add">Add to Workout Plan</button>
+    <button class="btn-details add-to-plan" data-exercise="SitUps" data-state="add">Add to Workout Plan</button>
 </div>
     <div class="grid-item" data-equipment="barbell,bench" data-muscle="chest,triceps,shoulders" data-difficulty="advanced">
-    <h3 class="exercise-title">Decline Bench Press</h3>
+    <h3 class="exercise-title">Decline BenchPress</h3>
         <img src="{{ url_for('static', filename='images/DeclineBenchPress.jpg') }}" alt="Exercise 1" class="exercise-image">
         
         <p class="exercise-description">A compound weightlifting exercise focusing on the chest, shoulders, and triceps by pressing a barbell upward while lying on a declined bench.</p>
@@ -355,10 +355,10 @@
         <span class="tag muscle-group">Shoulders</span>
         <span class="tag difficulty">Advanced</span>
         </div>
-        <button class="btn-details add-to-plan" data-exercise="Decline Bench Press" data-state="add">Add to Workout Plan</button>
+        <button class="btn-details add-to-plan" data-exercise="Decline BenchPress" data-state="add">Add to Workout Plan</button>
     </div>
     <div class="grid-item" data-equipment="barbell,bench" data-muscle="chest,triceps,shoulders" data-difficulty="advanced">
-    <h3 class="exercise-title">Incline Bench Press</h3>
+    <h3 class="exercise-title">Incline BenchPress</h3>
         <img src="{{ url_for('static', filename='images/InclineBenchPress.jpg') }}" alt="Exercise 1" class="exercise-image">
         
         <p class="exercise-description">A compound weightlifting exercise focusing on the chest, shoulders, and triceps by pressing a barbell upward while lying on a inclined bench.</p>
@@ -370,7 +370,7 @@
         <span class="tag muscle-group">Shoulders</span>
         <span class="tag difficulty">Advanced</span>
         </div>
-        <button class="btn-details add-to-plan" data-exercise="Incline Bench Press" data-state="add">Add to Workout Plan</button>
+        <button class="btn-details add-to-plan" data-exercise="Incline BenchPress" data-state="add">Add to Workout Plan</button>
     </div>
     <div class="grid-item" data-equipment="barbell" data-muscle="hamstrings,core,quads" data-difficulty="advanced">
         <h3 class="exercise-title">Barbell Lunges</h3>
@@ -454,17 +454,17 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 console.log('Success:', data);
-                // Update button based on the next state
+                
                 if (nextState === 'remove') {
                     this.setAttribute('data-state', 'remove');
                     this.textContent = 'Remove from Workout Plan';
                     this.style.backgroundColor = 'grey';
-                    this.style.color = 'white'; // Ensure text color is visible on grey background
+                    this.style.color = 'white'; 
                 } else {
                     this.setAttribute('data-state', 'add');
                     this.textContent = 'Add to Workout Plan';
-                    this.style.backgroundColor = '#007bff'; // Original color
-                    this.style.color = 'white'; // Reset text color if changed
+                    this.style.backgroundColor = '#007bff';
+                    this.style.color = 'white'; 
                 }
             })
             .catch((error) => {
