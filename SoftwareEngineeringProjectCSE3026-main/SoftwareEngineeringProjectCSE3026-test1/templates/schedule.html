@@ -295,7 +295,7 @@
         // Data array for creating exercises
         const workoutArray = [
             { id: "BenchPress", type: "ChestTricep", title: "BenchPress", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BenchPress.jpg') }}" },
-            { id: "PullUp", type: "BackBicep", title: "Pullup", reps: "12", sets: "4", image: "{{ url_for('static', filename='images/PullUp.jpg') }}" },
+            { id: "PullUp", type: "BackBicep", title: "PullUp", reps: "12", sets: "4", image: "{{ url_for('static', filename='images/PullUp.jpg') }}" },
             { id: "Squat", type: "Legs", title: "Squat", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/Squat.jpg') }}" },
             { id: "BicepCurls", type: "BackBicep", title: "Bicep Curls", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BicepCurls.jpg') }}" },
             { id: "BarbellLunge", type: "Legs", title: "Barbell Lunge", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BarbellLunge.jpg') }}" },
@@ -309,7 +309,7 @@
             { id: "Deadlift", type: "Core", title: "Deadlift", reps: "8", sets: "4", image: "{{ url_for('static', filename='images/Deadlift.jpg') }}" },
             { id: "Plank", type: "BackBicep", title: "Plank", reps: "3", sets: "3", image: "{{ url_for('static', filename='images/Plank.jpg') }}" },
             { id: "ShoulderPress", type: "Shoulders", title: "Shoulder Press", reps: "12", sets: "3", image: "{{ url_for('static', filename='images/ShoulderPress.jpg') }}" },
-            { id: "PushUp", type: "ChestTricep", title: "Push Up", reps: "20", sets: "3", image: "{{ url_for('static', filename='images/PushUp.jpg') }}" }
+            { id: "PushUp", type: "ChestTricep", title: "PushUp", reps: "20", sets: "3", image: "{{ url_for('static', filename='images/PushUp.jpg') }}" }
         ];
         var filteredWorkoutArray = workoutArray.filter(workout => workoutInput.includes(workout.title));
 
