@@ -7,13 +7,14 @@ import bcrypt
 import pymysql
 import sqlalchemy
 from flask_migrate import Migrate
+import os
 
 
 # from google.cloud.sql.connector import Connector
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = '123456789967'  # change this for new testing instances
+app.config["SECRET_KEY"] = os.urandom(24)  # change this for new testing instances
 
 db_user = 'dbuser'
 db_pass = 'dbuser'
