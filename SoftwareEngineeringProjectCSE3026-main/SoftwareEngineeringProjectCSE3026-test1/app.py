@@ -215,10 +215,10 @@ def workouts(username):
             db.session.commit()
             
         except Exception as e:
-            db.session.rollback()  # Roll back the session to a clean state
+            db.session.rollback()  
             print("Commit failed: ", e)
         
-        #print("Final user print",user.userdata)  # Check if the changes are reflected
+       
         
         return jsonify({"status": "success", "message": f"Successfully {action}ed {exercise_name} for {username}."})
     user = User.query.filter_by(username=username).first()
@@ -226,10 +226,31 @@ def workouts(username):
 
     return render_template('workouts.html', username=username, workouts=workouts)
 
-@app.route('/schedule', methods=['GET', 'POST'])
+@app.route('/schedule/<username>', methods=['GET', 'POST'])
 @login_required
-def schedule():
-    return render_template('schedule.html')
+def schedule(username):
+    if request.method=='POST':
+        #Takes in the data as a dictionary
+        data = request.json
+        print("made it here")
+        print(data) 
+        answers = session.get('answers', {})
+        answers.update({'schedule': data})
+        user = User.query.get(session.get('_user_id'))
+        user.userdata=answers
+        flag_modified(user, 'userdata')
+        try:
+            db.session.commit()
+            
+        except Exception as e:
+            db.session.rollback()  
+            print("Commit failed: ", e)
+        print(answers)
+        return jsonify({'message': 'Data received successfully!'})
+    
+    user = User.query.filter_by(username=username).first()
+    weekData = user.userdata.get('schedule', {})
+    return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'))
 
 @app.route('/logout')
 def logout():
@@ -245,4 +266,4 @@ def thankyou():
     return 'Thank you for completing the survey'
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

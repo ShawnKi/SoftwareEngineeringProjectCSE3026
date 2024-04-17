@@ -1,174 +1,556 @@
 {% extends 'base.html' %}
-{% block body %}
 
+{% block head %}
+
+<title>Workout Planner</title>
 <style>
-    .exercise-image {
-        width: 25%;
-        height: auto;
-        border-radius: 5px;
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .container {
+        padding:0;
+        padding-top: 50px;
+        
+    }
+    
+    .title-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .main-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .workouts {
+        flex: 0.8;
+        height: 70vh;
+        overflow-y: auto;
+        padding: 5px;
+        border-left: 1px solid #ccc;
+    }
+    .workout {
+        position: relative;
+        flex: 0 0 auto;
+    	cursor: grab;
+    	width: 100%;
+   	    max-width: 140px;
+    	display: flex;
+    	flex-direction: column;
+    	padding: 5px;
+    	margin: 5px;
+    	text-align: center;
+        margin: 5px auto;
+    	border-radius: 5px;
+    	border: 1px solid #ccc;
+    	align-items: center;
+	}
+    .workout-title {
+    	font-size: 20px;
+   	    margin-bottom: 5px;
+	}
+
+    .workout-body {
+    	display: flex;
+    	align-items: center;
+	}
+
+    .workout-info {
+    	display: flex;
+    	flex-direction: column;
+	    font-size: 15px
+    	margin-left: 10px;
+     }
+    .close-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 0px 4px; 
+        cursor: pointer;
+        background-color: rgba(150, 40, 90, 0.1); 
+        color: white;
+        border-radius: 0 5px 0 0;
+        font-size: 16px; 
+        display: none; 
+    }
+    
+
+    .workout.ChestTricep { background-color: rgba(215, 112, 147, 0.5); } 
+	.workout.BackBicep { background-color: rgba(199, 21, 133, 0.5); } 
+	.workout.Legs { background-color: rgba(139, 0, 139, 0.5); } 
+	.workout.Core { background-color: rgba(219, 112, 147, 0.5); } 
+	.workout.Shoulders { background-color: rgba(255, 20, 147, 0.5); } 
+
+
+    .workout img {
+        width: 100px;
+        height: 75px;
+        margin-bottom: 5px;
+        pointer-events: none;
+    }
+    .saveChanges {
+        background-color: rgba(150, 40, 90, 0.9);
+        color: white;
+        font-size: 20px; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        cursor: pointer;
+        border: none;
+        display: inline-block;
+        text-align: center;
+
+    }
+    .reps, .sets {
+	font-size: 15px;
+    	line-height: 1.2;
+        display: none;
     }
 
-    .exercise-name {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 14px;
-        color: aliceblue;
+    .editable {
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        width: 100%;
+        text-align: center;
     }
+    .week-container {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 20px;
+        padding: 10px;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+    #week .day {
+        width: 150px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        min-height: 300px;
+        padding: 10px;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 16px;
+        font-weight: bold;
+    }
+	#week .day-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+	#week .day .workout { 
+    font-size: initial; 
+    font-weight: normal; 
+	}
 
-    .table {
-        border: 1px solid #ececec00;
-        padding: .75rem;
-        vertical-align: top;
-        background-color: #9e94c0;
-    }
+    #week .monday { background-color: #DDA0DD; }
+    #week .tuesday { background-color: #9966CC; }
+    #week .wednesday { background-color: #DDA0DD; } 
+    #week .thursday { background-color: #9966CC; } 
+    #week .friday { background-color: #DDA0DD; }  
+    #week .saturday { background-color: #9966CC; }  
+    #week .sunday { background-color: #DDA0DD; }  
+}
 </style>
 
+<script type="text/javascript">
+    // Embed the username in a JavaScript variable
+    var currentUsername = "{{ username }}";
+    var weekData = {{ weekData|tojson|safe }};
+</script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let workouts = document.querySelectorAll('.workout');
+        let days = document.querySelectorAll('.day');
+    
+        workouts.forEach(workout => {
+            workout.addEventListener('dragstart', function (e) {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                var dragImage = e.target.cloneNode(true);
+                dragImage.style.width = "100px";  // Reduce the size of the drag image if necessary
+                document.body.appendChild(dragImage);
+                e.dataTransfer.setDragImage(dragImage, 50, 50);
+                setTimeout(() => document.body.removeChild(dragImage), 0);
+            });
+        });
+    
+        days.forEach(day => {
+            day.addEventListener('dragover', function (e) {
+                e.preventDefault();  // Allow dropping
+            });
+    
+            day.addEventListener('drop', function (e) {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('text');
+                const original = document.getElementById(data);
+                const clone = original.cloneNode(true);
+                clone.id = `${data}-${Date.now()}`;  // Unique ID for the clone
+                
+                const image = clone.querySelector('img');
+                if (image) {
+                    
+                    image.style.display = 'none'; //change to 'block' to show the image again
+
+                    
+                }
+
+                // Add the close button dynamically
+                const closeButton = document.createElement('div');
+                closeButton.classList.add('close-button');
+                closeButton.textContent = 'x';
+                closeButton.style.display = "block";  // Make sure it is visible
+                closeButton.onclick = function() {
+                    this.parentNode.remove();  // Remove the workout from the day
+                };
+                clone.appendChild(closeButton);
+    
+                // Ensure reps and sets are displayed and editable
+                const reps = clone.querySelector('.reps');
+                const sets = clone.querySelector('.sets');
+                reps.style.display = 'block';
+                sets.style.display = 'block';
+    
+                clone.querySelectorAll('.reps, .sets').forEach(element => {
+                    element.classList.add('editable');
+                    element.onclick = function() {
+                        if (!this.querySelector('input')) {
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.value = this.innerText.split(': ')[1];
+                            this.innerHTML = `${this.innerText.split(':')[0]}: `;
+                            this.appendChild(input);
+                            input.focus();
+                            input.onblur = function() {
+                                this.parentNode.innerText = `${this.parentNode.innerText.split(':')[0]}: ${this.value}`;
+                            };
+                        }
+                    };
+                });
+    
+                day.appendChild(clone);  // Append the cloned workout with the close button to the day
+            });
+        });
+    });
+    
+    
+</script>
+
+
+
+{% endblock %}
+
+{% block body %}
+
 <div class="container">
-    <div>
-        <ol class="breadcrumb small" style="margin-top:100px;">
-            <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">schedule</li>
-        </ol>
+    <div class="title-container">
+        <h1>Plan Your Workouts</h1>
     </div>
-    <h1 style="margin-top:37px;">Weekly Schedule</h1>
+        <div class="main-container">
+            
+            <div class="week-container">
+                <div id="week" class="d-flex justify-content-between">
+                    <div class="day monday border p-3" id="monday">Monday</div>
+                    <div class="day tuesday border p-3" id="tuesday">Tuesday</div>
+                    <div class="day wednesday border p-3" id="wednesday">Wednesday</div>
+                    <div class="day thursday border p-3" id="thursday">Thursday</div>
+                    <div class="day friday border p-3" id="friday">Friday</div>
+                    <div class="day saturday border p-3" id="saturday">Saturday</div>
+                    <div class="day sunday border p-3" id="sunday">Sunday</div>
+    
+                </div>
+            </div>
+            <div class="workouts">
+                <div id="workoutTemplate" class="workout" style="display: none;">
+                    <div class="workout-title"></div>
+                    <img src="" class="workout-image" style="display: none;">
+                    <div class="workout-details">
+                        <div class="reps"></div>
+                        <div class="sets"></div>
+                    </div>
+                    <div class="close-button" onclick="this.parentElement.remove()">x</div>
+                </div>
+                
 
-    <div class="container">
-        <div class="timetable-img text-center">
-            <img src="img/content/timetable.png" alt="">
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered text-center">
-                <thead>
-                    <tr class="weekday-name">
-                        <th class="text-uppercase">Sunday</th>
-                        <th class="text-uppercase">Monday</th>
-                        <th class="text-uppercase">Tuesday</th>
-                        <th class="text-uppercase">Wednesday</th>
-                        <th class="text-uppercase">Thursday</th>
-                        <th class="text-uppercase">Friday</th>
-                        <th class="text-uppercase">Saturday</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr> <!-- ROW 1 -->
-                        <td> <!-- SUNDAY -->
-                        </td>
-
-                        <td> <!-- Monday -->
-                            <span class="exercise-name">Pushups</span>
-                            <div> <img src="{{ url_for('static', filename='images/PushUp.jpg') }}" alt="Pushup"
-                                    class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">10 Reps</div>
-                        </td>
-
-                        <td> <!-- Tuesday -->
-                        </td>
-
-                        <td> <!-- Wednesday -->
-                            <span class="exercise-name">Squats</span>
-                            <div> <img src="{{ url_for('static', filename='images/Squat.jpg') }}" alt="Squat"
-                                    class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">10 Reps</div>
-                        </td>
-
-                        <td> <!-- Thursday -->
-                        </td>
-
-                        <td> <!-- Friday -->
-                            <span class="exercise-name">Deadlift</span>
-                            <div> <img src="{{ url_for('static', filename='images/Deadlift.jpg') }}" alt="Deadlift"
-                                    class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">4 Sets</div>
-                            <div class="font-size13 text-light-gray">6 Reps</div>
-                        </td>
-
-                        <td> <!-- Saturday -->
-                        </td>
-                    </tr>
-
-                    <tr> <!-- ROW 2 -->
-                        <td> <!-- SUNDAY -->
-                        </td>
-
-                        <td> <!-- Monday -->
-                            <span class="exercise-name">Shoulder Press</span>
-                            <div> <img src="{{ url_for('static', filename='images/ShoulderPress.jpg') }}"
-                                    alt="ShoulderPress" class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">10 Reps</div>
-                        </td>
-
-                        <td> <!-- Tuesday -->
-                        </td>
-
-                        <td> <!-- Wednesday -->
-                            <span class="exercise-name">Lateral Raises</span>
-                            <div> <img src="{{ url_for('static', filename='images/LateralRaises.jpg') }}"
-                                    alt="LateralRaises" class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">6 Reps</div>
-                        </td>
-
-                        <td> <!-- Thursday -->
-                        </td>
-
-                        <td> <!-- Friday -->
-                            <span class="exercise-name">Squat</span>
-                            <div> <img src="{{ url_for('static', filename='images/Squat.jpg') }}" alt="Squat"
-                                    class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">12 Reps</div>
-                        </td>
-
-                        <td> <!-- Saturday -->
-                        </td>
-                    </tr>
-
-                    <tr> <!-- ROW 3 -->
-                        <td> <!-- SUNDAY -->
-                        </td>
-
-                        <td> <!-- Monday -->
-                            <span class="exercise-name">Bicep Curls</span>
-                            <div> <img src="{{ url_for('static', filename='images/BicepCurls.jpg') }}" alt="BicepCurls"
-                                    class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">10 Reps</div>
-                        </td>
-
-                        <td> <!-- Tuesday -->
-                        </td>
-
-                        <td> <!-- Wednesday -->
-                            <span class="exercise-name">Plank</span>
-                            <div> <img src="{{ url_for('static', filename='images/Plank.jpg') }}" alt="Plank"
-                                    class="exercise-image"> </div>
-                            <div class="margin-10px-top font-size14">3 Sets</div>
-                            <div class="font-size13 text-light-gray">30 Sec</div>
-                        </td>
-
-                        <td> <!-- Thursday -->
-                        </td>
-
-                        <td> <!-- Friday -->
-                        </td>
-
-                        <td> <!-- Saturday -->
-                        </td>
-                    </tr>
-
-                    <tr> <!-- ROW 4 -->
-                    </tr>
-
-                    <tr> <!-- ROW 5 -->
-                    </tr>
-
-                </tbody>
-            </table>
-        </div>
+    		<div draggable="true" class="workout ChestTricep m-2 p-2 rounded" id="workout1">
+        	<div class="workout-title">BenchPress</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+        	<img src="{{ url_for('static', filename='images/BenchPress.jpg') }}" alt="Workout 1" class="workout-image">
+        	<div class="workout-details">
+            		<div class="reps">Reps: 10</div>
+            		<div class="sets">Sets: 3</div>
+             </div>
+    	     </div>
+    		<div draggable="true" class="workout BackBicep m-2 p-2 rounded" id="workout2">
+        	<div class="workout-title">Pullup</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+        	<img src="{{ url_for('static', filename='images/PullUp.jpg') }}" alt="Workout 2" class="workout-image">
+        	<div class="workout-details">
+            		<div class="reps">Reps: 12</div>
+            		<div class="sets">Sets: 4</div>
+             </div>
+	        </div>
+    		<div draggable="true" class="workout Legs m-2 p-2 rounded" id="workout3">
+        	<div class="workout-title">Squat</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+        	<img src="{{ url_for('static', filename='images/Squat.jpg') }}" alt="Workout 2" class="workout-image">
+        	<div class="workout-details">
+            		<div class="reps">Reps: 10</div>
+            		<div class="sets">Sets: 3</div>
+            </div>
+	        </div>
+    		<div draggable="true" class="workout BackBicep m-2 p-2 rounded" id="BicepCurls">
+        	<div class="workout-title">BicepCurls</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+        	<img src="{{ url_for('static', filename='images/BicepCurls.jpg') }}" alt="BicepCurls" class="workout-image">
+        	<div class="workout-details">
+            		<div class="reps">Reps: 10</div>
+            		<div class="sets">Sets: 3</div>
+             </div>
+            </div>
+            <div draggable="true" class="workout Legs m-2 p-2 rounded" id="BarbellLunge">
+            <div class="workout-title">Barbell Lunge</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/BarbellLunge.jpg') }}" alt="Barbell Lunge" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 10</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout ChestTricep m-2 p-2 rounded" id="InclineBenchPress">
+            <div class="workout-title">Incline BenchPress</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/InclineBenchPress.jpg') }}" alt="Incline Bench Press" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 12</div>
+                <div class="sets">Sets: 4</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout ChestTricep m-2 p-2 rounded" id="DeclineBenchPress">
+            <div class="workout-title">Decline BenchPress</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/DeclineBenchPress.jpg') }}" alt="Decline Bench Press" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 8</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout Core m-2 p-2 rounded" id="SitUps">
+            <div class="workout-title">Sit Ups</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/SitUps.jpg') }}" alt="Sit Ups" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 15</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout ChestTricep m-2 p-2 rounded" id="PectoralFly">
+            <div class="workout-title">Pectoral Fly</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/PectoralFly.jpg') }}" alt="Pectoral Fly" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 10</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout BackBicep m-2 p-2 rounded" id="BarbellRow">
+            <div class="workout-title">Barbell Row</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/BarbellRow.jpg') }}" alt="Barbell Row" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 12</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout Shoulders m-2 p-2 rounded" id="LateralRaises">
+            <div class="workout-title">Lateral Raises</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/LateralRaises.jpg') }}" alt="Lateral Raises" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 15</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout ChestTricep m-2 p-2 rounded" id="DumbbellBenchPress">
+            <div class="workout-title">Dumbbell BenchPress</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/DumbbellBenchPress.jpg') }}" alt="Dumbbell Bench Press" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 10</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout Legs m-2 p-2 rounded" id="Deadlift">
+            <div class="workout-title">Deadlift</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/Deadlift.jpg') }}" alt="Deadlift" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 8</div>
+                <div class="sets">Sets: 4</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout Core m-2 p-2 rounded" id="Plank">
+            <div class="workout-title">Plank</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/Plank.jpg') }}" alt="Plank" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 3</div>
+                <div class="reps">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout Shoulders m-2 p-2 rounded" id="ShoulderPress">
+            <div class="workout-title">Shoulder Press</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/ShoulderPress.jpg') }}" alt="Shoulder Press" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 12</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+            <div draggable="true" class="workout ChestTricep m-2 p-2 rounded" id="PushUp">
+            <div class="workout-title">Push Up</div>
+            <div class="close-button" onclick="removeWorkout(this)">x</div>
+            <img src="{{ url_for('static', filename='images/PushUp.jpg') }}" alt="Push Up" class="workout-image">
+            <div class="workout-details">
+                <div class="reps">Reps: 20</div>
+                <div class="sets">Sets: 3</div>
+            </div>
+            </div>
+        
+    <!-- Add more workouts as needed -->
+        
+        
     </div>
-
 </div>
+<div class="save-button-container" style="text-align:center; margin-top:20px;">
+    <button id="saveChangesButton" class="saveChanges">Save Changes</button>
+</div>
+<script>
+    document.getElementById('saveChangesButton').addEventListener('click', function() {
+        let weekData = {};
+        document.querySelectorAll('#week .day').forEach(day => {
+            const dayName = day.id; // e.g., 'monday'
+            weekData[dayName] = [];
+    
+            day.querySelectorAll('.workout').forEach(workout => {
+                let workoutInfo = {
+                    name: workout.querySelector('.workout-title').textContent.trim(),
+                    reps: workout.querySelector('.reps').textContent.split(': ')[1].trim(),
+                    sets: workout.querySelector('.sets').textContent.split(': ')[1].trim()
+                };
+                weekData[dayName].push(workoutInfo);
+            });
+        });
+        const url = `/schedule/${currentUsername}`;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(weekData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Changes saved successfully!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Error saving changes.');
+        });
+    });
+</script>
+<script> //Not Funcitonal Yet
+    function initializeWorkouts(weekData) {
+        const template = document.getElementById('workoutTemplate');
+        if (!template) {
+            console.error('Template not found');
+            return;
+        }
+        console.error("Data", weekData)
+        Object.entries(weekData).forEach(([day, workouts]) => {
+            const dayElement = document.getElementById(day.toLowerCase());
+            if (!dayElement) {
+                console.error('Day element not found for:', day);
+                return;
+            }
+
+            workouts.forEach(workout => {
+                const workoutElement = template.cloneNode(true);
+                workoutElement.id = ''; // Clear the id to avoid duplicate IDs
+                workoutElement.style.display = 'flex'; // Make the clone visible
+
+                // Setting workout details
+                workoutElement.querySelector('.workout-title').textContent = workout.name;
+                const repsEl = workoutElement.querySelector('.reps');
+                const setsEl = workoutElement.querySelector('.sets');
+
+                repsEl.textContent = `Reps: ${workout.reps}`;
+                setsEl.textContent = `Sets: ${workout.sets}`;
+
+                // Ensuring all editable fields are set up correctly
+                [repsEl, setsEl].forEach(el => {
+                    el.classList.add('editable');
+                    el.style.display = 'block'; // Make sure reps and sets are visible
+                    el.onclick = function() {
+                        if (!this.querySelector('input')) {
+                            const input = document.createElement('input');
+                            input.type = 'text';
+                            input.value = this.innerText.split(': ')[1];
+                            this.innerHTML = `${this.innerText.split(':')[0]}: `;
+                            this.appendChild(input);
+                            input.focus();
+                            input.onblur = function() {
+                                this.parentNode.innerText = `${this.parentNode.innerText.split(':')[0]}: ${this.value}`;
+                            };
+                        }
+                    };
+                });
+
+                // Add close button functionality if not already there
+                let closeButton = workoutElement.querySelector('.close-button');
+                if (!closeButton) {
+                    closeButton = document.createElement('div');
+                    closeButton.classList.add('close-button');
+                    closeButton.textContent = 'x';
+                    closeButton.onclick = function() {
+                        this.parentNode.remove();
+                    };
+                    workoutElement.appendChild(closeButton);
+                }
+                closeButton.style.display = 'block'; // Ensure close button is visible
+
+                dayElement.appendChild(workoutElement);
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeWorkouts(weekData);
+    });
+</script>
+
 {% endblock %}
