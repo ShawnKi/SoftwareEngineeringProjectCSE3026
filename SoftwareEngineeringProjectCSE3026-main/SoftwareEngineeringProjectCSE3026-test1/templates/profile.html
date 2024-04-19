@@ -25,11 +25,59 @@
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" src="#" alt="">
+                    <img class="img-account-profile rounded-circle mb-2" img
+                        src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
                     <!-- Profile picture help block-->
-                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                    <div class="small font-italic text-muted mb-4"></div>
                     <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="button">Upload new image</button>
+                    <button class="btn btn-primary" id="choose-image-btn" type="button">Choose image</button>
+                </div>
+            </div>
+        </div>
+        <!-- Hidden card with image options -->
+        <div class="modal" id="image-options-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Choose Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Image options -->
+                        <div class="row">
+                            <div class="col">
+                                <img class="img-thumbnail rounded-circle mb-2"
+                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                            </div>
+                            <div class="col">
+                                <img class="img-thumbnail rounded-circle mb-2"
+                                    src="{{ url_for('static', filename='images/pfp2.png') }}" alt="">
+                            </div>
+                            <div class="col">
+                                <img class="img-thumbnail rounded-circle mb-2"
+                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <img class="img-thumbnail rounded-circle mb-2" src=" {{ url_for('static',
+                                    filename='images/pfp.png' ) }}" alt="">
+                            </div>
+                            <div class="col">
+                                <img class="img-thumbnail rounded-circle mb-2"
+                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                            </div>
+                            <div class="col">
+                                <img class="img-thumbnail rounded-circle mb-2"
+                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,4 +123,37 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var chooseImageButton = document.getElementById('choose-image-btn');
+        var imageOptionsModal = document.getElementById('image-options-modal');
+        var imageThumbnails = document.querySelectorAll('#image-options-modal .img-thumbnail');
+
+        imageThumbnails.forEach(function (thumbnail) {
+            thumbnail.addEventListener('click', function () {
+                // Get the source of the clicked image
+                var newImageUrl = thumbnail.src;
+
+                // Set the source of the profile picture to the clicked image
+                document.querySelector('.img-account-profile').src = newImageUrl;
+
+                // Close the modal
+                imageOptionsModal.style.display = 'none';
+            });
+        });
+
+        chooseImageButton.addEventListener('click', function () {
+            //show images
+            imageOptionsModal.style.display = 'block';
+        });
+
+
+        //close
+        imageOptionsModal.addEventListener('click', function (event) {
+            if (event.target === imageOptionsModal || event.target.getAttribute('data-dismiss') === 'modal') {
+                imageOptionsModal.style.display = 'none';
+            }
+        });
+    });
+</script>
 {% endblock %}
