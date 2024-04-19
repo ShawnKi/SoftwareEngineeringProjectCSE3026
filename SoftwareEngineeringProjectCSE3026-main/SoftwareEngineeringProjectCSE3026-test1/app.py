@@ -7,13 +7,14 @@ import bcrypt
 import pymysql
 import sqlalchemy
 from flask_migrate import Migrate
+import os
 
 
 # from google.cloud.sql.connector import Connector
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = '1234567899'  # change this for new testing instances
+app.config["SECRET_KEY"] = os.urandom(24)  # change this for new testing instances
 
 db_user = 'dbuser'
 db_pass = 'dbuser'
@@ -190,7 +191,7 @@ def workouts(username):
         exercise_name = data['name']
         action = data['action']
         answers = session.get('answers', {})
-        #print("Answers now", answers)
+        print("Answers now", answers)
         # Ensure userdata is initialized
         if 'workouts' not in answers:
             workouts = []
@@ -207,7 +208,7 @@ def workouts(username):
         # Reassign userdata to ensure changes are detected
         answers.update({'workouts': workouts})
         session['answers'] = answers
-        #print(answers)
+        print(answers)
         user = User.query.get(session.get('_user_id'))
         user.userdata=answers
         flag_modified(user, 'userdata')
@@ -239,18 +240,19 @@ def schedule(username):
         user = User.query.get(session.get('_user_id'))
         user.userdata=answers
         flag_modified(user, 'userdata')
+        session['answers'] = answers
         try:
             db.session.commit()
             
         except Exception as e:
             db.session.rollback()  
             print("Commit failed: ", e)
-        print(answers)
         return jsonify({'message': 'Data received successfully!'})
     
     user = User.query.filter_by(username=username).first()
     weekData = user.userdata.get('schedule', {})
-    return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'))
+    workoutInput=user.userdata.get('workouts', [])
+    return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'), workoutInput=workoutInput)
 
 @app.route('/logout')
 def logout():
