@@ -32,7 +32,7 @@
         border: 1px solid rgba(0, 0, 0, 0.1);
         padding: 10px;
         border-radius: 8px;
-        background-color: #f0effa;
+        background-color: #dddcff;
         /* Sets the background color for the exercise elements */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
@@ -110,6 +110,7 @@
     .popup img {
         width: 100%;
         height: auto;
+
     }
 
     .popup .close-btn {
@@ -125,7 +126,7 @@
 <div class="main-container">
     <div class="filter-container">
         <h2>Filter</h2>
-        <h3>Equipment</h3>
+        <h3 style="font-weight: normal;">Equipment</h3>
         <input type="checkbox" id="none" name="equipment" value="none" checked>
         <label for="none"> None Needed</label><br>
         <input type="checkbox" id="pullupbar" name="equipment" value="pullupbar" checked>
@@ -441,6 +442,35 @@
             </div>
             <button class="btn-details add-to-plan" data-exercise="Barbell Lunges" data-state="add">Add to Workout
                 Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Side Plank</h3>
+            <img src=# alt="Exercise 1" class="exercise-image">
+
+            <p class="exercise-description">An exercise that improves core strength and stability by lying sideways and
+                lifting the lowerbody off the ground.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Barbell Lunges" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Mountain Climbers</h3>
+            <img src=# alt="Situps" class="exercise-image">
+            <p class="exercise-description">An exercise that improves core strength by bringing the knees to to chest
+                while in a high plank position.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="SitUps" data-state="add">Add to Workout Plan</button>
         </div>
 
 

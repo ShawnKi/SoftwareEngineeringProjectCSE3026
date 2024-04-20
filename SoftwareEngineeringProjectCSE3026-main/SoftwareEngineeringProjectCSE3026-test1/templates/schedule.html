@@ -4,27 +4,32 @@
 
 <title>Workout Planner</title>
 <style>
-    body, html {
+    body,
+    html {
         margin: 0;
         padding: 0;
         width: 100%;
         height: 100%;
     }
+
     .container {
-        padding:0;
+        padding: 0;
         padding-top: 50px;
-        
+        margin-top: 50px;
+
     }
-    
+
     .title-container {
         text-align: center;
         margin-top: 20px;
     }
+
     .main-container {
         display: flex;
         justify-content: center;
         margin-top: 20px;
     }
+
     .workouts {
         flex: 0.8;
         height: 70vh;
@@ -32,58 +37,75 @@
         padding: 5px;
         border-left: 1px solid #ccc;
     }
+
     .workout {
         position: relative;
         flex: 0 0 auto;
-    	cursor: grab;
-    	width: 100%;
-   	    max-width: 140px;
-    	display: flex;
-    	flex-direction: column;
-    	padding: 5px;
-    	margin: 5px;
-    	text-align: center;
+        cursor: grab;
+        width: 100%;
+        max-width: 140px;
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        margin: 5px;
+        text-align: center;
         margin: 5px auto;
-    	border-radius: 5px;
-    	border: 1px solid #ccc;
-    	align-items: center;
-	}
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        align-items: center;
+        background-color: #cdcde7;
+    }
+
     .workout-title {
-    	font-size: 20px;
-   	    margin-bottom: 5px;
-	}
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
 
     .workout-body {
-    	display: flex;
-    	align-items: center;
-	}
+        display: flex;
+        align-items: center;
+    }
 
     .workout-info {
-    	display: flex;
-    	flex-direction: column;
-	    font-size: 15px
-    	margin-left: 10px;
-     }
+        display: flex;
+        flex-direction: column;
+        font-size: 15px margin-left: 10px;
+    }
+
     .close-button {
         position: absolute;
         top: 0;
         right: 0;
         z-index: 1000;
-        padding: 0px 4px; 
+        padding: 0px 4px;
         cursor: pointer;
-        background-color: rgba(150, 40, 90, 0.1); 
+        background-color: #0061f2;
         color: white;
         border-radius: 0 5px 0 0;
-        font-size: 16px; 
-        display: none; 
+        font-size: 16px;
+        display: none;
     }
-    
 
-    .workout.ChestTricep { background-color: rgba(215, 112, 147, 0.5); } 
-	.workout.BackBicep { background-color: rgba(199, 21, 133, 0.5); } 
-	.workout.Legs { background-color: rgba(139, 0, 139, 0.5); } 
-	.workout.Core { background-color: rgba(219, 112, 147, 0.5); } 
-	.workout.Shoulders { background-color: rgba(255, 20, 147, 0.5); } 
+
+    .workout.ChestTricep {
+        background-color: rgba(112, 114, 215, 0.5);
+    }
+
+    .workout.BackBicep {
+        background-color: rgba(39, 21, 199, 0.5);
+    }
+
+    .workout.Legs {
+        background-color: rgba(30, 0, 139, 0.5);
+    }
+
+    .workout.Core {
+        background-color: rgba(119, 112, 219, 0.5);
+    }
+
+    .workout.Shoulders {
+        background-color: rgba(43, 20, 255, 0.5);
+    }
 
 
     .workout img {
@@ -92,21 +114,24 @@
         margin-bottom: 5px;
         pointer-events: none;
     }
+
     .saveChanges {
-        background-color: rgba(150, 40, 90, 0.9);
+        background-color: #0061f2;
         color: white;
-        font-size: 20px; 
-        padding: 10px 20px; 
-        border-radius: 5px; 
+        font-size: 20px;
+        padding: 10px 20px;
+        border-radius: 5px;
         cursor: pointer;
         border: none;
         display: inline-block;
         text-align: center;
 
     }
-    .reps, .sets {
-	font-size: 15px;
-    	line-height: 1.2;
+
+    .reps,
+    .sets {
+        font-size: 15px;
+        line-height: 1.2;
         display: none;
     }
 
@@ -117,6 +142,7 @@
         width: 100%;
         text-align: center;
     }
+
     .week-container {
         flex: 3;
         display: flex;
@@ -125,13 +151,14 @@
         margin: 0 20px;
         padding: 10px;
         flex-grow: 0;
-        flex-shrink: 0;
+        flex-shrink: 1;
     }
+
     #week .day {
         width: 150px;
         flex-grow: 0;
-        flex-shrink: 0;
-        min-height: 300px;
+        flex-shrink: 1;
+        min-height: 500px;
         padding: 10px;
         border: 1px solid #dee2e6;
         text-align: center;
@@ -143,83 +170,105 @@
         font-size: 16px;
         font-weight: bold;
     }
-	#week .day-title {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 10px;
-}
-	#week .day .workout { 
-    font-size: initial; 
-    font-weight: normal; 
-	}
 
-    #week .monday { background-color: #DDA0DD; }
-    #week .tuesday { background-color: #9966CC; }
-    #week .wednesday { background-color: #DDA0DD; } 
-    #week .thursday { background-color: #9966CC; } 
-    #week .friday { background-color: #DDA0DD; }  
-    #week .saturday { background-color: #9966CC; }  
-    #week .sunday { background-color: #DDA0DD; }  
-}
+    #week .day-title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    #week .day .workout {
+        font-size: initial;
+        font-weight: normal;
+    }
+
+    #week .monday {
+        background-color: #dde1fd;
+    }
+
+    #week .tuesday {
+        background-color: #9eb8e9;
+        ;
+    }
+
+    #week .wednesday {
+        background-color: #dde1fd;
+    }
+
+    #week .thursday {
+        background-color: #9eb8e9;
+    }
+
+    #week .friday {
+        background-color: #dde1fd;
+    }
+
+    #week .saturday {
+        background-color: #9eb8e9;
+    }
+
+    #week .sunday {
+        background-color: #dde1fd;
+    }
 </style>
 
 <script type="text/javascript">
     var currentUsername = "{{ username }}";
-    var weekData = {{ weekData|tojson|safe }};
-    var weekDataObject = JSON.parse(weekData); 
-    var workoutInput={{ workoutInput|tojson|safe }};
-    
+    var weekData = {{ weekData| tojson | safe }};
+    var weekDataObject = JSON.parse(weekData);
+    var workoutInput = {{ workoutInput| tojson | safe }};
+
 </script>
 
 
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () { //Sets up page on load
-            populateWorkouts()
-            populateSchedule(weekDataObject);
-            console.log("workoutInput", workoutInput);
-            let workouts = document.querySelectorAll('.workout');
-            let days = document.querySelectorAll('.day');
+    document.addEventListener('DOMContentLoaded', function () { //Sets up page on load
+        populateWorkouts()
+        populateSchedule(weekDataObject);
+        console.log("workoutInput", workoutInput);
+        let workouts = document.querySelectorAll('.workout');
+        let days = document.querySelectorAll('.day');
 
-            workouts.forEach(workout => { //Dragging behavior 
-                workout.addEventListener('dragstart', function (e) {
-                    e.dataTransfer.setData('text/plain', e.target.id);
-                    var dragImage = e.target.cloneNode(true);
-                    dragImage.style.width = "100px";  
-                    document.body.appendChild(dragImage);
-                    e.dataTransfer.setDragImage(dragImage, 50, 50);
-                    setTimeout(() => document.body.removeChild(dragImage), 0);
-                });
-            });
-
-            days.forEach(day => {
-                day.addEventListener('dragover', function (e) {
-                    e.preventDefault();  // Allows dropping into the days
-                });
-
-                day.addEventListener('drop', function (e) {
-                    e.preventDefault();
-                    const data = e.dataTransfer.getData('text');
-                    const original = document.getElementById(data);
-
-                    //collects the workout data from the original 
-                    const workoutDetails = {
-                        name: original.querySelector('.workout-title').textContent,
-                        reps: original.querySelector('.reps').textContent.split(': ')[1],
-                        sets: original.querySelector('.sets').textContent.split(': ')[1],
-                        type: original.getAttribute('data-type'),
-                        image: original.querySelector('img').src
-                    };
-
-                    const newWorkoutElement = createWorkoutElement(workoutDetails);
-                    newWorkoutElement.id = `${data}-${Date.now()}`; // creats a new id for elements
-
-                    day.appendChild(newWorkoutElement);  
-                });
+        workouts.forEach(workout => { //Dragging behavior 
+            workout.addEventListener('dragstart', function (e) {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                var dragImage = e.target.cloneNode(true);
+                dragImage.style.width = "100px";
+                document.body.appendChild(dragImage);
+                e.dataTransfer.setDragImage(dragImage, 50, 50);
+                setTimeout(() => document.body.removeChild(dragImage), 0);
             });
         });
-    
-    
+
+        days.forEach(day => {
+            day.addEventListener('dragover', function (e) {
+                e.preventDefault();  // Allows dropping into the days
+            });
+
+            day.addEventListener('drop', function (e) {
+                e.preventDefault();
+                const data = e.dataTransfer.getData('text');
+                const original = document.getElementById(data);
+
+                //collects the workout data from the original 
+                const workoutDetails = {
+                    name: original.querySelector('.workout-title').textContent,
+                    reps: original.querySelector('.reps').textContent.split(': ')[1],
+                    sets: original.querySelector('.sets').textContent.split(': ')[1],
+                    type: original.getAttribute('data-type'),
+                    image: original.querySelector('img').src
+                };
+
+                const newWorkoutElement = createWorkoutElement(workoutDetails);
+                newWorkoutElement.id = `${data}-${Date.now()}`; // creats a new id for elements
+
+                day.appendChild(newWorkoutElement);
+            });
+        });
+    });
+
+
 </script>
 
 
@@ -231,267 +280,267 @@
     <div class="title-container">
         <h1>Plan Your Workouts</h1>
     </div>
-        <div class="main-container">
-            
-            <div class="week-container">
-                <div id="week" class="d-flex justify-content-between">
-                    <div class="day monday border p-3" id="monday">Monday</div>
-                    <div class="day tuesday border p-3" id="tuesday">Tuesday</div>
-                    <div class="day wednesday border p-3" id="wednesday">Wednesday</div>
-                    <div class="day thursday border p-3" id="thursday">Thursday</div>
-                    <div class="day friday border p-3" id="friday">Friday</div>
-                    <div class="day saturday border p-3" id="saturday">Saturday</div>
-                    <div class="day sunday border p-3" id="sunday">Sunday</div>
-    
-                </div>
+    <div class="main-container">
+
+        <div class="week-container">
+            <div id="week" class="d-flex justify-content-between">
+                <div class="day monday border p-3" id="monday">Monday</div>
+                <div class="day tuesday border p-3" id="tuesday">Tuesday</div>
+                <div class="day wednesday border p-3" id="wednesday">Wednesday</div>
+                <div class="day thursday border p-3" id="thursday">Thursday</div>
+                <div class="day friday border p-3" id="friday">Friday</div>
+                <div class="day saturday border p-3" id="saturday">Saturday</div>
+                <div class="day sunday border p-3" id="sunday">Sunday</div>
+
             </div>
-            <div class="workouts">
+        </div>
+        <div class="workouts">
+        </div>
     </div>
-</div>
-<div class="save-button-container" style="text-align:center; margin-top:20px;">
-    <button id="saveChangesButton" class="saveChanges">Save Changes</button>
-</div>
-<script>
-    document.getElementById('saveChangesButton').addEventListener('click', function() {
-        let scheduleData = {};  
-        document.querySelectorAll('#week .day').forEach(day => {
-            const dayName = day.id; 
-            scheduleData[dayName] = []; 
-        
-            day.querySelectorAll('.workout').forEach(workout => {
-                //console.log("data-type",workout.getAttribute('data-type'))
-                let workoutInfo = {
-                    name: workout.querySelector('.workout-title').textContent.trim(),
-                    reps: workout.querySelector('.reps').textContent.split(': ')[1].trim(),
-                    sets: workout.querySelector('.sets').textContent.split(': ')[1].trim(),
-                    
-                    type: workout.getAttribute('data-type'),
-                    image: workout.querySelector('img').src
-                };
-                scheduleData[dayName].push(workoutInfo);  // Adds individual workout info to schedleData
-            });
-        });
-        const url = `/schedule/${currentUsername}`;
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(scheduleData)  // Send scheduleData back to app.py
-        })
-        .then(response => response.json())
-        .then(data => {
-            //console.log('Success:', data);
-            alert('Changes saved successfully!');
-        })
-        .catch((error) => {
-            //console.error('Error:', error);
-            alert('Error saving changes.');
-        });
-    });
-</script>
-<script>
-    function populateWorkouts() {
-        // Data array for creating exercises
-        const workoutArray = [
-            { id: "BenchPress", type: "ChestTricep", title: "BenchPress", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BenchPress.jpg') }}" },
-            { id: "PullUp", type: "BackBicep", title: "PullUp", reps: "12", sets: "4", image: "{{ url_for('static', filename='images/PullUp.jpg') }}" },
-            { id: "Squat", type: "Legs", title: "Squat", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/Squat.jpg') }}" },
-            { id: "BicepCurls", type: "BackBicep", title: "Bicep Curls", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BicepCurls.jpg') }}" },
-            { id: "BarbellLunge", type: "Legs", title: "Barbell Lunge", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BarbellLunge.jpg') }}" },
-            { id: "InclineBenchPress", type: "ChestTricep", title: "Incline BenchPress", reps: "12", sets: "4", image: "{{ url_for('static', filename='images/InclineBenchPress.jpg') }}" },
-            { id: "DeclineBenchPress", type: "ChestTricep", title: "Decline BenchPress", reps: "8", sets: "3", image: "{{ url_for('static', filename='images/DeclineBenchPress.jpg') }}" },
-            { id: "SitUps", type: "Core", title: "Sit Ups", reps: "15", sets: "3", image: "{{ url_for('static', filename='images/SitUps.jpg') }}" },
-            { id: "PectoralFly", type: "ChestTricep", title: "Pectoral Fly", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/PectoralFly.jpg') }}" },
-            { id: "BarbellRow", type: "BackBicep", title: "Barbell Row", reps: "12", sets: "3", image: "{{ url_for('static', filename='images/BarbellRow.jpg') }}" },
-            { id: "LateralRaises", type: "Shoulders", title: "Lateral Raises", reps: "15", sets: "3", image: "{{ url_for('static', filename='images/LateralRaises.jpg') }}" },
-            { id: "DumbbellBenchPress", type: "ChestTricep", title: "Dumbbell BenchPress", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/DumbbellBenchPress.jpg') }}" },
-            { id: "Deadlift", type: "Core", title: "Deadlift", reps: "8", sets: "4", image: "{{ url_for('static', filename='images/Deadlift.jpg') }}" },
-            { id: "Plank", type: "BackBicep", title: "Plank", reps: "3", sets: "3", image: "{{ url_for('static', filename='images/Plank.jpg') }}" },
-            { id: "ShoulderPress", type: "Shoulders", title: "Shoulder Press", reps: "12", sets: "3", image: "{{ url_for('static', filename='images/ShoulderPress.jpg') }}" },
-            { id: "PushUp", type: "ChestTricep", title: "PushUp", reps: "20", sets: "3", image: "{{ url_for('static', filename='images/PushUp.jpg') }}" }
-        ];
-        var filteredWorkoutArray = workoutArray.filter(workout => workoutInput.includes(workout.title));
+    <div class="save-button-container" style="text-align:center; margin-top:20px;">
+        <button id="saveChangesButton" class="saveChanges">Save Changes</button>
+    </div>
+    <script>
+        document.getElementById('saveChangesButton').addEventListener('click', function () {
+            let scheduleData = {};
+            document.querySelectorAll('#week .day').forEach(day => {
+                const dayName = day.id;
+                scheduleData[dayName] = [];
 
-    
-        const workoutsContainer = document.querySelector('.workouts');
-        filteredWorkoutArray.forEach(workout => {
-            const workoutType = createWorkoutType({
-                name: workout.title,
-                reps: workout.reps,
-                sets: workout.sets,
-                type: workout.type,
-                image: workout.image
-            });
-            workoutType.id = workout.id;
-            workoutType.setAttribute('data-type', workout.type);
-            workoutsContainer.appendChild(workoutType);
-        });
-    }
-</script>
+                day.querySelectorAll('.workout').forEach(workout => {
+                    //console.log("data-type",workout.getAttribute('data-type'))
+                    let workoutInfo = {
+                        name: workout.querySelector('.workout-title').textContent.trim(),
+                        reps: workout.querySelector('.reps').textContent.split(': ')[1].trim(),
+                        sets: workout.querySelector('.sets').textContent.split(': ')[1].trim(),
 
-<script> //Creates the workout elements within specific days
-    function createWorkoutElement(workoutDetails) {
-        //creats the workout object
-        let workout = document.createElement('div');
-        workout.classList.add('workout', workoutDetails.type);
-        workout.setAttribute('data-type', workoutDetails.type);
-        workout.setAttribute('draggable', true);
-        
-        let workoutTitle = document.createElement('div');
-        workoutTitle.className = 'workout-title';
-        workoutTitle.textContent = workoutDetails.name;
-        
-        let closeButton = document.createElement('div');
-        closeButton.className = 'close-button';
-        closeButton.textContent = 'x';
-        
-        closeButton.style.display = "block";
-        closeButton.onclick = function() {
-            this.parentNode.remove();
-        };
-        
-        let workoutImage = document.createElement('img');
-        workoutImage.src = workoutDetails.image;
-        workoutImage.alt = workoutDetails.name;
-        workoutImage.className = 'workout-image';
-        workoutImage.style.display = "none"; 
-
-        let workoutDetailsDiv = document.createElement('div');
-        workoutDetailsDiv.className = 'workout-details';
-
-        // creats the sets and reps, which can be edited
-        let repsDiv = document.createElement('div');
-        repsDiv.className = 'reps';
-        repsDiv.textContent = `Reps: ${workoutDetails.reps}`;
-        repsDiv.onclick = function() { can_edit(this); };
-        repsDiv.style.cursor = 'pointer';
-        repsDiv.style.display = "block";
-
-        let setsDiv = document.createElement('div');
-        setsDiv.className = 'sets';
-        setsDiv.textContent = `Sets: ${workoutDetails.sets}`;
-        setsDiv.onclick = function() { can_edit(this); };
-        setsDiv.style.cursor = 'pointer';
-        setsDiv.style.display = "block";
-
-        workoutDetailsDiv.appendChild(repsDiv);
-        workoutDetailsDiv.appendChild(setsDiv); 
-
-        //puts the items all together to form the object.
-        workout.appendChild(workoutTitle);
-        workout.appendChild(closeButton);
-        workout.appendChild(workoutImage);
-        workout.appendChild(workoutDetailsDiv);
-
-        return workout;
-    }
-    function can_edit(div) { //Function to let the the rep and set parts be edited
-        if (div.querySelector('input')) {
-            return; 
-        }
-        let currentText = div.textContent.split(': ')[1];
-        div.innerHTML = div.textContent.split(':')[0] + ': ';
-        let input = document.createElement('input');
-        input.type = 'text';
-        input.value = currentText;
-        input.style.width = '50px'; 
-        input.style.border = 'none'; 
-        input.style.background = 'transparent'; 
-        input.style.outline = 'none'; 
-        input.style.fontSize = 'inherit'; 
-        div.appendChild(input);
-        input.focus();
-    
-        input.onblur = function() {
-            div.textContent = `${div.textContent.split(':')[0]}: ${input.value}`;
-        };
-        input.onkeypress = function(e) {
-            if (e.key === 'Enter') {
-                input.blur();
-            }
-        };
-    }
-</script>
-<script>
-    function createWorkoutType(workoutDetails) { //Modified version of createWorkoutElement which makes the workouts for the selection bar on the right. 
-        let workout = document.createElement('div');
-        workout.classList.add('workout', workoutDetails.type, 'm-2', 'p-2', 'rounded');
-        workout.setAttribute('data-type', workoutDetails.type);
-        workout.setAttribute('draggable', true);
-        workout.style.cursor = 'grab';
-        workout.style.userSelect = 'none'; 
-    
-        let workoutTitle = document.createElement('div');
-        workoutTitle.className = 'workout-title';
-        workoutTitle.textContent = workoutDetails.name;
-        workoutTitle.style.userSelect = 'none'; 
-    
-        let closeButton = document.createElement('div');
-        closeButton.className = 'close-button';
-        closeButton.textContent = 'x';
-        closeButton.style.display = "none";
-        closeButton.onclick = function() {
-            this.parentNode.remove();
-        };
-    
-        let workoutImage = document.createElement('img');
-        workoutImage.src = workoutDetails.image;
-        workoutImage.alt = workoutDetails.name;
-        workoutImage.className = 'workout-image';
-        workoutImage.style.display = "block";
-        workoutImage.style.pointerEvents = "none"; 
-    
-        let workoutDetailsDiv = document.createElement('div');
-        workoutDetailsDiv.className = 'workout-details';
-    
-        let repsDiv = document.createElement('div');
-        repsDiv.className = 'reps';
-        repsDiv.textContent = `Reps: ${workoutDetails.reps}`;
-        repsDiv.style.display = "none";
-    
-        let setsDiv = document.createElement('div');
-        setsDiv.className = 'sets';
-        setsDiv.textContent = `Sets: ${workoutDetails.sets}`;
-        setsDiv.style.display = "none";
-    
-        workoutDetailsDiv.appendChild(repsDiv);
-        workoutDetailsDiv.appendChild(setsDiv);
-    
-        workout.appendChild(workoutTitle);
-        workout.appendChild(closeButton);
-        workout.appendChild(workoutImage);
-        workout.appendChild(workoutDetailsDiv);
-    
-        //Sets drag behavior
-        workout.addEventListener('dragstart', function(e) {
-            e.dataTransfer.setData('text/plain', e.target.id);
-            var dragImage = e.target.cloneNode(true);
-            dragImage.style.width = "100px";  
-            document.body.appendChild(dragImage);
-            e.dataTransfer.setDragImage(dragImage, 50, 50); 
-            setTimeout(() => document.body.removeChild(dragImage), 0);
-        });
-    
-        return workout;
-    }
-</script>
-<script>
-    function populateSchedule(weekDataObj) { //takes in the list of workouts for each day and add them. 
-        console.log("weekData:", weekDataObj);
-        const days = document.querySelectorAll('.day');
-        days.forEach(day => {
-            const dayWorkouts = weekDataObj[day.id];
-            
-            if (dayWorkouts) {
-                dayWorkouts.forEach(workoutData => {
-                    
-                    const workoutElement = createWorkoutElement(workoutData);
-                    day.appendChild(workoutElement);
-                    
+                        type: workout.getAttribute('data-type'),
+                        image: workout.querySelector('img').src
+                    };
+                    scheduleData[dayName].push(workoutInfo);  // Adds individual workout info to schedleData
                 });
-            }
+            });
+            const url = `/schedule/${currentUsername}`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(scheduleData)  // Send scheduleData back to app.py
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //console.log('Success:', data);
+                    alert('Changes saved successfully!');
+                })
+                .catch((error) => {
+                    //console.error('Error:', error);
+                    alert('Error saving changes.');
+                });
         });
-    }
-</script>
-{% endblock %}
+    </script>
+    <script>
+        function populateWorkouts() {
+            // Data array for creating exercises
+            const workoutArray = [
+                { id: "BenchPress", type: "ChestTricep", title: "BenchPress", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BenchPress.jpg') }}" },
+                { id: "PullUp", type: "BackBicep", title: "PullUp", reps: "12", sets: "4", image: "{{ url_for('static', filename='images/PullUp.jpg') }}" },
+                { id: "Squat", type: "Legs", title: "Squat", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/Squat.jpg') }}" },
+                { id: "BicepCurls", type: "BackBicep", title: "Bicep Curls", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BicepCurls.jpg') }}" },
+                { id: "BarbellLunge", type: "Legs", title: "Barbell Lunge", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/BarbellLunge.jpg') }}" },
+                { id: "InclineBenchPress", type: "ChestTricep", title: "Incline BenchPress", reps: "12", sets: "4", image: "{{ url_for('static', filename='images/InclineBenchPress.jpg') }}" },
+                { id: "DeclineBenchPress", type: "ChestTricep", title: "Decline BenchPress", reps: "8", sets: "3", image: "{{ url_for('static', filename='images/DeclineBenchPress.jpg') }}" },
+                { id: "SitUps", type: "Core", title: "Sit Ups", reps: "15", sets: "3", image: "{{ url_for('static', filename='images/SitUps.jpg') }}" },
+                { id: "PectoralFly", type: "ChestTricep", title: "Pectoral Fly", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/PectoralFly.jpg') }}" },
+                { id: "BarbellRow", type: "BackBicep", title: "Barbell Row", reps: "12", sets: "3", image: "{{ url_for('static', filename='images/BarbellRow.jpg') }}" },
+                { id: "LateralRaises", type: "Shoulders", title: "Lateral Raises", reps: "15", sets: "3", image: "{{ url_for('static', filename='images/LateralRaises.jpg') }}" },
+                { id: "DumbbellBenchPress", type: "ChestTricep", title: "Dumbbell BenchPress", reps: "10", sets: "3", image: "{{ url_for('static', filename='images/DumbbellBenchPress.jpg') }}" },
+                { id: "Deadlift", type: "Core", title: "Deadlift", reps: "8", sets: "4", image: "{{ url_for('static', filename='images/Deadlift.jpg') }}" },
+                { id: "Plank", type: "BackBicep", title: "Plank", reps: "3", sets: "3", image: "{{ url_for('static', filename='images/Plank.jpg') }}" },
+                { id: "ShoulderPress", type: "Shoulders", title: "Shoulder Press", reps: "12", sets: "3", image: "{{ url_for('static', filename='images/ShoulderPress.jpg') }}" },
+                { id: "PushUp", type: "ChestTricep", title: "PushUp", reps: "20", sets: "3", image: "{{ url_for('static', filename='images/PushUp.jpg') }}" }
+            ];
+            var filteredWorkoutArray = workoutArray.filter(workout => workoutInput.includes(workout.title));
+
+
+            const workoutsContainer = document.querySelector('.workouts');
+            filteredWorkoutArray.forEach(workout => {
+                const workoutType = createWorkoutType({
+                    name: workout.title,
+                    reps: workout.reps,
+                    sets: workout.sets,
+                    type: workout.type,
+                    image: workout.image
+                });
+                workoutType.id = workout.id;
+                workoutType.setAttribute('data-type', workout.type);
+                workoutsContainer.appendChild(workoutType);
+            });
+        }
+    </script>
+
+    <script> //Creates the workout elements within specific days
+        function createWorkoutElement(workoutDetails) {
+            //creats the workout object
+            let workout = document.createElement('div');
+            workout.classList.add('workout', workoutDetails.type);
+            workout.setAttribute('data-type', workoutDetails.type);
+            workout.setAttribute('draggable', true);
+
+            let workoutTitle = document.createElement('div');
+            workoutTitle.className = 'workout-title';
+            workoutTitle.textContent = workoutDetails.name;
+
+            let closeButton = document.createElement('div');
+            closeButton.className = 'close-button';
+            closeButton.textContent = 'x';
+
+            closeButton.style.display = "block";
+            closeButton.onclick = function () {
+                this.parentNode.remove();
+            };
+
+            let workoutImage = document.createElement('img');
+            workoutImage.src = workoutDetails.image;
+            workoutImage.alt = workoutDetails.name;
+            workoutImage.className = 'workout-image';
+            workoutImage.style.display = "none";
+
+            let workoutDetailsDiv = document.createElement('div');
+            workoutDetailsDiv.className = 'workout-details';
+
+            // creats the sets and reps, which can be edited
+            let repsDiv = document.createElement('div');
+            repsDiv.className = 'reps';
+            repsDiv.textContent = `Reps: ${workoutDetails.reps}`;
+            repsDiv.onclick = function () { can_edit(this); };
+            repsDiv.style.cursor = 'pointer';
+            repsDiv.style.display = "block";
+
+            let setsDiv = document.createElement('div');
+            setsDiv.className = 'sets';
+            setsDiv.textContent = `Sets: ${workoutDetails.sets}`;
+            setsDiv.onclick = function () { can_edit(this); };
+            setsDiv.style.cursor = 'pointer';
+            setsDiv.style.display = "block";
+
+            workoutDetailsDiv.appendChild(repsDiv);
+            workoutDetailsDiv.appendChild(setsDiv);
+
+            //puts the items all together to form the object.
+            workout.appendChild(workoutTitle);
+            workout.appendChild(closeButton);
+            workout.appendChild(workoutImage);
+            workout.appendChild(workoutDetailsDiv);
+
+            return workout;
+        }
+        function can_edit(div) { //Function to let the the rep and set parts be edited
+            if (div.querySelector('input')) {
+                return;
+            }
+            let currentText = div.textContent.split(': ')[1];
+            div.innerHTML = div.textContent.split(':')[0] + ': ';
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.style.width = '50px';
+            input.style.border = 'none';
+            input.style.background = 'transparent';
+            input.style.outline = 'none';
+            input.style.fontSize = 'inherit';
+            div.appendChild(input);
+            input.focus();
+
+            input.onblur = function () {
+                div.textContent = `${div.textContent.split(':')[0]}: ${input.value}`;
+            };
+            input.onkeypress = function (e) {
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
+            };
+        }
+    </script>
+    <script>
+        function createWorkoutType(workoutDetails) { //Modified version of createWorkoutElement which makes the workouts for the selection bar on the right. 
+            let workout = document.createElement('div');
+            workout.classList.add('workout', workoutDetails.type, 'm-2', 'p-2', 'rounded');
+            workout.setAttribute('data-type', workoutDetails.type);
+            workout.setAttribute('draggable', true);
+            workout.style.cursor = 'grab';
+            workout.style.userSelect = 'none';
+
+            let workoutTitle = document.createElement('div');
+            workoutTitle.className = 'workout-title';
+            workoutTitle.textContent = workoutDetails.name;
+            workoutTitle.style.userSelect = 'none';
+
+            let closeButton = document.createElement('div');
+            closeButton.className = 'close-button';
+            closeButton.textContent = 'x';
+            closeButton.style.display = "none";
+            closeButton.onclick = function () {
+                this.parentNode.remove();
+            };
+
+            let workoutImage = document.createElement('img');
+            workoutImage.src = workoutDetails.image;
+            workoutImage.alt = workoutDetails.name;
+            workoutImage.className = 'workout-image';
+            workoutImage.style.display = "block";
+            workoutImage.style.pointerEvents = "none";
+
+            let workoutDetailsDiv = document.createElement('div');
+            workoutDetailsDiv.className = 'workout-details';
+
+            let repsDiv = document.createElement('div');
+            repsDiv.className = 'reps';
+            repsDiv.textContent = `Reps: ${workoutDetails.reps}`;
+            repsDiv.style.display = "none";
+
+            let setsDiv = document.createElement('div');
+            setsDiv.className = 'sets';
+            setsDiv.textContent = `Sets: ${workoutDetails.sets}`;
+            setsDiv.style.display = "none";
+
+            workoutDetailsDiv.appendChild(repsDiv);
+            workoutDetailsDiv.appendChild(setsDiv);
+
+            workout.appendChild(workoutTitle);
+            workout.appendChild(closeButton);
+            workout.appendChild(workoutImage);
+            workout.appendChild(workoutDetailsDiv);
+
+            //Sets drag behavior
+            workout.addEventListener('dragstart', function (e) {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                var dragImage = e.target.cloneNode(true);
+                dragImage.style.width = "100px";
+                document.body.appendChild(dragImage);
+                e.dataTransfer.setDragImage(dragImage, 50, 50);
+                setTimeout(() => document.body.removeChild(dragImage), 0);
+            });
+
+            return workout;
+        }
+    </script>
+    <script>
+        function populateSchedule(weekDataObj) { //takes in the list of workouts for each day and add them. 
+            console.log("weekData:", weekDataObj);
+            const days = document.querySelectorAll('.day');
+            days.forEach(day => {
+                const dayWorkouts = weekDataObj[day.id];
+
+                if (dayWorkouts) {
+                    dayWorkouts.forEach(workoutData => {
+
+                        const workoutElement = createWorkoutElement(workoutData);
+                        day.appendChild(workoutElement);
+
+                    });
+                }
+            });
+        }
+    </script>
+    {% endblock %}
