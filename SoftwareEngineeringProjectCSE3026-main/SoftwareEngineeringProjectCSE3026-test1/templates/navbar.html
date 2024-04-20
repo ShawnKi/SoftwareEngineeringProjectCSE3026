@@ -28,8 +28,8 @@
                 <li class="nav-item"></li>
                 <a class="nav-link" a href="{{ url_for('logout') }}">Logout</a>
                 <a class="navbar-brand mx-2" a href="{{ url_for('profile', username=current_user.username) }}"><img
-                        class="rounded-circle" src="{{ url_for('static', filename='images/pfp.png') }}" alt=""
-                        style="width: 50px; height: 50px;"></a>
+                        class="rounded-circle" src="{{ url_for('static', filename='images/' + current_user.picture) }}"
+                        alt="" style="width: 50px; height: 50px;"></a>
                 </li>
 
                 {% endif %}

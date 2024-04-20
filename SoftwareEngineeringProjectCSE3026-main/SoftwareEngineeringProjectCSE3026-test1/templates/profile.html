@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+<style>
+    .col {
+        img
+    }
+</style>
 {% endblock %}
 {% block body %}
 <div class="container">
@@ -26,7 +31,7 @@
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
                     <img class="img-account-profile rounded-circle mb-2" img
-                        src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                        src="{{ url_for('static', filename='images/' + current_user.picture) }}" alt="">
                     <!-- Profile picture help block-->
                     <div class="small font-italic text-muted mb-4"></div>
                     <!-- Profile picture upload button-->
@@ -57,21 +62,21 @@
                             </div>
                             <div class="col">
                                 <img class="img-thumbnail rounded-circle mb-2"
-                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                                    src="{{ url_for('static', filename='images/pfp3.png') }}" alt="">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <img class="img-thumbnail rounded-circle mb-2" src=" {{ url_for('static',
-                                    filename='images/pfp.png' ) }}" alt="">
+                                    filename='images/pfp4.png' ) }}" alt="">
                             </div>
                             <div class="col">
                                 <img class="img-thumbnail rounded-circle mb-2"
-                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                                    src="{{ url_for('static', filename='images/pfp5.png') }}" alt="">
                             </div>
                             <div class="col">
                                 <img class="img-thumbnail rounded-circle mb-2"
-                                    src="{{ url_for('static', filename='images/pfp.png') }}" alt="">
+                                    src="{{ url_for('static', filename='images/pfp6.png') }}" alt="">
                             </div>
                         </div>
                     </div>
@@ -133,9 +138,23 @@
             thumbnail.addEventListener('click', function () {
                 // Get the source of the clicked image
                 var newImageUrl = thumbnail.src;
-
+                var imageFilename = newImageUrl.split('/').pop();
                 // Set the source of the profile picture to the clicked image
                 document.querySelector('.img-account-profile').src = newImageUrl;
+
+                fetch('/pfp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ image_url: imageFilename })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log("Profile image updated successfully");
+                    } else {
+                        console.error("Failed to update profile image");
+                    }
+                });
 
                 // Close the modal
                 imageOptionsModal.style.display = 'none';

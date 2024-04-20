@@ -42,6 +42,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
+    picture = db.Column(db.String(255))
     def __init__(self, first_name, last_name, email, username, password):
         self.first_name = first_name
         self.last_name = last_name
@@ -175,6 +176,20 @@ def profile(username):
         user.username = username
         db.session.commit()
     return render_template('profile.html', username=username)
+
+@app.route('/pfp', methods=['POST'])
+@login_required
+def pfp():
+    user = User.query.get(session.get('_user_id'))
+    data = request.json
+    image_url = data.get('image_url')
+
+    if image_url:
+        user.picture = image_url
+        db.session.commit()  # Save changes to the database
+        return jsonify({"status": "success"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Invalid image URL"}), 400
 
 @app.route('/results/<username>')
 def results(username):
