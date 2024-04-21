@@ -42,6 +42,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
+    picture = db.Column(db.String(255))
     def __init__(self, first_name, last_name, email, username, password):
         self.first_name = first_name
         self.last_name = last_name
@@ -179,6 +180,20 @@ def profile(username):
         db.session.commit()
     return render_template('profile.html', username=username)
 
+@app.route('/pfp', methods=['POST'])
+@login_required
+def pfp():
+    user = User.query.get(session.get('_user_id'))
+    data = request.json
+    image_url = data.get('image_url')
+
+    if image_url:
+        user.picture = image_url
+        db.session.commit()  # Save changes to the database
+        return jsonify({"status": "success"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Invalid image URL"}), 400
+
 @app.route('/results/<username>')
 def results(username):
     user = User.query.get(session.get('_user_id'))
@@ -226,13 +241,10 @@ def workouts(username):
         
         return jsonify({"status": "success", "message": f"Successfully {action}ed {exercise_name} for {username}."})
     user = User.query.filter_by(username=username).first()
-    try:
-        workouts = user.userdata.get('workouts', [])
-    except:
-        workouts=[]
+    workouts = user.userdata.get('workouts', [])
+
     return render_template('workouts.html', username=username, workouts=workouts)
 
-       
 @app.route('/schedule/<username>', methods=['GET', 'POST'])
 @login_required
 def schedule(username):
@@ -256,15 +268,8 @@ def schedule(username):
         return jsonify({'message': 'Data received successfully!'})
     
     user = User.query.filter_by(username=username).first()
-    try: 
-        weekData = user.userdata.get('schedule', {})
-    except:
-        weekData={}
-    try:
-        workoutInput=user.userdata.get('workouts', [])
-    except:
-        workoutInput=[]
-        
+    weekData = user.userdata.get('schedule', {})
+    workoutInput=user.userdata.get('workouts', [])
     return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'), workoutInput=workoutInput)
 
 @app.route('/logout')
