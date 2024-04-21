@@ -21,7 +21,7 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
-        margin-top: 150px;
+        margin-top: 50px;
     }
 
     .homepage-text {
@@ -63,10 +63,89 @@
         margin-left: -1em;
         /* Aligns bullet with the start of the text line */
     }
+
+    .home {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top: 70px;
+    }
+
+    .full {
+        width: 100%;
+        height: auto;
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        white-space: nowrap;
+        font-size: 65px;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .overlay2 {
+        position: absolute;
+        font-weight: lighter;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        white-space: nowrap;
+        font-size: 30px;
+        overflow: hidden;
+
+    }
+
+    .overlay-buttons {
+        position: absolute;
+        top: 60%;
+        left: 30%;
+    }
+
+    .overlay-button2 {
+        position: absolute;
+        top: 60%;
+        right: 30%;
+
+    }
+
+    .btn {
+        padding: 0.5rem;
+        background-color: rgba(255, 255, 255, 0);
+        border: 4px solid #ffffff;
+        color: white;
+        font-size: 30px;
+        border-radius: 0;
+        margin-right: 10px;
+        margin-left: 10px;
+        overflow: hidden;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    a:hover {
+        color: rgb(118, 150, 255);
+    }
 </style>
 {% endblock %}
 
 {% block body %}
+<div class="home"><img src="{{ url_for('static', filename='images/home2.png') }}" alt="home" class="full">
+    <div class="overlay-text">Your Personalized Path to a Stronger You</div>
+    <div class="overlay2">Personalize your fitness tracking experience with CHASMFitness.</div>
+    <div class="overlay-buttons"><button class="btn" type="button"><a href="{{ url_for('signup') }}">Get
+                Started</a></button></div>
+    <div class="overlay-button2"><button class="btn" type="button"><a href=#>Browse
+                Workouts</a></button></div>
+</div>
+
 <div class="container homepage-container">
     <div>
         <h1 class="fade-in">Welcome to CHASM Fitness</h1>
