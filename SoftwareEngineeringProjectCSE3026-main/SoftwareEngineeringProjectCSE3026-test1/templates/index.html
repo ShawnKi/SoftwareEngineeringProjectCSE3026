@@ -97,7 +97,7 @@
         white-space: nowrap;
         font-size: 30px;
         overflow: hidden;
-
+        animation: fadeIn 1s ease-out;
     }
 
     .overlay-buttons {
@@ -138,7 +138,7 @@
 
 {% block body %}
 <div class="home"><img src="{{ url_for('static', filename='images/home2.png') }}" alt="home" class="full">
-    <div class="overlay-text">Your Personalized Path to a Stronger You</div>
+    <div class="overlay-text">Your personalized path to a stronger you.</div>
     <div class="overlay2">Personalize your fitness tracking experience with CHASMFitness.</div>
     <div class="overlay-buttons"><button class="btn" type="button"><a href="{{ url_for('signup') }}">Get
                 Started</a></button></div>
