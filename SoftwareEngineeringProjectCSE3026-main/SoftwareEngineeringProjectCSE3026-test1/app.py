@@ -48,6 +48,7 @@ class User(db.Model, UserMixin):
         self.last_name = last_name
         self.email = email
         self.username = username
+        self.picture="pfp.png"
         self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
 
