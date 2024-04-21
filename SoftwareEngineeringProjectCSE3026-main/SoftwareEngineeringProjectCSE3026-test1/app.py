@@ -42,7 +42,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     userdata = db.Column(db.JSON)
-    picture = db.Column(db.String(255))
     def __init__(self, first_name, last_name, email, username, password):
         self.first_name = first_name
         self.last_name = last_name
@@ -107,23 +106,26 @@ def about():
     return render_template('about.html')
 
 @app.route('/quiz', methods=['GET', 'POST'])
+@login_required
 def quiz():
-    if not session.get('loggedin'):
-        return redirect(url_for('login'))
-
     if request.method == 'POST':
         answers = session.get('answers', {})
-
+        data = request.get_json()
         # Update the answers with the data from the current POST request
-        answers.update(request.get_json())
-
-        session['answers'] = answers
-        print(answers)
+        answers.update({'quiz_results': data})
         user = User.query.get(session.get('_user_id'))
-        user.userdata = answers
-        db.session.commit()
-        return jsonify({'message': 'Thank you for completing the survey!'}), 200
-        return jsonify({'message': 'Your answer has been saved'}), 200
+        user.userdata=answers
+        #print(data)
+        flag_modified(user, 'userdata')
+        session['answers'] = answers
+        #print(user.userdata)
+        try:
+            db.session.commit()
+            
+        except Exception as e:
+            db.session.rollback()  
+            print("Commit failed: ", e)
+        return jsonify({'message': 'Data received successfully!'})
 
     return render_template('quiz.html')
 
@@ -139,7 +141,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        return render_template('quiz.html')
+        return redirect(url_for('quiz'))
         
     else:
         return render_template('signup.html')
@@ -176,20 +178,6 @@ def profile(username):
         user.username = username
         db.session.commit()
     return render_template('profile.html', username=username)
-
-@app.route('/pfp', methods=['POST'])
-@login_required
-def pfp():
-    user = User.query.get(session.get('_user_id'))
-    data = request.json
-    image_url = data.get('image_url')
-
-    if image_url:
-        user.picture = image_url
-        db.session.commit()  # Save changes to the database
-        return jsonify({"status": "success"}), 200
-    else:
-        return jsonify({"status": "error", "message": "Invalid image URL"}), 400
 
 @app.route('/results/<username>')
 def results(username):
@@ -238,10 +226,13 @@ def workouts(username):
         
         return jsonify({"status": "success", "message": f"Successfully {action}ed {exercise_name} for {username}."})
     user = User.query.filter_by(username=username).first()
-    workouts = user.userdata.get('workouts', [])
-
+    try:
+        workouts = user.userdata.get('workouts', [])
+    except:
+        workouts=[]
     return render_template('workouts.html', username=username, workouts=workouts)
 
+       
 @app.route('/schedule/<username>', methods=['GET', 'POST'])
 @login_required
 def schedule(username):
@@ -265,8 +256,15 @@ def schedule(username):
         return jsonify({'message': 'Data received successfully!'})
     
     user = User.query.filter_by(username=username).first()
-    weekData = user.userdata.get('schedule', {})
-    workoutInput=user.userdata.get('workouts', [])
+    try: 
+        weekData = user.userdata.get('schedule', {})
+    except:
+        weekData={}
+    try:
+        workoutInput=user.userdata.get('workouts', [])
+    except:
+        workoutInput=[]
+        
     return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'), workoutInput=workoutInput)
 
 @app.route('/logout')
