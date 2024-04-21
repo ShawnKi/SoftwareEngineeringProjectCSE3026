@@ -127,7 +127,7 @@ document.getElementById("surveyForm").addEventListener("submit", function(event)
     bodyType: document.querySelector('input[name="bodyType"]:checked') ? document.querySelector('input[name="bodyType"]:checked').value : null,
     dietaryPreferences: Array.from(document.querySelectorAll('input[name="dietaryPreferences"]:checked')).map(el => el.value),
 	exerciseFrequency : document.querySelector('input[name="exerciseFrequency"]:checked').value,
-	equipment : document.querySelector('input[name="equipment"]:checked').value,
+	equipment : Array.from(document.querySelectorAll('input[name="equipment"]:checked')).map(el => el.value),
 height: document.querySelector('input[name="height"]').value,
   weight: document.querySelector('input[name="weight"]').value,
   goalWeight: document.querySelector('input[name="goalweight"]').value,
