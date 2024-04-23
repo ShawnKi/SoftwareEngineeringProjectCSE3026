@@ -1,0 +1,73 @@
+main > .container {
+    padding: 70px 10px 0px 10px;
+}
+/* Store this code in 'style.css' file inside the 'static' folder*/
+
+.header{
+    padding: 5px 120px;
+    width: 150px;
+    height: 70px;
+}
+
+.border{
+    padding: 80px 50px;
+    width: 400px;
+    height: 450px;
+    border: 1px solid;
+    border-radius: 0px;
+}
+
+.btn {
+    padding: 10px 40px;
+    color: #000000;
+    font-weight: bold;
+    font-size: 12pt;
+    border: 1px solid;
+    border-radius: 10px;
+    background-color:#aaaaaa;
+}
+
+.textbox{
+    padding: 10px 40px;
+    text-color: #000000;
+    border-radius: 10px;
+}
+    
+::placeholder {
+    color: #646464;
+    opacity: 1;
+    font-size: 12pt;
+}
+
+.word{
+    color: #000000;
+    font-weight: bold;
+    font-size: 12pt;
+}
+
+.bottom{
+    color: #236B8E;
+    font-weight: bold;
+    font-size: 12pt;
+    margin-bottom: 100px;
+}
+.workout {
+    cursor: grab;
+    width: 200px; /* Fixed width for better control */
+    display: block; /* Ensures the element behaves as a block, enhancing layout control */
+    padding: 10px; /* Adds space inside the workout boxes */
+    margin: 5px; /* Adds space between workout boxes */
+    text-align: center; /* Centers the text and image within the workout box */
+}
+
+.workout img {
+    width: 100px; /* Fixed width for images */
+    height: auto; /* Maintains the aspect ratio of the image */
+    margin-bottom: 5px; /* Adds a small space below the image */
+}
+
+
+.day {
+    width: 13%; /* Adjust based on layout */
+    min-height: 200px; /* Adjust height as necessary */
+}

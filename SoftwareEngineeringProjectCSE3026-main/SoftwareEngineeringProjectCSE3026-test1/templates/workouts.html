@@ -1,0 +1,690 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Exercise Selection</title>
+<style>
+    .main-container {
+        display: flex;
+        flex-wrap: nowrap;
+        margin-top: 50px;
+    }
+
+    .filter-container {
+        flex: 1;
+        padding: 20px;
+        max-width: 250px;
+        /* dimensions for filter */
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 300px));
+        /* Sets the width and number of columns */
+        gap: 10px;
+        justify-content: space-around;
+        /* This can help distribute items evenly */
+        padding: 20px;
+    }
+
+
+    .grid-item {
+
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #dce2ff;
+        /* Sets the background color for the exercise elements */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+    }
+
+    .exercise-image {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    .exercise-title {
+        font-size: 20px;
+        margin: 5px 0;
+    }
+
+    .exercise-description {
+        text-align: center;
+        font-size: 10px;
+        padding: 0 5px;
+    }
+
+    .exercise-tags {
+        margin: 5px 0;
+    }
+
+    .tag {
+        display: inline-block;
+        background-color: #eee;
+        border-radius: 12px;
+        padding: 5px 10px;
+        font-size: 10px;
+        margin: 2px;
+    }
+
+    .btn-details {
+        margin-top: auto;
+        padding: 8px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-details:hover {
+        background-color: #0056b3;
+    }
+
+    .exercise-title {
+        color: #000000;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    /* Popup styles */
+    .popup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid #ddd;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        z-index: 100;
+        padding: 20px;
+        width: 300px;
+    }
+
+    .popup img {
+        width: 100%;
+        height: auto;
+
+    }
+
+    .popup .close-btn {
+        float: right;
+        cursor: pointer;
+        color: rgb(51, 51, 51);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>Exercise Selection</h1>
+<div class="main-container">
+    <div class="filter-container">
+        <h2>Filter</h2>
+        <h3 style="font-weight: lighter;">Equipment</h3>
+        <input type="checkbox" id="none" name="equipment" value="none" checked>
+        <label for="none"> None Needed</label><br>
+        <input type="checkbox" id="pullupbar" name="equipment" value="pullupbar" checked>
+        <label for="pullupbar"> Pull-Up Bar</label><br>
+        <input type="checkbox" id="barbell" name="equipment" value="barbell" checked>
+        <label for="barbell"> Barbell</label><br>
+        <input type="checkbox" id="bench" name="equipment" value="bench" checked>
+        <label for="bench"> Bench</label><br>
+        <input type="checkbox" id="dumbbells" name="equipment" value="dumbbells" checked>
+        <label for="dumbbells"> Dumbbells</label><br>
+        <input type="checkbox" id="machine" name="equipment" value="machine" checked>
+        <label for="machine"> Machine</label><br>
+
+
+        <h3 style="font-weight: lighter;">Muscles</h3>
+        <input type="checkbox" id="chest" name="muscle" value="chest" checked>
+        <label for="chest"> Chest</label><br>
+        <input type="checkbox" id="upperback" name="muscle" value="upperback" checked>
+        <label for="upperback"> Upper Back</label><br>
+        <input type="checkbox" id="lowerback" name="muscle" value="lowerback" checked>
+        <label for="lowerback"> Lower Back</label><br>
+        <input type="checkbox" id="quads" name="muscle" value="quads" checked>
+        <label for="quads"> Quads</label><br>
+        <input type="checkbox" id="glutes" name="muscle" value="glutes" checked>
+        <label for="glutes"> Glutes</label><br>
+        <input type="checkbox" id="hamstrings" name="muscle" value="hamstrings" checked>
+        <label for="hamstrings"> Hamstrings</label><br>
+        <input type="checkbox" id="calves" name="muscle" value="calves" checked>
+        <label for="calves"> Calves</label><br>
+        <input type="checkbox" id="triceps" name="muscle" value="triceps" checked>
+        <label for="triceps"> Triceps</label><br>
+        <input type="checkbox" id="biceps" name="muscle" value="biceps" checked>
+        <label for="biceps"> Biceps</label><br>
+        <input type="checkbox" id="core" name="muscle" value="core" checked>
+        <label for="core"> Core</label><br>
+        <input type="checkbox" id="shoulders" name="muscle" value="shoulders" checked>
+        <label for="shoulders"> Shoulders</label><br>
+
+        <h3 style="font-weight: lighter;">Difficulty</h3>
+        <input type="checkbox" id="beginner" name="difficulty" value="beginner" checked>
+        <label for="beginner"> Beginner</label><br>
+        <input type="checkbox" id="intermediate" name="difficulty" value="intermediate" checked>
+        <label for="intermediate"> Intermediate</label><br>
+        <input type="checkbox" id="advanced" name="difficulty" value="advanced" checked>
+        <label for="advanced"> Advanced</label><br>
+    </div>
+    <div id="popup" class="popup">
+        <span class="close-btn" onclick="closePopup()">X</span>
+        <h2 id="popup-title"></h2>
+        <img id="popup-img" src="" alt="Exercise Image">
+        <p>Some dummy text for the exercise.</p>
+    </div>
+    <div class="grid-container">
+
+        <div class="grid-item" data-equipment="barbell,bench" data-muscle="chest,triceps,shoulders"
+            data-difficulty="intermediate">
+            <h3 class="exercise-title">Bench Press</h3>
+            <img src="{{ url_for('static', filename='images/Bench.png') }}" alt="Exercise 1" class="exercise-image">
+
+            <p class="exercise-description">A compound weightlifting exercise focusing on the chest, shoulders, and
+                triceps by pressing a barbell upward while lying on a bench.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Barbell</span>
+                <span class="tag equipment">Bench</span>
+                <span class="tag muscle-group">Chest</span>
+                <span class="tag muscle-group">Triceps</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="BenchPress" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+
+        <div class="grid-item" data-equipment="pullupbar" data-muscle="upperback,biceps" data-difficulty="beginner">
+            <h3 class="exercise-title">Pull-up</h3>
+            <img src="{{ url_for('static', filename='images/pull.png') }}" alt="Exercise 2" class="exercise-image">
+
+            <p class="exercise-description">An upper-body strength exercise where you lift your body up by pulling
+                yourself towards a bar, primarily working upper back and biceps.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Pull-up Bar</span>
+                <span class="tag muscle-group">Upper Back</span>
+                <span class="tag muscle-group">Triceps</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="PullUp" data-state="add">Add to Workout Plan</button>
+        </div>
+
+
+        <div class="grid-item" data-equipment="none" data-muscle="chest,triceps,shoulders" data-difficulty="beginner">
+            <h3 class="exercise-title">Push-up</h3>
+            <img src="{{ url_for('static', filename='images/push.png') }}" alt="Exercise 3" class="exercise-image">
+
+            <p class="exercise-description">An easy bodyweight exercise that targets the chest, shoulders, and triceps
+                by raising and lowering the body using the arms.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Chest</span>
+                <span class="tag muscle-group">Triceps</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="PushUp" data-state="add">Add to Workout Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="barbell" data-muscle="quads,glutes,hamstrings"
+            data-difficulty="intermediate">
+            <h3 class="exercise-title">Squat</h3>
+            <img src="{{ url_for('static', filename='images/squa.png') }}" alt="Exercise 4" class="exercise-image">
+
+            <p class="exercise-description">A string lower-body exercise that strengthens the legs and glutes by
+                repeatedly squating with a barbell on your shoulders.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Barbell</span>
+                <span class="tag muscle-group">Quads</span>
+                <span class="tag muscle-group">Glutes</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Squat" data-state="add">Add to Workout Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="dumbbells" data-muscle="shoulders,triceps" data-difficulty="beginner">
+            <h3 class="exercise-title">Shoulder Press</h3>
+            <img src="{{ url_for('static', filename='images/shoulder.png') }}" alt="Shoulder Press"
+                class="exercise-image">
+            <p class="exercise-description">An exercise that strengthens the shoulders and triceps by pressing dumbbells
+                overhead from a seated or standing position.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Dumbbells</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag muscle-group">Triceps</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Shoulder Press" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Plank</h3>
+            <img src="{{ url_for('static', filename='images/plank.png') }}" alt="Plank" class="exercise-image">
+            <p class="exercise-description">An exercise that strengthens entire core by maintaining a push-up like
+                position for a set period.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Plank" data-state="add">Add to Workout Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="dumbbells" data-muscle="biceps" data-difficulty="beginner">
+            <h3 class="exercise-title">Bicep Curls</h3>
+            <img src="{{ url_for('static', filename='images/curl.png') }}" alt="Bicep Curls" class="exercise-image">
+            <p class="exercise-description">An exercise that strengthens the biceps by curling dumbbells towards the
+                shoulders in a controlled motion.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Dumbbells</span>
+                <span class="tag muscle-group">Biceps</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Bicep Curls" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="barbell" data-muscle="upperback,hamstrings,glutes"
+            data-difficulty="advanced">
+            <h3 class="exercise-title">Deadlift</h3>
+            <img src="{{ url_for('static', filename='images/deadlift.png') }}" alt="Deadlift" class="exercise-image">
+            <p class="exercise-description">An exercise that targets the back, glutes, and hamstrings by lifting a
+                barbell off the ground to the level of the hips, then lowering it back down.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Barbell</span>
+                <span class="tag muscle-group">Upper Back</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Glutes</span>
+                <span class="tag difficulty">Advanced</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Deadlift" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="bench,dumbbells" data-muscle="chest,triceps"
+            data-difficulty="intermediate">
+            <h3 class="exercise-title">Dumbbell Bench Press</h3>
+            <img src="{{ url_for('static', filename='images/dumbell_bench.png') }}" alt="Dumbbell Bench Press"
+                class="exercise-image">
+            <p class="exercise-description">A bench press with dumbbells to target the chest and triceps, offering a
+                greater range of motion training of stabalizing muscles.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bench</span>
+                <span class="tag equipment">Dumbbells</span>
+                <span class="tag muscle-group">Chest</span>
+                <span class="tag muscle-group">Triceps</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Dumbbell BenchPress" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="dumbbells" data-muscle="shoulders" data-difficulty="intermediate">
+            <h3 class="exercise-title">Lateral Raises</h3>
+            <img src="{{ url_for('static', filename='images/lateral.png') }}" alt="Lateral Raises"
+                class="exercise-image">
+            <p class="exercise-description">Strengthens the shoulders, specifically the lateral deltoids, by lifting
+                dumbbells out to the side.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Dumbbells</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Lateral Raises" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="barbell" data-muscle="lowerback" data-difficulty="intermediate">
+            <h3 class="exercise-title">Barbell Row</h3>
+            <img src="{{ url_for('static', filename='images/rows.png') }}" alt="Barbell Row" class="exercise-image">
+            <p class="exercise-description">A compound exercise that targets the entire back and the biceps by
+                repeatedly pulling a barbell towards the torso.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Barbell</span>
+                <span class="tag muscle-group">Lower Back</span>
+                <span class="tag muscle-group">Upper Back</span>
+                <span class="tag muscle-group">Biceps</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Barbell Row" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="machine" data-muscle="chest,shoulders" data-difficulty="intermediate">
+            <h3 class="exercise-title">Pectoral Fly</h3>
+            <img src="{{ url_for('static', filename='images/fly.png') }}" alt="Pectoral-Fly" class="exercise-image">
+            <p class="exercise-description">Strengthens the chest and shoulders by moving the arms in a semi-circular
+                motion, lifting weight attached to a machine.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Machine</span>
+                <span class="tag muscle-group">Chest</span>
+                <span class="tag muscle-group">Triceps</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Pectoral Fly" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Sit Ups</h3>
+            <img src="{{ url_for('static', filename='images/situp.png') }}" alt="Situps" class="exercise-image">
+            <p class="exercise-description">An exercise that strengthens the core by lying down and sitting up
+                repeatedly. Can also be done with a declined bench.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="SitUps" data-state="add">Add to Workout Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="barbell" data-muscle="hamstrings,core,quads" data-difficulty="advanced">
+            <h3 class="exercise-title">Barbell Lunges</h3>
+            <img src="{{ url_for('static', filename='images/barbell_lunge.png') }}" alt="Exercise 1"
+                class="exercise-image">
+
+            <p class="exercise-description">A compound weightlifting exercise focusing on the lower body by lunging
+                forwards with a barbell mounted on the shoulders.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Barbell</span>
+                <span class="tag muscle-group">Quads</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag difficulty">Advanced</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Barbell Lunges" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Side Plank</h3>
+            <img src="{{ url_for('static', filename='images/side_plank.png') }}" alt="Exercise 1"
+                class="exercise-image">
+
+            <p class="exercise-description">An exercise that improves core strength and stability by lying sideways and
+                lifting the lowerbody off the ground.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Side Plank" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Mountain Climbers</h3>
+            <img src="{{ url_for('static', filename='images/mountain_climbers.png') }}" alt="mountain climbers"
+                class="exercise-image">
+            <p class="exercise-description">An exercise that improves core strength by bringing the knees to to chest
+                while in a high plank position.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Shoulders</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Mountain Climbers" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="calves" data-difficulty="beginner">
+            <h3 class="exercise-title">Calf Raises</h3>
+            <img src="{{ url_for('static', filename='images/calves.png') }}" alt="calves" class="exercise-image">
+            <p class="exercise-description">An exercise that targets the calves by raising the heels off the floor. Can
+                also be done with dumbells.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Calves</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Calf-raises" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="glutes,quads" data-difficulty="beginner">
+            <h3 class="exercise-title">Lunges</h3>
+            <img src="{{ url_for('static', filename='images/lunge.png') }}" alt="lunge" class="exercise-image">
+            <p class="exercise-description">An exercise that targets the calves by raising the heels off the floor. Can
+                also be done with dumbells.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Calves</span>
+                <span class="tag muscle-group">Glutes</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Quads</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Lunges" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="glutes,quads" data-difficulty="intermediate">
+            <h3 class="exercise-title">Romainian Deadlifts</h3>
+            <img src="{{ url_for('static', filename='images/romainian.png') }}" alt="rdl" class="exercise-image">
+            <p class="exercise-description">An exercise that targets the glutes and hamstrings by hinging forward at the
+                hips. Can be done with a barbell or dumbells.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag equipment">Dumbbells</span>
+                <span class="tag muscle-group">Glutes</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Quads</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="romanian deadlift" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+
+        <div class="grid-item" data-equipment="none" data-muscle="core,lowerback" data-difficulty="beginner">
+            <h3 class="exercise-title">Bird Dog</h3>
+            <img src="{{ url_for('static', filename='images/bird-dog.png') }}" alt="bird-dog" class="exercise-image">
+            <p class="exercise-description">A stability exercise that targets the core and lowerback by lifting opposite
+                arm and leg.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Lower Back</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Bird Dog" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="quads,glutes" data-difficulty="beginner">
+            <h3 class="exercise-title">Leg raises</h3>
+            <img src="{{ url_for('static', filename='images/leg_raise.png') }}" alt="leg raise" class="exercise-image">
+
+            <p class="exercise-description">A lower-body exercise that targets the legs and glutes by
+                lifting the leg while lying sideways</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Quads</span>
+                <span class="tag muscle-group">Glutes</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="Leg raises" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="core" data-difficulty="beginner">
+            <h3 class="exercise-title">Bicycle crunch</h3>
+            <img src="{{ url_for('static', filename='images/bicycle.png') }}" alt="bird-dog" class="exercise-image">
+            <p class="exercise-description">An exercise that targets the core and lowerback by lifting the
+                knee to the opposite elbow.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Core</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="bicycle-crunch" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="machine" data-muscle="upperback,biceps" data-difficulty="intermediate">
+            <h3 class="exercise-title">Lat pulldowns</h3>
+            <img src="{{ url_for('static', filename='images/pulldown.png') }}" alt="pulldowns" class="exercise-image">
+            <p class="exercise-description">An upper body exercise that activates and strengthens the upper back and
+                shoulder by pulling a bar towards the chest.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Machine</span>
+                <span class="tag muscle-group">Shoulder</span>
+                <span class="tag muscle-group">upperback</span>
+                <span class="tag difficulty">Intermediate</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="lat pulldowns" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+        <div class="grid-item" data-equipment="none" data-muscle="hamstrings,glutes" data-difficulty="beginner">
+            <h3 class="exercise-title">Glute Bridge</h3>
+            <img src="{{ url_for('static', filename='images/glute_bridge.png') }}" alt="bridge" class="exercise-image">
+
+            <p class="exercise-description">A lower-body exercise that targets the glutes and hamstrings by
+                lifting the hips up while lying face up.</p>
+            <div class="exercise-tags">
+                <span class="tag equipment">Bodyweight</span>
+                <span class="tag muscle-group">Hamstrings</span>
+                <span class="tag muscle-group">Glutes</span>
+                <span class="tag difficulty">Beginner</span>
+            </div>
+            <button class="btn-details add-to-plan" data-exercise="glute bridge" data-state="add">Add to Workout
+                Plan</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filters = document.querySelectorAll('.filter-container input[type=checkbox]');
+        const exercises = document.querySelectorAll('.grid-item');
+
+        function filterExercises() {
+            exercises.forEach(exercise => {
+                let isVisible = true;
+
+                // Handling multiple equipment requirements
+                const exerciseEquipment = exercise.getAttribute('data-equipment').split(',');
+                const selectedEquipmentFilters = Array.from(document.querySelectorAll(`input[name="equipment"]:checked`)).map(el => el.value);
+                isVisible &= exerciseEquipment.every(eq => selectedEquipmentFilters.includes(eq));
+
+                // Handling multiple muscles (visible if any selected muscle matches)
+                const exerciseMuscles = exercise.getAttribute('data-muscle').split(',');
+                const selectedMuscleFilters = Array.from(document.querySelectorAll(`input[name="muscle"]:checked`)).map(el => el.value);
+                isVisible &= exerciseMuscles.some(muscle => selectedMuscleFilters.includes(muscle));
+
+                // Difficulty remains unchanged
+                const exerciseDifficulty = exercise.getAttribute('data-difficulty');
+                const selectedDifficultyFilters = Array.from(document.querySelectorAll(`input[name="difficulty"]:checked`)).map(el => el.value);
+                isVisible &= selectedDifficultyFilters.includes(exerciseDifficulty);
+
+                exercise.style.display = isVisible ? '' : 'none';
+            });
+        }
+
+        filters.forEach(filter => filter.addEventListener('change', filterExercises));
+
+        filterExercises(); // Apply filters on page load
+    });
+
+</script>
+<script type="text/javascript">
+    // Embed the username in a JavaScript variable
+    var currentUsername = "{{ username }}";
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.add-to-plan').forEach(button => {
+            button.addEventListener('click', function () {
+                const exerciseName = this.getAttribute('data-exercise');
+                const currentState = this.getAttribute('data-state');
+                const nextState = currentState === 'add' ? 'remove' : 'add'; // Determine the next state
+                const url = `/workouts/${currentUsername}`; // Using the dynamic username
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: exerciseName, action: currentState }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+
+                        if (nextState === 'remove') {
+                            this.setAttribute('data-state', 'remove');
+                            this.textContent = 'Remove from Workout Plan';
+                            this.style.backgroundColor = 'grey';
+                            this.style.color = 'white';
+                        } else {
+                            this.setAttribute('data-state', 'add');
+                            this.textContent = 'Add to Workout Plan';
+                            this.style.backgroundColor = '#007bff';
+                            this.style.color = 'white';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.exercise-title').forEach(title => {
+            title.addEventListener('click', function () {
+                // Find the sibling image of the clicked title
+                const imgSrc = this.nextElementSibling.src;
+                const exerciseName = this.textContent;
+
+                // Set the content of the popup
+                document.getElementById('popup-title').textContent = exerciseName;
+                document.getElementById('popup-img').src = imgSrc;
+
+                // Show the popup
+                document.getElementById('popup').style.display = 'block';
+            });
+        });
+    });
+
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Assuming "workouts" is passed as a JSON array
+        var workouts = {{ workouts| tojson | safe
+    }};
+
+    // Convert workouts to a Set for faster lookups
+    var workoutsSet = new Set(workouts);
+
+    document.querySelectorAll('.add-to-plan').forEach(function (button) {
+        var exerciseName = button.getAttribute('data-exercise');
+        if (workoutsSet.has(exerciseName)) {
+            // Update button to show it's already added
+            button.setAttribute('data-state', 'remove');
+            button.textContent = 'Remove from Workout Plan';
+            button.style.backgroundColor = 'grey';
+            button.style.color = 'white';
+            button.classList.remove('btn-primary'); // Assuming this is your initial class for add
+            button.classList.add('btn-secondary'); // Assuming you want this class for remove
+        }
+    });
+});
+</script>
+
+{% endblock %}

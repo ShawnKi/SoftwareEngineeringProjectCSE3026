@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    /* Custom styling for fade-in effect */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 1s ease-out;
+    }
+
+    .homepage-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-top: 50px;
+    }
+
+    .homepage-text {
+        max-width: 50%;
+        font-size: 22px;
+    }
+
+    .logo {
+        width: 500px;
+        animation: fadeIn 2s ease-out;
+        /* Slightly different timing for variety */
+    }
+
+    .homepage-bullets {
+        margin-top: 30px;
+        list-style: none;
+        /* Removes default bullet styling */
+        padding-left: 0;
+        /* Removes default padding */
+    }
+
+    .homepage-bullets li {
+        font-weight: bold;
+        /* Makes list text bold */
+        margin-bottom: 20px;
+        /* Adds space between bullet points */
+    }
+
+    .homepage-bullets li::before {
+        content: "•";
+        /* Adds a bullet point before each list item */
+        color: black;
+        /* Bullet point color */
+        font-weight: bold;
+        /* Ensures the bullet point is bold */
+        display: inline-block;
+        width: 1em;
+        /* Ensures spacing between bullet and text */
+        margin-left: -1em;
+        /* Aligns bullet with the start of the text line */
+    }
+
+    .home {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        margin-top: 70px;
+    }
+
+    .full {
+        width: 100%;
+        height: auto;
+    }
+
+    .overlay-text {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        white-space: nowrap;
+        font-size: 65px;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .overlay2 {
+        position: absolute;
+        font-weight: lighter;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        white-space: nowrap;
+        font-size: 30px;
+        overflow: hidden;
+        animation: fadeIn 1s ease-out;
+    }
+
+    .overlay-buttons {
+        position: absolute;
+        top: 60%;
+        left: 30%;
+    }
+
+    .overlay-button2 {
+        position: absolute;
+        top: 60%;
+        right: 30%;
+
+    }
+
+    .btn {
+        padding: 0.5rem;
+        background-color: rgba(255, 255, 255, 0);
+        border: 4px solid #ffffff;
+        color: white;
+        font-size: 30px;
+        border-radius: 0;
+        margin-right: 10px;
+        margin-left: 10px;
+        overflow: hidden;
+    }
+
+    a {
+        text-decoration: none;
+        color: white;
+    }
+
+    a:hover {
+        color: rgb(118, 150, 255);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="home"><img src="{{ url_for('static', filename='images/home2.png') }}" alt="home" class="full">
+    <div class="overlay-text">Your personalized path to a stronger you.</div>
+    <div class="overlay2">Personalize your fitness tracking experience with CHASMFitness.</div>
+    <div class="overlay-buttons"><button class="btn" type="button"><a href="{{ url_for('signup') }}">Get
+                Started</a></button></div>
+    <div class="overlay-button2"><button class="btn" type="button"><a href=#>Browse
+                Workouts</a></button></div>
+</div>
+
+<div class="container homepage-container">
+    <div>
+        <h1 class="fade-in">Welcome to CHASM Fitness</h1>
+        <img src="{{ url_for('static', filename='images/logonew.png') }}" alt="Logo" class="logo fade-in">
+    </div>
+    <div class="homepage-text fade-in">
+        <p class="lead">Welcome to CHASM Fitness! Here we offer you a dynamic workout experience, where you can pick
+            from a wide variety of exercises tailored for your needs. Just take a short quiz after you sign up and you
+            can get started picking workouts, customizing your weight training, and building a schedule to track your
+            progress!</p>
+        <ul class="homepage-bullets">
+            <li>Customize your workout experience</li>
+            <li>Build a personal training schedule</li>
+            <li>Take our fitness quiz to get the best results!</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
