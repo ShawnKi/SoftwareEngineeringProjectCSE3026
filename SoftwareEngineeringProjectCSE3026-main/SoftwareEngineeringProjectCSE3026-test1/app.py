@@ -12,20 +12,16 @@ import os
 from datetime import date
 import calendar
 
-
-# from google.cloud.sql.connector import Connector
-
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(24)  # change this for new testing instances
 
-db_user = 'dbuser'
-db_pass = 'dbuser'
-db_name = 'users'
-cloud_sql_connection_name = 'awesome-flash-416102:us-central1:fitness-app-db'
+db_user = os.environ.get("DB_USER")
+db_pass = os.environ.get("DB_PASS")
+db_name = os.environ.get("DB_NAME")
+cloud_sql_connection_name = os.environ.get("DB_CONN_NAME")
 
 host = '/cloudsql/{}'.format(cloud_sql_connection_name)
-db_public_ip = '34.29.30.210'
+db_public_ip = os.environ.get("DB_IP")
 db_port = 3306
 app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}:{db_port}/{db_name}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -37,7 +33,7 @@ login_manager.init_app(app)
 
 # Defines model
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = db_name
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
@@ -343,4 +339,4 @@ def logout():
 #     return 'Thank you for completing the survey'
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="127.0.0.1", port=8080, debug=True)
