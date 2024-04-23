@@ -144,8 +144,10 @@
                 href="{{ url_for('signup') }}">{% else %}<a
                     href="{{ url_for('schedule', username=current_user.username) }}">{% endif %} Get
                     Started</a></button></div>
-    <div class="overlay-button2"><button class="btn" type="button"><a href=#>Browse
-                Workouts</a></button></div>
+    <div class="overlay-button2"><button class="btn" type="button">{% if current_user.is_anonymous %}<a
+                href="{{ url_for('workout_lean') }}">{% else %}<a
+                    href="{{url_for('workouts', username=current_user.username)}}">{% endif %}Browse
+                    Workouts</a></button></div>
 </div>
 
 <div class="container homepage-container">

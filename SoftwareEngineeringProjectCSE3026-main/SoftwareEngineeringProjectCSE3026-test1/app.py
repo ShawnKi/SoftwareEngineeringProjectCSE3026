@@ -105,11 +105,11 @@ def calculate_workout_recomendations(username):
 @app.route('/')
 def index():
     return render_template('index.html')
-    
+
 @app.route('/workout_lean')
 def workout_lean():
     return render_template('workout_lean.html')
-    
+
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -264,6 +264,7 @@ def schedule(username):
         print("made it here")
         print(data) 
         data = update_workout_plan(data) 
+        print(data)
 
         answers = session.get('answers', {})
         answers.update({'schedule': data})
