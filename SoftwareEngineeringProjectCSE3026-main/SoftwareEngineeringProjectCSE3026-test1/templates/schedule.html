@@ -87,23 +87,23 @@
 
 
     .workout.ChestTricep {
-        background-color: rgba(112, 114, 215, 0.5);
+        background-color: rgba(112, 153, 215, 0.5);
     }
 
     .workout.BackBicep {
-        background-color: rgba(39, 21, 199, 0.5);
+        background-color: rgba(21, 69, 199, 0.5);
     }
 
     .workout.Legs {
-        background-color: rgba(30, 0, 139, 0.5);
+        background-color: rgba(0, 139, 139, 0.5);
     }
 
     .workout.Core {
-        background-color: rgba(119, 112, 219, 0.5);
+        background-color: rgba(112, 162, 219, 0.5);
     }
 
     .workout.Shoulders {
-        background-color: rgba(43, 20, 255, 0.5);
+        background-color: rgba(20, 75, 255, 0.5);
     }
 
 
@@ -342,199 +342,199 @@
         function populateWorkouts() {
             // Data array for creating exercises
             const workoutArray = [
-    {
-        "id": "BenchPress",
-        "type": "ChestTricep",
-        "title": "BenchPress",
-        "reps": "10",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/Bench.png') }}"
-    },
-    {
-        "id": "PullUp",
-        "type": "BackBicep",
-        "title": "PullUp",
-        "reps": "8",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/pull.png') }}"
-    },
-    {
-        "id": "PushUp",
-        "type": "ChestTricep",
-        "title": "PushUp",
-        "reps": "15",
-        "sets": "4",
-        "image": "{{ url_for('static', filename='images/push.png') }}"
-    },
-    {
-        "id": "Squat",
-        "type": "Legs",
-        "title": "Squat",
-        "reps": "12",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/squa.png') }}"
-    },
-    {
-        "id": "Shoulder Press",
-        "type": "Shoulders",
-        "title": "Shoulder Press",
-        "reps": "10",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/shoulder.png') }}"
-    },
-    {
-        "id": "Plank",
-        "type": "Core",
-        "title": "Plank",
-        "reps": "1",  // Time in minutes
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/plank.png') }}"
-    },
-    {
-        "id": "Bicep Curls",
-        "type": "BackBicep",
-        "title": "Bicep Curls",
-        "reps": "12",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/curl.png') }}"
-    },
-    {
-        "id": "Deadlift",
-        "type": "BackBicep",
-        "title": "Deadlift",
-        "reps": "10",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/deadlift.png') }}"
-    },
-    {
-        "id": "Dumbbell BenchPress",
-        "type": "ChestTricep",
-        "title": "Dumbbell BenchPress",
-        "reps": "10",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/dumbell_bench.png') }}"
-    },
-    {
-        "id": "Lateral Raises",
-        "type": "Shoulders",
-        "title": "Lateral Raises",
-        "reps": "12",
-        "sets": "4",
-        "image": "{{ url_for('static', filename='images/lateral.png') }}"
-    },
-    {
-        "id": "Barbell Row",
-        "type": "BackBicep",
-        "title": "Barbell Row",
-        "reps": "12",
-        "sets": "4",
-        "image": "{{ url_for('static', filename='images/rows.png') }}"
-    },
-    {
-        "id": "Pectoral Fly",
-        "type": "ChestTricep",
-        "title": "Pectoral Fly",
-        "reps": "12",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/fly.png') }}"
-    },
-    {
-        "id": "SitUps",
-        "type": "Core",
-        "title": "SitUps",
-        "reps": "20",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/situp.png') }}"
-    },
-    {
-        "id": "Barbell Lunges",
-        "type": "Legs",
-        "title": "Barbell Lunges",
-        "reps": "12",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/barbell_lunge.png') }}"
-    },
-    {
-        "id": "Side Plank",
-        "type": "Core",
-        "title": "Side Plank",
-        "reps": "1",  // Time in minutes per side
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/side_plank.png') }}"
-    },
-    {
-        "id": "Mountain Climbers",
-        "type": "Core",
-        "title": "Mountain Climbers",
-        "reps": "1",  // Time in minutes
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/mountain_climbers.png') }}"
-    },
-    {
-        "id": "Calf-raises",
-        "type": "Legs",
-        "title": "Calf-raises",
-        "reps": "15",
-        "sets": "4",
-        "image": "{{ url_for('static', filename='images/calves.png') }}"
-    },
-    {
-        "id": "Lunges",
-        "type": "Legs",
-        "title": "Lunges",
-        "reps": "15",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/lunge.png') }}"
-    },
-    {
-        "id": "romanian deadlift",
-        "type": "Legs",
-        "title": "romanian deadlift",
-        "reps": "12",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/romainian.png') }}"
-    },
-    {
-        "id": "Bird Dog",
-        "type": "Core",
-        "title": "Bird Dog",
-        "reps": "15",  // Per side
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/bird-dog.png') }}"
-    },
-    {
-        "id": "Leg raises",
-        "type": "Legs",
-        "title": "Leg raises",
-        "reps": "15",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/leg_raise.png') }}"
-    },
-    {
-        "id": "bicycle-crunch",
-        "type": "Core",
-        "title": "bicycle-crunch",
-        "reps": "20",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/bicycle.png') }}"
-    },
-    {
-        "id": "lat pulldowns",
-        "type": "BackBicep",
-        "title": "lat pulldowns",
-        "reps": "12",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/pulldown.png') }}"
-    },
-    {
-        "id": "glute bridge",
-        "type": "Legs",
-        "title": "glute bridge",
-        "reps": "15",
-        "sets": "3",
-        "image": "{{ url_for('static', filename='images/glute_bridge.png') }}"
-    }
-];
+                {
+                    "id": "BenchPress",
+                    "type": "ChestTricep",
+                    "title": "BenchPress",
+                    "reps": "10",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/Bench.png') }}"
+                },
+                {
+                    "id": "PullUp",
+                    "type": "BackBicep",
+                    "title": "PullUp",
+                    "reps": "8",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/pull.png') }}"
+                },
+                {
+                    "id": "PushUp",
+                    "type": "ChestTricep",
+                    "title": "PushUp",
+                    "reps": "15",
+                    "sets": "4",
+                    "image": "{{ url_for('static', filename='images/push.png') }}"
+                },
+                {
+                    "id": "Squat",
+                    "type": "Legs",
+                    "title": "Squat",
+                    "reps": "12",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/squa.png') }}"
+                },
+                {
+                    "id": "Shoulder Press",
+                    "type": "Shoulders",
+                    "title": "Shoulder Press",
+                    "reps": "10",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/shoulder.png') }}"
+                },
+                {
+                    "id": "Plank",
+                    "type": "Core",
+                    "title": "Plank",
+                    "reps": "1",  // Time in minutes
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/plank.png') }}"
+                },
+                {
+                    "id": "Bicep Curls",
+                    "type": "BackBicep",
+                    "title": "Bicep Curls",
+                    "reps": "12",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/curl.png') }}"
+                },
+                {
+                    "id": "Deadlift",
+                    "type": "BackBicep",
+                    "title": "Deadlift",
+                    "reps": "10",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/deadlift.png') }}"
+                },
+                {
+                    "id": "Dumbbell BenchPress",
+                    "type": "ChestTricep",
+                    "title": "Dumbbell BenchPress",
+                    "reps": "10",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/dumbell_bench.png') }}"
+                },
+                {
+                    "id": "Lateral Raises",
+                    "type": "Shoulders",
+                    "title": "Lateral Raises",
+                    "reps": "12",
+                    "sets": "4",
+                    "image": "{{ url_for('static', filename='images/lateral.png') }}"
+                },
+                {
+                    "id": "Barbell Row",
+                    "type": "BackBicep",
+                    "title": "Barbell Row",
+                    "reps": "12",
+                    "sets": "4",
+                    "image": "{{ url_for('static', filename='images/rows.png') }}"
+                },
+                {
+                    "id": "Pectoral Fly",
+                    "type": "ChestTricep",
+                    "title": "Pectoral Fly",
+                    "reps": "12",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/fly.png') }}"
+                },
+                {
+                    "id": "SitUps",
+                    "type": "Core",
+                    "title": "SitUps",
+                    "reps": "20",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/situp.png') }}"
+                },
+                {
+                    "id": "Barbell Lunges",
+                    "type": "Legs",
+                    "title": "Barbell Lunges",
+                    "reps": "12",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/barbell_lunge.png') }}"
+                },
+                {
+                    "id": "Side Plank",
+                    "type": "Core",
+                    "title": "Side Plank",
+                    "reps": "1",  // Time in minutes per side
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/side_plank.png') }}"
+                },
+                {
+                    "id": "Mountain Climbers",
+                    "type": "Core",
+                    "title": "Mountain Climbers",
+                    "reps": "1",  // Time in minutes
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/mountain_climbers.png') }}"
+                },
+                {
+                    "id": "Calf-raises",
+                    "type": "Legs",
+                    "title": "Calf-raises",
+                    "reps": "15",
+                    "sets": "4",
+                    "image": "{{ url_for('static', filename='images/calves.png') }}"
+                },
+                {
+                    "id": "Lunges",
+                    "type": "Legs",
+                    "title": "Lunges",
+                    "reps": "15",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/lunge.png') }}"
+                },
+                {
+                    "id": "romanian deadlift",
+                    "type": "Legs",
+                    "title": "romanian deadlift",
+                    "reps": "12",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/romainian.png') }}"
+                },
+                {
+                    "id": "Bird Dog",
+                    "type": "Core",
+                    "title": "Bird Dog",
+                    "reps": "15",  // Per side
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/bird-dog.png') }}"
+                },
+                {
+                    "id": "Leg raises",
+                    "type": "Legs",
+                    "title": "Leg raises",
+                    "reps": "15",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/leg_raise.png') }}"
+                },
+                {
+                    "id": "bicycle-crunch",
+                    "type": "Core",
+                    "title": "bicycle-crunch",
+                    "reps": "20",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/bicycle.png') }}"
+                },
+                {
+                    "id": "lat pulldowns",
+                    "type": "BackBicep",
+                    "title": "lat pulldowns",
+                    "reps": "12",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/pulldown.png') }}"
+                },
+                {
+                    "id": "glute bridge",
+                    "type": "Legs",
+                    "title": "glute bridge",
+                    "reps": "15",
+                    "sets": "3",
+                    "image": "{{ url_for('static', filename='images/glute_bridge.png') }}"
+                }
+            ];
             var filteredWorkoutArray = workoutArray.filter(workout => workoutInput.includes(workout.title));
 
 
