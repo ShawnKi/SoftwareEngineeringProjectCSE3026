@@ -7,7 +7,10 @@ import bcrypt
 import pymysql
 import sqlalchemy
 from flask_migrate import Migrate
+from function import *
 import os
+from datetime import date
+import calendar
 
 
 # from google.cloud.sql.connector import Connector
@@ -117,7 +120,7 @@ def quiz():
         answers.update({'quiz_results': data})
         user = User.query.get(session.get('_user_id'))
         user.userdata=answers
-        #print(data)
+        print(data)
         flag_modified(user, 'userdata')
         session['answers'] = answers
         #print(user.userdata)
@@ -243,6 +246,8 @@ def workouts(username):
         return jsonify({"status": "success", "message": f"Successfully {action}ed {exercise_name} for {username}."})
     user = User.query.filter_by(username=username).first()
     workouts = user.userdata.get('workouts', [])
+    
+
 
     return render_template('workouts.html', username=username, workouts=workouts)
 
@@ -254,6 +259,8 @@ def schedule(username):
         data = request.json
         print("made it here")
         print(data) 
+        data = update_workout_plan(data) 
+
         answers = session.get('answers', {})
         answers.update({'schedule': data})
         user = User.query.get(session.get('_user_id'))
@@ -273,6 +280,55 @@ def schedule(username):
     workoutInput=user.userdata.get('workouts', [])
     return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'), workoutInput=workoutInput)
 
+@app.route('/planning/<username>',methods=['GET'])
+@login_required
+def planning(username):
+    user = User.query.get(session.get('_user_id'))
+    user = User.query.filter_by(username=username).first()
+    quiz_res = user.userdata.get('quiz_results', {}) 
+    print(quiz_res)
+    print(quiz_res['bodyType'])
+    bodyt = quiz_res['bodyType']
+    print(bodyt)
+    goals = quiz_res['goal']  
+    print(goals)
+    # workouts = user.userdata.get('workouts', [])
+    exercises =[]
+    
+    weekData = user.userdata.get('schedule', {})
+    my_date = date.today()
+    today = calendar.day_name[my_date.weekday()]  #Tod5ay's date
+    today_workout = weekData[today.lower()]
+    print(today_workout)
+    rep,sets,rest = sets_rep_calculation(bodyt,goals)  
+    s = rep
+    r = rest
+     
+    for x in today_workout:        
+        if x['name'] == 'Plank':
+            rep = x['reps']
+            rest = '30 seconds'            
+        info = {"name":x['name'], "sets": sets, "reps": rep, "rest": rest} 
+        exercises.append(info)
+        rep = s 
+        rest = r 
+    # If no workouts, provide default exercises
+    if not any(weekData):
+        if user.userdata.get('equipment') == 'No equipment':
+            for x in no_equip:
+                info = {"name":x, "sets": 3, "reps": '8-12', "rest": "1 minutes"}
+                exercises.append(info)
+        elif user.userdata.get('equipment') == 'Dumbbells':
+            for x in dumbell:
+                info = {"name":x, "sets": 3, "reps": '8-12', "rest": "1 minutes"}
+                exercises.append(info)
+        elif user.userdata.get('equipment') == 'Barbell' or 'Kettlebell':
+            for x in gym:
+                info = {"name":x, "sets": 3, "reps": '8-12', "rest": "1 minutes"}
+                exercises.append(info)
+                
+    return render_template('planning.html', exercises=exercises)
+
 @app.route('/logout')
 def logout():
     logout_user()
@@ -282,9 +338,9 @@ def logout():
     response.headers["Expires"] = "0"
     return response
 
-@app.route('/thankyou')
-def thankyou():
-    return 'Thank you for completing the survey'
+# @app.route('/thankyou')
+# def thankyou():
+#     return 'Thank you for completing the survey'
 
 if __name__ == "__main__":
     app.run(debug=True)
