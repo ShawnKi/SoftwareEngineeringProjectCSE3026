@@ -15,11 +15,14 @@ In order to test our website, we would test new features by testing a range of p
 We also used GPT4 to analyze certain functions in both app.py and the HTML files to provide testing input to ensure that we can handle all types of user input.
 
 Development lifecycle:
-We followed a loose verison of the AGILE software development lifecycle, with planning the features we wanted to implement in a given week, how we would design and connect them. We would then implement these features and upload the individual changes to seperate github branches. After testing and review, we would merge these changes, and then deploy these changes. When planning new features, we would also examine old features that needed to be updated. This lifecycle allowed us to make incremental changes while constantly ensuring an intuative and accessable UI.
+We followed a loose verison of the AGILE software development lifecycle, with planning the features we wanted to implement in a given week, how we would design and connect them. We would then implement these features and upload the individual changes to seperate github branches. After testing and review, we would merge these changes, and then deploy these changes. When planning new features, we would also examine old features that needed to be updated. This lifecycle allowed us to make incremental changes while constantly ensuring an intuative and accessable UI. 
 
 Deployment:
 We use AWS to host the website and Google features to have our domain hosted with chasmfit.com. We dockerized our core files to ensure easy updates and testing. 
 
 Known issues:
 - Chasmfit.com will sometimes go down and not be accessble by certain IPs. After extensive testing we concluded this was a quirk with Google's domain mapping feature, and we could not fix it on our end.
-- The sets and reps for the planner will sometimes not line up with those in the schedule. This is due to loading in only certain parts from the userdata. We concluded that this issue only has a minimal impact on the user experiance and thus we focused our efforts on more critical bugs. 
+- The sets and reps for the planner will sometimes not line up with those in the schedule. This is due to loading in only certain parts from the userdata. We concluded that this issue only has a minimal impact on the user experiance and thus we focused our efforts on more critical bugs.
+
+Misc:
+**Use the version in the local_host_version to run the program on the localhost**
