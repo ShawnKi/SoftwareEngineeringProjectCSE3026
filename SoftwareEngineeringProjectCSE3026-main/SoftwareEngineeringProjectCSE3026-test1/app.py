@@ -14,18 +14,18 @@ import os
 from datetime import date
 import calendar
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.urandom(24)  # change this for new testing instances
+app.config["SECRET_KEY"] = '12345'  # change this for new testing instances
+# app.config["SECRET_KEY"] = "os.urandom(24)"  # change this for new testing instances
 
-# get db info from injected environment variables
-db_user = os.environ.get("DB_USER") 
-db_pass = os.environ.get("DB_PASS")
-db_name = os.environ.get("DB_NAME")
-cloud_sql_connection_name = os.environ.get("DB_CONN_NAME")
+db_user = 'dbuser'
+db_pass = 'dbuser'
+db_name = 'users'
+cloud_sql_connection_name = 'awesome-flash-416102:us-central1:fitness-app-db'
 
 host = '/cloudsql/{}'.format(cloud_sql_connection_name)
-db_public_ip = os.environ.get("DB_IP")
+db_public_ip = '34.29.30.210'
 db_port = 3306
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}:{db_port}/{db_name}" #db connection string
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}:{db_port}/{db_name}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -33,9 +33,9 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Defines model
+# Defines model for users.
 class User(db.Model, UserMixin):
-    __tablename__ = db_name
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
