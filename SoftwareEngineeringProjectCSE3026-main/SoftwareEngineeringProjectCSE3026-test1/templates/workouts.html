@@ -4,6 +4,7 @@
 <title>Exercise Selection</title>
 <style>
     .main-container {
+        
         display: flex;
         flex-wrap: nowrap;
         margin-top: 50px;
@@ -13,16 +14,13 @@
         flex: 1;
         padding: 20px;
         max-width: 250px;
-        /* dimensions for filter */
     }
 
     .grid-container {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 300px));
-        /* Sets the width and number of columns */
         gap: 10px;
         justify-content: space-around;
-        /* This can help distribute items evenly */
         padding: 20px;
     }
 
@@ -33,7 +31,6 @@
         padding: 10px;
         border-radius: 8px;
         background-color: #dce2ff;
-        /* Sets the background color for the exercise elements */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
@@ -177,7 +174,7 @@
         <span class="close-btn" onclick="closePopup()">X</span>
         <h2 id="popup-title"></h2>
         <img id="popup-img" src="" alt="Exercise Image">
-        <p>Some dummy text for the exercise.</p>
+        <p>Image modified from Canva</p>
     </div>
     <div class="grid-container">
 
@@ -558,7 +555,7 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () { //Sets up the filters initially
         const filters = document.querySelectorAll('.filter-container input[type=checkbox]');
         const exercises = document.querySelectorAll('.grid-item');
 
@@ -566,17 +563,17 @@
             exercises.forEach(exercise => {
                 let isVisible = true;
 
-                // Handling multiple equipment requirements
+                
                 const exerciseEquipment = exercise.getAttribute('data-equipment').split(',');
                 const selectedEquipmentFilters = Array.from(document.querySelectorAll(`input[name="equipment"]:checked`)).map(el => el.value);
                 isVisible &= exerciseEquipment.every(eq => selectedEquipmentFilters.includes(eq));
 
-                // Handling multiple muscles (visible if any selected muscle matches)
+                
                 const exerciseMuscles = exercise.getAttribute('data-muscle').split(',');
                 const selectedMuscleFilters = Array.from(document.querySelectorAll(`input[name="muscle"]:checked`)).map(el => el.value);
                 isVisible &= exerciseMuscles.some(muscle => selectedMuscleFilters.includes(muscle));
 
-                // Difficulty remains unchanged
+                
                 const exerciseDifficulty = exercise.getAttribute('data-difficulty');
                 const selectedDifficultyFilters = Array.from(document.querySelectorAll(`input[name="difficulty"]:checked`)).map(el => el.value);
                 isVisible &= selectedDifficultyFilters.includes(exerciseDifficulty);
@@ -587,12 +584,11 @@
 
         filters.forEach(filter => filter.addEventListener('change', filterExercises));
 
-        filterExercises(); // Apply filters on page load
+        filterExercises(); //Applies filters
     });
 
 </script>
 <script type="text/javascript">
-    // Embed the username in a JavaScript variable
     var currentUsername = "{{ username }}";
 </script>
 
@@ -602,8 +598,8 @@
             button.addEventListener('click', function () {
                 const exerciseName = this.getAttribute('data-exercise');
                 const currentState = this.getAttribute('data-state');
-                const nextState = currentState === 'add' ? 'remove' : 'add'; // Determine the next state
-                const url = `/workouts/${currentUsername}`; // Using the dynamic username
+                const nextState = currentState === 'add' ? 'remove' : 'add'; 
+                const url = `/workouts/${currentUsername}`; 
 
                 fetch(url, {
                     method: 'POST',
@@ -641,18 +637,18 @@
     });
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () { 
         document.querySelectorAll('.exercise-title').forEach(title => {
             title.addEventListener('click', function () {
-                // Find the sibling image of the clicked title
+                //Sets the ability for the title to be clicked
                 const imgSrc = this.nextElementSibling.src;
                 const exerciseName = this.textContent;
 
-                // Set the content of the popup
+                
                 document.getElementById('popup-title').textContent = exerciseName;
                 document.getElementById('popup-img').src = imgSrc;
 
-                // Show the popup
+                //Shows popup (not extensively used)
                 document.getElementById('popup').style.display = 'block';
             });
         });
@@ -665,7 +661,6 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Assuming "workouts" is passed as a JSON array
         var workouts = {{ workouts| tojson | safe
     }};
 
@@ -680,8 +675,8 @@
             button.textContent = 'Remove from Workout Plan';
             button.style.backgroundColor = 'grey';
             button.style.color = 'white';
-            button.classList.remove('btn-primary'); // Assuming this is your initial class for add
-            button.classList.add('btn-secondary'); // Assuming you want this class for remove
+            button.classList.remove('btn-primary'); 
+            button.classList.add('btn-secondary'); 
         }
     });
 });
