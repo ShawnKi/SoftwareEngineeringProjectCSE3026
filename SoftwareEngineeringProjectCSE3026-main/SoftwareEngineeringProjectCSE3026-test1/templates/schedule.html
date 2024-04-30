@@ -83,7 +83,7 @@
     }
 
 
-    .workout.ChestTricep {
+    .workout.ChestTricep { 
         background-color: rgba(112, 153, 215, 0.5);
     }
 
@@ -141,7 +141,7 @@
     .title-container {
         text-align: center; /* Centers text for semantic HTML elements */
         margin-top: 20px;
-        width: 100%; /* Ensures the container takes full width */
+        width: 100%; 
     }
     
     .title-flex {
@@ -247,13 +247,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () { //Sets up page on load
-        populateWorkouts()
-        populateSchedule(weekDataObject);
-        console.log("workoutInput", workoutInput);
+        populateWorkouts() //Gets the workouts that the user selected
+        populateSchedule(weekDataObject); //Loads in the already existing schedule
+        console.log("workoutInput", workoutInput); //used for debugging
         let workouts = document.querySelectorAll('.workout');
         let days = document.querySelectorAll('.day');
 
-        workouts.forEach(workout => { //Dragging behavior 
+        workouts.forEach(workout => { //Sets the dragging behaviour for the workouts
             workout.addEventListener('dragstart', function (e) {
                 e.dataTransfer.setData('text/plain', e.target.id);
                 var dragImage = e.target.cloneNode(true);
@@ -266,7 +266,7 @@
 
         days.forEach(day => {
             day.addEventListener('dragover', function (e) {
-                e.preventDefault();  // Allows dropping into the days
+                e.preventDefault();  // Allows dropping workouts into the days
             });
 
             day.addEventListener('drop', function (e) {
@@ -274,7 +274,7 @@
                 const data = e.dataTransfer.getData('text');
                 const original = document.getElementById(data);
 
-                //collects the workout data from the original 
+                //collects the workout data from the original workout type
                 const workoutDetails = {
                     name: original.querySelector('.workout-title').textContent,
                     reps: original.querySelector('.reps').textContent.split(': ')[1],
@@ -284,14 +284,12 @@
                 };
 
                 const newWorkoutElement = createWorkoutElement(workoutDetails);
-                newWorkoutElement.id = `${data}-${Date.now()}`; // creats a new id for elements
+                newWorkoutElement.id = `${data}-${Date.now()}`; // creats a new id for the clone
 
-                day.appendChild(newWorkoutElement);
+                day.appendChild(newWorkoutElement); //Adds the workout to the day
             });
         });
     });
-
-
 </script>
 
 
@@ -309,7 +307,8 @@
     <div class="main-container">
 
         <div class="week-container">
-            <div id="week" class="d-flex justify-content-between">
+            <div id="week" class="d-flex justify-content-between"> 
+            
                 <div class="day monday border p-3" id="monday">Monday</div>
                 <div class="day tuesday border p-3" id="tuesday">Tuesday</div>
                 <div class="day wednesday border p-3" id="wednesday">Wednesday</div>
@@ -327,6 +326,7 @@
         <button id="saveChangesButton" class="saveChanges">Save Changes</button>
     </div>
     <script>
+        //Function to send the current schedule back when the user presses save changes
         document.getElementById('saveChangesButton').addEventListener('click', function () {
             let scheduleData = {};
             document.querySelectorAll('#week .day').forEach(day => {
@@ -367,7 +367,7 @@
     </script>
     <script>
         function populateWorkouts() {
-            // Data array for creating exercises
+            // function to add in workouts that the user selected
             const workoutArray = [
                 {
                     "id": "BenchPress",
@@ -413,7 +413,7 @@
                     "id": "Plank",
                     "type": "Core",
                     "title": "Plank",
-                    "reps": "1",  // Time in minutes
+                    "reps": "1", 
                     "sets": "3",
                     "image": "{{ url_for('static', filename='images/plank.png') }}"
                 },
@@ -485,7 +485,7 @@
                     "id": "Side Plank",
                     "type": "Core",
                     "title": "Side Plank",
-                    "reps": "1",  // Time in minutes per side
+                    "reps": "1",  
                     "sets": "3",
                     "image": "{{ url_for('static', filename='images/side_plank.png') }}"
                 },
@@ -493,7 +493,7 @@
                     "id": "Mountain Climbers",
                     "type": "Core",
                     "title": "Mountain Climbers",
-                    "reps": "1",  // Time in minutes
+                    "reps": "1",  
                     "sets": "3",
                     "image": "{{ url_for('static', filename='images/mountain_climbers.png') }}"
                 },
@@ -525,7 +525,7 @@
                     "id": "Bird Dog",
                     "type": "Core",
                     "title": "Bird Dog",
-                    "reps": "15",  // Per side
+                    "reps": "15",  
                     "sets": "3",
                     "image": "{{ url_for('static', filename='images/bird-dog.png') }}"
                 },
@@ -562,7 +562,7 @@
                     "image": "{{ url_for('static', filename='images/glute_bridge.png') }}"
                 }
             ];
-            var filteredWorkoutArray = workoutArray.filter(workout => workoutInput.includes(workout.title));
+            var filteredWorkoutArray = workoutArray.filter(workout => workoutInput.includes(workout.title)); //Selects only the workouts that the user wants.
 
 
             const workoutsContainer = document.querySelector('.workouts');
@@ -601,12 +601,12 @@
             closeButton.onclick = function () {
                 this.parentNode.remove();
             };
-
+            //Option to add the image to the workout elements (not currently used)
             let workoutImage = document.createElement('img');
             workoutImage.src = workoutDetails.image;
             workoutImage.alt = workoutDetails.name;
             workoutImage.className = 'workout-image';
-            workoutImage.style.display = "none";
+            workoutImage.style.display = "none"; //Set this variable to true if you want to see the pictures on the days.
 
             let workoutDetailsDiv = document.createElement('div');
             workoutDetailsDiv.className = 'workout-details';
@@ -635,7 +635,7 @@
             workout.appendChild(workoutImage);
             workout.appendChild(workoutDetailsDiv);
 
-            return workout;
+            return workout; //sends back the workout element
         }
         function can_edit(div) { //Function to let the the rep and set parts be edited
             if (div.querySelector('input')) {
@@ -714,7 +714,7 @@
             workout.appendChild(workoutImage);
             workout.appendChild(workoutDetailsDiv);
 
-            //Sets drag behavior
+            //Sets drag behavior for workouts
             workout.addEventListener('dragstart', function (e) {
                 e.dataTransfer.setData('text/plain', e.target.id);
                 var dragImage = e.target.cloneNode(true);
@@ -746,6 +746,7 @@
         }
     </script>
     <script>
+        //Button to send a message to app.py to generate a schedule.
         document.getElementById('generateScheduleButton').addEventListener('click', function() {
             const url = `/schedule/${currentUsername}`;
             fetch(url, {
