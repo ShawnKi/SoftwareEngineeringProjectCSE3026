@@ -59,6 +59,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 #Format: "Exercise":[["Primary Muscles"],["Secondary Muscles"],["Equipment"],["Complexity"]]
+#NOT USED IN CURRENT VERSION
 exercises = {
     "Push-ups": [["Chest", "Triceps"], ["Shoulders"], ["Bodyweight"], ["Beginner"]],
     "Sit-ups": [["Abs"], [], ["Bodyweight"], ["Beginner"]],
@@ -90,10 +91,6 @@ exercises = {
     "Planche Push-ups": [["Chest", "Triceps"], ["Shoulders", "Back"], ["Bodyweight"], ["Advanced"]]
 }
 
-
-def calculate_workout_recomendations(username):
-    user = User.query.filter_by(username=username).first()
-    equipment=user.userdata["equipment"]
     
     
 
@@ -101,14 +98,13 @@ def calculate_workout_recomendations(username):
 def index():
     return render_template('index.html')
 
+#Renders the workout page for non-logged in users. 
 @app.route('/workout_lean')
 def workout_lean():
     return render_template('workout_lean.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
 
+#Gets the quiz results and adds them to the userdata
 @app.route('/quiz', methods=['GET', 'POST'])
 @login_required
 def quiz():
@@ -144,7 +140,7 @@ def signup():
         new_user = User(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
         db.session.add(new_user)
         db.session.commit()
-        login_user(new_user)
+        login_user(new_user) #logs in new user before they take the quiz
         return redirect(url_for('quiz'))
         
     else:
@@ -159,8 +155,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             login_user(user)
             session['loggedin'] = True
-            session['answers'] = user.userdata
-            #session['username'] = username
+            session['answers'] = user.userdata #Sets the session answers to be correct for the user.
             return render_template('profile.html', username=username)
         
         else:
@@ -184,6 +179,7 @@ def profile(username):
         db.session.commit()
     return render_template('profile.html', username=username)
 
+
 @app.route('/pfp', methods=['POST'])
 @login_required
 def pfp():
@@ -198,12 +194,14 @@ def pfp():
     else:
         return jsonify({"status": "error", "message": "Invalid image URL"}), 400
 
+#returns the results of the quiz.
 @app.route('/results/<username>')
 def results(username):
     user = User.query.get(session.get('_user_id'))
-    print("Userdata:",user.userdata)
+    #print("Userdata:",user.userdata)
     return render_template('results.html', username=username)
 
+#Shows the workouts page for the logged in user
 @app.route('/workouts/<username>', methods=['GET', 'POST'])
 @login_required
 def workouts(username):
@@ -214,7 +212,6 @@ def workouts(username):
         action = data['action']
         answers = session.get('answers', {})
         print("Answers now", answers)
-        # Ensure userdata is initialized
         if 'workouts' not in answers:
             workouts = []
         else:
@@ -227,7 +224,6 @@ def workouts(username):
             if exercise_name in workouts:
                 workouts.remove(exercise_name)
         
-        # Reassign userdata to ensure changes are detected
         answers.update({'workouts': workouts})
         session['answers'] = answers
         print(answers)
@@ -251,16 +247,16 @@ def workouts(username):
 
     return render_template('workouts.html', username=username, workouts=workouts)
 
+#The schedule page for logged in users. 
 @app.route('/schedule/<username>', methods=['GET', 'POST'])
 @login_required
 def schedule(username):
     
     if request.method=='POST':
-        #Takes in the data as a dictionary
         data = request.json
         print(data)
         print({'message': 'generate schedule'})
-        if 'message' in data:
+        if 'message' in data: #if the user clicked auto generate schedule
             user = User.query.get(session.get('_user_id'))
             user = User.query.filter_by(username=username).first()
             
@@ -276,7 +272,7 @@ def schedule(username):
                 "saturday": [],
                 "sunday": []
             }
-            datas = update_workout_plan(datas,exercisefreq) 
+            datas = update_workout_plan(datas,exercisefreq) #Generates workout plan based off user quiz results.
             print(datas)
 
             answers = session.get('answers', {})
@@ -291,7 +287,7 @@ def schedule(username):
                 db.session.rollback()  
                 print("Commit failed: ", e)
             return jsonify({"reload": True}), 200
-        else:
+        else: #if the user presses save changes
             user = User.query.get(session.get('_user_id'))
             user = User.query.filter_by(username=username).first()
             
@@ -320,7 +316,7 @@ def schedule(username):
     workoutInput=user.userdata.get('workouts', [])
     return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'), workoutInput=workoutInput)
 
-@app.route('/planning/<username>',methods=['GET'])
+@app.route('/planning/<username>',methods=['GET']) #gets the planning page for the specific day 
 @login_required
 def planning(username):
     user = User.query.get(session.get('_user_id'))
@@ -370,6 +366,7 @@ def planning(username):
                 
     return render_template('planning.html', exercises=exercises)
 
+#Clears the session data on logout and ensures that pressing the back key will not log the user back in. 
 @app.route('/logout')
 def logout():
     session.clear()
@@ -380,9 +377,6 @@ def logout():
     response.headers["Expires"] = "0"
     return response
 
-# @app.route('/thankyou')
-# def thankyou():
-#     return 'Thank you for completing the survey'
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     app.run(host="127.0.0.1", port=8080, debug=True)
