@@ -258,29 +258,62 @@ def schedule(username):
     if request.method=='POST':
         #Takes in the data as a dictionary
         data = request.json
-        user = User.query.get(session.get('_user_id'))
-        user = User.query.filter_by(username=username).first()
-        
-        quiz_res = user.userdata.get('quiz_results', {})  
-        exercisefreq = quiz_res['exerciseFrequency'] 
-        print("made it here")
-        print(data) 
-        datas = data
-        datas = update_workout_plan(datas,exercisefreq) 
-        print(datas)
-
-        answers = session.get('answers', {})
-        answers.update({'schedule': datas})
-        user.userdata=answers
-        flag_modified(user, 'userdata')
-        session['answers'] = answers
-        try:
-            db.session.commit()
+        print(data)
+        print({'message': 'generate schedule'})
+        if 'message' in data:
+            user = User.query.get(session.get('_user_id'))
+            user = User.query.filter_by(username=username).first()
             
-        except Exception as e:
-            db.session.rollback()  
-            print("Commit failed: ", e)
-        return jsonify({'message': 'Data received successfully!'})
+            quiz_res = user.userdata.get('quiz_results', {})  
+            exercisefreq = quiz_res['exerciseFrequency'] 
+            print("made it here") 
+            datas = {
+                "monday": [],
+                "tuesday": [],
+                "wednesday": [],
+                "thursday": [],
+                "friday": [],
+                "saturday": [],
+                "sunday": []
+            }
+            datas = update_workout_plan(datas,exercisefreq) 
+            print(datas)
+
+            answers = session.get('answers', {})
+            answers.update({'schedule': datas})
+            user.userdata=answers
+            flag_modified(user, 'userdata')
+            session['answers'] = answers
+            try:
+                db.session.commit()
+                
+            except Exception as e:
+                db.session.rollback()  
+                print("Commit failed: ", e)
+            return jsonify({"reload": True}), 200
+        else:
+            user = User.query.get(session.get('_user_id'))
+            user = User.query.filter_by(username=username).first()
+            
+            quiz_res = user.userdata.get('quiz_results', {})  
+            exercisefreq = quiz_res['exerciseFrequency'] 
+            print("made it here")
+            print(data) 
+            datas = data
+            print(datas)
+
+            answers = session.get('answers', {})
+            answers.update({'schedule': datas})
+            user.userdata=answers
+            flag_modified(user, 'userdata')
+            session['answers'] = answers
+            try:
+                db.session.commit()
+                
+            except Exception as e:
+                db.session.rollback()  
+                print("Commit failed: ", e)
+            return jsonify({'message': 'Data received successfully!'})
     
     user = User.query.filter_by(username=username).first()
     weekData = user.userdata.get('schedule', {}) 
