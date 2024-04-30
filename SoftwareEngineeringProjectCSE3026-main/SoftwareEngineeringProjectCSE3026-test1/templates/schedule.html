@@ -19,10 +19,7 @@
 
     }
 
-    .title-container {
-        text-align: center;
-        margin-top: 20px;
-    }
+    
 
     .main-container {
         display: flex;
@@ -141,7 +138,34 @@
         width: 100%;
         text-align: center;
     }
-
+    .title-container {
+        text-align: center; /* Centers text for semantic HTML elements */
+        margin-top: 20px;
+        width: 100%; /* Ensures the container takes full width */
+    }
+    
+    .title-flex {
+        display: flex;
+        justify-content: space-between; 
+        align-items: center;           
+        position: relative;            
+    }
+    
+    h1 {
+        flex-grow: 1;                   
+        text-align: center;            
+    }
+    
+    .generateSchedule {
+        position: absolute;             
+        right: 10px;                    
+        padding: 10px 20px;
+        background-color: #4CAF50;     
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
     .week-container {
         flex: 3;
         display: flex;
@@ -277,7 +301,10 @@
 {% block body %}
 <div class="container">
     <div class="title-container">
-        <h1>Plan Your Workouts</h1>
+        <div class="title-flex">
+            <h1>Plan Your Workouts</h1>
+            <button id="generateScheduleButton" class="generateSchedule">Auto-Generate Schedule</button>
+        </div>
     </div>
     <div class="main-container">
 
@@ -717,5 +744,27 @@
                 }
             });
         }
+    </script>
+    <script>
+        document.getElementById('generateScheduleButton').addEventListener('click', function() {
+            const url = `/schedule/${currentUsername}`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: "generate schedule" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.reload) {
+                    window.location.reload();  
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
     </script>
     {% endblock %}
