@@ -13,16 +13,16 @@
         flex: 1;
         padding: 20px;
         max-width: 250px;
-        /* dimensions for filter */
+        
     }
 
     .grid-container {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 300px));
-        /* Sets the width and number of columns */
+        
         gap: 10px;
         justify-content: space-around;
-        /* This can help distribute items evenly */
+        
         padding: 20px;
     }
 
@@ -33,7 +33,7 @@
         padding: 10px;
         border-radius: 8px;
         background-color: #dce2ff;
-        /* Sets the background color for the exercise elements */
+        
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         display: flex;
         flex-direction: column;
@@ -92,7 +92,7 @@
         text-decoration: underline;
     }
 
-    /* Popup styles */
+    
     .popup {
         display: none;
         position: fixed;
@@ -537,6 +537,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        //Function to setup the filters and exercises
         const filters = document.querySelectorAll('.filter-container input[type=checkbox]');
         const exercises = document.querySelectorAll('.grid-item');
 
@@ -575,7 +576,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.exercise-title').forEach(title => {
             title.addEventListener('click', function () {
-                // Find the sibling image of the clicked title
+                
                 const imgSrc = this.nextElementSibling.src;
                 const exerciseName = this.textContent;
 
