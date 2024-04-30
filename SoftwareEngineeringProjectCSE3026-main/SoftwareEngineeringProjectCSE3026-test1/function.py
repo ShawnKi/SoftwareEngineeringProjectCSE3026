@@ -31,12 +31,21 @@ def sets_rep_calculation(bodytype, goal):
     sets = 3  # All body types and goals have the same default number of sets
     return reps, sets, rest
 
-def update_workout_plan(data):
-    if not any(data.values()):
-        data['monday'] = ChestandTricep
-        data['tuesday'] = BackandBicep
-        data['thursday'] = LegsandShoulders
-        data['friday'] = CardioandCore
+def update_workout_plan(data,exerfreq):
+    if not any(data.values()): 
+        if exerfreq == "Twice a week":
+            data.update({'tuesday':UpperBodyStrength})
+            data.update({'friday':LowerBodyStrength})
+        elif exerfreq == "Three times a week":
+            data.update({'tuesday':FullBody})
+            data.update({'thursday':UpperBodyStrength})
+            data.update({'friday':LowerBodyStrength})
+        elif exerfreq == "4-5 times a week":
+            data.update({'monday': ChestandTricep})
+            data.update({'tuesday': BackandBicep})
+            data.update({'wednesday':LegsandShoulders})
+            data.update({'friday': CardioandCore})
+                
     return data
 
 #endomorph
@@ -79,4 +88,4 @@ LowerBodyStrength = [{'name': 'Squat', 'reps': '10', 'sets': '3', 'type': 'Legs'
 #mesomorph
 no_equip = ["Push-ups","Pull-ups","Lunges","Squats"]
 dumbell = ["Push-ups","Bicep Curls","Dumbbell Bench Press","Lateral Raises"]
-gym = ["Barbell Row","Lat Pulldown","Bicep Curls"]
+gym = ["Barbell Row","Lat Pulldown","Bicep Curls","Romanian Deadlift"]

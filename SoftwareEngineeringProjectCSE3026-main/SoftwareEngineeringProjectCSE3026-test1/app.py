@@ -11,7 +11,6 @@ from function import *
 import os
 from datetime import date
 import calendar
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(24)  # change this for new testing instances
 
@@ -254,17 +253,23 @@ def workouts(username):
 @app.route('/schedule/<username>', methods=['GET', 'POST'])
 @login_required
 def schedule(username):
+    
     if request.method=='POST':
         #Takes in the data as a dictionary
         data = request.json
+        user = User.query.get(session.get('_user_id'))
+        user = User.query.filter_by(username=username).first()
+        
+        quiz_res = user.userdata.get('quiz_results', {})  
+        exercisefreq = quiz_res['exerciseFrequency'] 
         print("made it here")
         print(data) 
-        data = update_workout_plan(data) 
-        print(data)
+        datas = data
+        datas = update_workout_plan(datas,exercisefreq) 
+        print(datas)
 
         answers = session.get('answers', {})
-        answers.update({'schedule': data})
-        user = User.query.get(session.get('_user_id'))
+        answers.update({'schedule': datas})
         user.userdata=answers
         flag_modified(user, 'userdata')
         session['answers'] = answers
@@ -277,7 +282,7 @@ def schedule(username):
         return jsonify({'message': 'Data received successfully!'})
     
     user = User.query.filter_by(username=username).first()
-    weekData = user.userdata.get('schedule', {})
+    weekData = user.userdata.get('schedule', {}) 
     workoutInput=user.userdata.get('workouts', [])
     return render_template('schedule.html', username=username, weekData=jsonify(weekData).data.decode('utf-8'), workoutInput=workoutInput)
 
@@ -288,44 +293,45 @@ def planning(username):
     user = User.query.filter_by(username=username).first()
     quiz_res = user.userdata.get('quiz_results', {}) 
     print(quiz_res)
-    print(quiz_res['bodyType'])
     bodyt = quiz_res['bodyType']
-    print(bodyt)
     goals = quiz_res['goal']  
-    print(goals)
+    equipmenthave = quiz_res['equipment']
+    exercisefreq = quiz_res['exerciseFrequency'] 
+    print(exercisefreq) 
     # workouts = user.userdata.get('workouts', [])
     exercises =[]
+    rep,sets,rest = sets_rep_calculation(bodyt,goals)  
     
     weekData = user.userdata.get('schedule', {})
-    my_date = date.today()
-    today = calendar.day_name[my_date.weekday()]  #Tod5ay's date
-    today_workout = weekData[today.lower()]
-    print(today_workout)
-    rep,sets,rest = sets_rep_calculation(bodyt,goals)  
-    s = rep
-    r = rest
-     
-    for x in today_workout:        
-        if x['name'] == 'Plank':
-            rep = x['reps']
-            rest = '30 seconds'            
-        info = {"name":x['name'], "sets": sets, "reps": rep, "rest": rest} 
-        exercises.append(info)
-        rep = s 
-        rest = r 
+    if bool(weekData) :
+        my_date = date.today()
+        today = calendar.day_name[my_date.weekday()]  #Today's date
+        today_workout = weekData[today.lower()] 
+        s = rep
+        r = rest
+        
+        for x in today_workout:        
+            if x['name'] == 'Plank':
+                rep = x['reps']
+                rest = '30 seconds'            
+            info = {"name":x['name'], "sets": sets, "reps": rep, "rest": rest} 
+            exercises.append(info)
+            rep = s 
+            rest = r 
     # If no workouts, provide default exercises
-    if not any(weekData):
-        if user.userdata.get('equipment') == 'No equipment':
-            for x in no_equip:
-                info = {"name":x, "sets": 3, "reps": '8-12', "rest": "1 minutes"}
+    if not any(weekData) :
+        if 'No equipment' in equipmenthave:
+            for x in no_equip:           
+                info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
                 exercises.append(info)
-        elif user.userdata.get('equipment') == 'Dumbbells':
-            for x in dumbell:
-                info = {"name":x, "sets": 3, "reps": '8-12', "rest": "1 minutes"}
+                
+        elif 'Dumbbells' in equipmenthave:
+            for x in dumbell:         
+                info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
                 exercises.append(info)
-        elif user.userdata.get('equipment') == 'Barbell' or 'Kettlebell':
-            for x in gym:
-                info = {"name":x, "sets": 3, "reps": '8-12', "rest": "1 minutes"}
+        elif 'Barbell' or 'Kettlebell' in equipmenthave:
+            for x in gym:           
+                info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
                 exercises.append(info)
                 
     return render_template('planning.html', exercises=exercises)
