@@ -1,3 +1,8 @@
+<!-- 
+    a simple login page that contains a form for the user to enetr their information, and a link 
+    that redirects the user to the sign up page
+ -->
+
 {% extends 'base.html' %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
@@ -14,19 +19,19 @@
 <div class="col-xl-4 mx-auto">
     <div class="card mb-4">
         <div align="center">
-            <!-- <div class="card-header">Sign Up</div> -->
+
             <h1 class="fs-4 card-title fw-bold mt-5">Login</h1>
         </div>
         <div class="card-body">
             <form action="{{ url_for('login') }}" method="post">
 
-                <!-- </div> -->
+
                 <div class="m-4">
-                    <!--<label class="small mb-1" for="inputUsername">Username</label>-->
+
                     <input class="form-control" id="username" name="username" type="text" placeholder="Username">
                 </div>
                 <div class="m-4">
-                    <!-- <label class="small mb-1" for="inputUsername">Password</label> -->
+
                     <input class="form-control" id="password" name="password" type="password" placeholder="Password">
                 </div>
                 <div class="m-4">

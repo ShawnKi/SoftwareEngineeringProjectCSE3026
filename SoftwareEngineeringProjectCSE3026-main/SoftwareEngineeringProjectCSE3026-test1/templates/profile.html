@@ -1,3 +1,7 @@
+<!--
+    This file includes code for the acccount information on the profile page. It contains a profile picture selector and a form
+    that lets the user change their account information.
+-->
 {% extends 'base.html' %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
@@ -25,16 +29,14 @@
     <hr class="mt-0 mb-4">
     <div class="row">
         <div class="col-xl-4">
-            <!-- Profile picture (maybe change)-->
+            <!-- Profile picture card-->
             <div class="card mb-4 mb-xl-0">
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
                     <img class="img-account-profile rounded-circle mb-2" img
                         src="{{ url_for('static', filename='images/' + current_user.picture) }}" alt="">
-                    <!-- Profile picture help block-->
                     <div class="small font-italic text-muted mb-4"></div>
-                    <!-- Profile picture upload button-->
                     <button class="btn btn-primary" id="choose-image-btn" type="button">Choose image</button>
                 </div>
             </div>
@@ -92,29 +94,27 @@
                 <div class="card-header">Account Details</div>
                 <div class="card-body">
                     <form action="{{ url_for('profile', username=current_user.username) }}" method="post">
-                        <!-- Form Group (username)-->
+                        <!-- username -->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputUsername">Username</label>
                             <input class="form-control" id="inputUsername" name="inputUsername" type="text"
                                 placeholder="Enter your username" value={{current_user.username}}>
                         </div>
-                        <!-- Form Row-->
+                        <!-- firstname -->
                         <div class="row gx-3 mb-3">
-                            <!-- Form Group (first name)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputFirstName">First name</label>
                                 <input class="form-control" id="inputFirstName" name="inputFirstName" type="text"
                                     placeholder="Enter your first name" value={{current_user.first_name}}>
                             </div>
-                            <!-- Form Group (last name)-->
+                            <!-- lastname -->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="inputLastName">Last name</label>
                                 <input class="form-control" id="inputLastName" name="inputLastName" type="text"
                                     placeholder="Enter your last name" value={{current_user.last_name}}>
                             </div>
                         </div>
-                        <!-- Form Row        -->
-                        <!-- Form Group (email address)-->
+                        <!-- email -->
                         <div class="mb-3">
                             <label class="small mb-1" for="inputEmailAddress">Email address</label>
                             <input class="form-control" id="inputEmailAddress" name="inputEmailAddress" type="email"
@@ -129,6 +129,8 @@
     </div>
 </div>
 <script>
+    //brings up a modal when the user clicks the change image button with all the opions
+    //also sets the profile picture to what the user clicks
     document.addEventListener('DOMContentLoaded', function () {
         var chooseImageButton = document.getElementById('choose-image-btn');
         var imageOptionsModal = document.getElementById('image-options-modal');
@@ -156,7 +158,7 @@
                     }
                 });
 
-                // Close the modal
+                //close modal
                 imageOptionsModal.style.display = 'none';
             });
         });
