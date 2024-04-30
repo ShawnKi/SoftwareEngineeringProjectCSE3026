@@ -1,4 +1,8 @@
-<!-- Fixed navbar -->
+<!-- 
+    a simple navigation bar that has the website logo and links to each of the website pages. The links change depending 
+    on whethe the user is logged in ot not.
+-->
+
 <nav class="navbar navbar-expand-md navbar-light fixed-top shadow-sm" style="background-color: #9eb8e9;">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center fw-bold">
@@ -15,13 +19,16 @@
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="{{url_for('index')}}">Home</a>
                 </li>
+                <!-- workout page link -->
                 <li class="nav-item">
+                    <!-- checks if the user is not logged in-->
                     {% if current_user.is_anonymous %}
                     <a class="nav-link" href="{{ url_for('workout_lean') }}" }>Workouts</a>
                     {% else %}
                     <a class="nav-link" href="{{url_for('workouts', username=current_user.username)}}" }>Workouts</a>
                     {% endif %}
                 </li>
+                <!-- logged in users links or login link -->
                 <li class="nav-item">
                     {% if current_user.is_anonymous %}
                     <a class="nav-link" href="{{ url_for('login') }}">Login/Signup</a>

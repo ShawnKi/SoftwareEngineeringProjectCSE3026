@@ -1,3 +1,7 @@
+<!-- 
+    This file contains the code for our home page which has basic infromation about the website 
+    and buttons that redirect the user to the workout page and signup page
+-->
 {% extends 'base.html' %}
 
 {% block head %}
@@ -137,6 +141,7 @@
 {% endblock %}
 
 {% block body %}
+<!-- main homepage image and buttons-->
 <div class="home"><img src="{{ url_for('static', filename='images/home2.png') }}" alt="home" class="full">
     <div class="overlay-text">Your personalized path to a stronger you.</div>
     <div class="overlay2">Personalize your fitness tracking experience with CHASMFitness.</div>
@@ -146,10 +151,10 @@
                     Started</a></button></div>
     <div class="overlay-button2"><button class="btn" type="button">{% if current_user.is_anonymous %}<a
                 href="{{ url_for('workout_lean') }}">{% else %}<a
-                    href="{{url_for('workouts', username=current_user.username)}}">{% endif %}Browse
+                    href="{{url_for('workouts', username=current_user.username)}}">{% endif %} Browse
                     Workouts</a></button></div>
 </div>
-
+<!-- website logo and infromation-->
 <div class="container homepage-container">
     <div>
         <h1 class="fade-in">Welcome to CHASM Fitness</h1>
