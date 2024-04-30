@@ -1,3 +1,5 @@
+#Authors: Ariana Sanchez, Melissa Fusco, Cameron Rhea, Shawn Kingman, Hongrong Zhong
+#This file manages the backend of our website, such as loading html pages and managing user data.
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm.attributes import flag_modified
