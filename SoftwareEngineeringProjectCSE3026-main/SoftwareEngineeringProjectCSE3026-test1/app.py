@@ -14,7 +14,8 @@ import calendar
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.urandom(24)  # change this for new testing instances
 
-db_user = os.environ.get("DB_USER")
+# get db info from injected environment variables
+db_user = os.environ.get("DB_USER") 
 db_pass = os.environ.get("DB_PASS")
 db_name = os.environ.get("DB_NAME")
 cloud_sql_connection_name = os.environ.get("DB_CONN_NAME")
@@ -22,7 +23,7 @@ cloud_sql_connection_name = os.environ.get("DB_CONN_NAME")
 host = '/cloudsql/{}'.format(cloud_sql_connection_name)
 db_public_ip = os.environ.get("DB_IP")
 db_port = 3306
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}:{db_port}/{db_name}"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{db_user}:{db_pass}@{db_public_ip}:{db_port}/{db_name}" #db connection string
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -290,16 +291,9 @@ def schedule(username):
         else: #if the user presses save changes
             user = User.query.get(session.get('_user_id'))
             user = User.query.filter_by(username=username).first()
-            
-            quiz_res = user.userdata.get('quiz_results', {})  
-            exercisefreq = quiz_res['exerciseFrequency'] 
-            print("made it here")
-            print(data) 
-            datas = data
-            print(datas)
-
+             
             answers = session.get('answers', {})
-            answers.update({'schedule': datas})
+            answers.update({'schedule': data})
             user.userdata=answers
             flag_modified(user, 'userdata')
             session['answers'] = answers
@@ -325,14 +319,13 @@ def planning(username):
     print(quiz_res)
     bodyt = quiz_res['bodyType']
     goals = quiz_res['goal']  
-    equipmenthave = quiz_res['equipment']
-    exercisefreq = quiz_res['exerciseFrequency'] 
-    print(exercisefreq) 
+    equipmenthave = quiz_res['equipment'] 
     # workouts = user.userdata.get('workouts', [])
     exercises =[]
     rep,sets,rest = sets_rep_calculation(bodyt,goals)  
     
     weekData = user.userdata.get('schedule', {})
+    print(weekData) 
     if bool(weekData) :
         my_date = date.today()
         today = calendar.day_name[my_date.weekday()]  #Today's date
@@ -349,20 +342,21 @@ def planning(username):
             rep = s 
             rest = r 
     # If no workouts, provide default exercises
-    if not any(weekData) :
-        if 'No equipment' in equipmenthave:
-            for x in no_equip:           
-                info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
-                exercises.append(info)
-                
-        elif 'Dumbbells' in equipmenthave:
+    if not any(weekData) : 
+        if 'Dumbbells' in equipmenthave:
             for x in dumbell:         
                 info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
                 exercises.append(info)
+                break
         elif 'Barbell' or 'Kettlebell' in equipmenthave:
             for x in gym:           
                 info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
                 exercises.append(info)
+                break
+        for x in no_equip:           
+                info = {"name":x, "sets": sets, "reps": rep, "rest": rest}
+                exercises.append(info)
+                
                 
     return render_template('planning.html', exercises=exercises)
 
