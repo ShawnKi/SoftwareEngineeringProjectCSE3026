@@ -3,8 +3,7 @@ To get started, you can access our app at [https://fitness-app-image-6vh2ppreea-
 
 We also host the website on [chasmfit.com](https://www.chasmfit.com), but as we are making use of Google's experimental features, sometimes this version will not load. Try turning off vpns or using a different browser if this one gives you issues.  
 For non-login users, we offer a simplified experience with a browsable selection of workouts (We used Canva to find simplfied and easy to understand images for our workout selection).   
-Once you are signed up for an account, you can take our quiz that will help us generate a customized workout plan for you. Try browsing our workouts page and seeing what workouts you want to add to your workout plan, then you can either build a custom schedule on our schedule page by either dragging and dropping the workouts, or by having us auto-generate one for you.   
-You can then go to our planner to see the workouts for today, and check the ones you've completed.   
+Once you are signed up for an account, you can take our quiz that will help us generate a customized workout plan for you. Try browsing our workouts page and seeing what workouts you want to add to your workout plan, then you can either build a custom schedule on our schedule page by either dragging and dropping the workouts, or by having us auto-generate one for you. You can then go to our planner to see the workouts for today, and check the ones you've completed.   
 You can also customize your profile by easily changing your profile picture and personal details from our profile page.   
 
 #### Technical implementation:  
@@ -16,10 +15,11 @@ In order to test our website, we would test new features by testing a range of p
 We also used GPT4 to analyze certain functions in both app.py and the HTML files to provide testing input to ensure that we can handle all types of user input.  
 
 #### Development lifecycle:  
-We followed a loose verison of the AGILE software development lifecycle, with planning the features we wanted to implement in a given week, how we would design and connect them. We would then implement these features and upload the individual changes to seperate github branches. After testing and review, we would merge these changes and then deploy these changes. When planning new features, we would also examine old features that needed to be updated. This lifecycle allowed us to make incremental changes while constantly ensuring an intuative and accessable UI.   
+We followed a loose verison of the AGILE software development lifecycle, with planning the features we wanted to implement in a given week, how we would design and connect them. We would then implement these features and upload the individual changes to seperate github branches.    
+After testing and review, we would merge these changes and then deploy these changes. When planning new features, we would also examine old features that needed to be updated. This lifecycle allowed us to make incremental changes while constantly ensuring an intuative and accessable UI.   
 
 #### Deployment:  
-We use AWS to host the website and Google features to have our domain hosted with [chasmfit.com](https://www.chasmfit.com). We dockerized our core files to ensure easy updates and testing. 
+We use AWS to host the website and Google features to have our domain hosted at [www.chasmfit.com](https://www.chasmfit.com). We dockerized our core files to ensure easy updates and testing. 
 
 #### Known issues:  
 - Chasmfit.com will sometimes go down and not be accessble by certain IPs. After extensive testing we concluded this was a quirk with Google's domain mapping feature, and we could not fix it on our end.  
