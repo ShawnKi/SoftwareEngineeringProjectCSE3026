@@ -159,6 +159,7 @@ def login():
         if user and bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
             login_user(user)
             session['loggedin'] = True
+            session['answers'] = user.userdata
             #session['username'] = username
             return render_template('profile.html', username=username)
         
@@ -338,6 +339,7 @@ def planning(username):
 
 @app.route('/logout')
 def logout():
+    session.clear()
     logout_user()
     response = make_response(redirect(url_for("index")))
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
