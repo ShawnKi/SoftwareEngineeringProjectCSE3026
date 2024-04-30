@@ -45,7 +45,9 @@ def update_workout_plan(data,exerfreq):
             data.update({'tuesday': BackandBicep})
             data.update({'wednesday':LegsandShoulders})
             data.update({'friday': CardioandCore})
-                
+        elif exerfreq == "Once a week":
+            data.update({'saturday':FullBody})
+ 
     return data
 
 #endomorph
