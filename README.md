@@ -23,7 +23,7 @@ We use AWS to host the website and Google features to have our domain hosted at 
 
 #### Known issues:  
 - Chasmfit.com will sometimes go down and not be accessble by certain IPs. After extensive testing we concluded this was a quirk with Google's domain mapping feature, and we could not fix it on our end.  
-- The sets and reps on the planner is personalized and it is generated automatically based upon quiz results, it does not line up with those in the schedule. However, user may modified the sets and reps as they seem fit in the schedule and use that as planner instead for more flexibility. We concluded that this issue only has a minimal impact on the user experiance and thus we focused our efforts on more critical bugs.  
+- The sets and reps on the planner is personalized and it is generated automatically based upon quiz results, it does not line up with those in the schedule. The repetation in the planner should be done such that you are choosing the weight for the exercise such that you won't be lift more than the repetion recommended. However, user may modified the sets and reps as they seem fit in the schedule and use that as planner instead for more flexibility. We concluded that this issue only has a minimal impact on the user experiance and thus we focused our efforts on more critical bugs.  
  
 #### Misc:  
 **Use the version in the local_host_version to run the program on the localhost**
